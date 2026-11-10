@@ -2,6 +2,9 @@
 
 Chaque nouvelle version incrémente le numéro dans `package.json` (injecté dans le bundle et affiché dans la console du navigateur).
 
+## 1.16.2
+- README : retrait d'un chemin de ressource non vérifié (YAML) ; on renvoie à la ligne affichée par le Marketplace.
+
 ## 1.16.1
 - Documentation : captures d'écran dans le README (`docs/`) ; installation via le Marketplace de Home Assistant 2026.11 (HACS intégré), HACS et installation manuelle conservés.
 

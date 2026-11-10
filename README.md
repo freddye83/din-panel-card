@@ -35,7 +35,7 @@ Depuis la 2026.11, HACS est intégré à Home Assistant sous le nom de **Marketp
 Notes :
 - Les dépôts ajoutés se retrouvent dans la page **Dépôts personnalisés** du Marketplace ; ils y restent tant qu'ils ne sont pas désinstallés.
 - Les mises à jour apparaissent dans *Paramètres → Mises à jour* (vérification toutes les 6 h).
-- Si tu gères les ressources du tableau de bord **en YAML**, le Marketplace ne peut pas l'ajouter : la fenêtre d'installation affiche la ligne à copier (`/local/community/din-panel-card/din-panel-card.js`, type `module`). Elle ne sera pas retirée automatiquement à la désinstallation.
+- Si tu gères les ressources du tableau de bord **en YAML**, le Marketplace ne peut pas l'ajouter : la fenêtre d'installation affiche la ligne exacte à ajouter (type `module`). Elle ne sera pas retirée automatiquement à la désinstallation.
 - Si le dossier `www` n'existait pas au démarrage de HA, une réparation demande d'abord un redémarrage.
 
 ### Avant la 2026.11 — HACS
