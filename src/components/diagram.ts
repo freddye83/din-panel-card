@@ -275,7 +275,7 @@ export function renderDiagram(panels: Panel[], ctx: Ctx, o: DiagramOpts): Templa
     const pOpen = !o.collapsed.has(pkey);
     if (panel.label) {
       // Titre du tableau aligné sur les rangées (même abscisse GX que les différentiels)
-      const cy = y + RH / 2, w = Math.max(60, tw(panel.label, 8.5) + 28);
+      const cy = y + RH / 2, w = Math.max(60, tw(panel.label, 9.8) + 28);
       els.push(svg`<g style="--acc:var(--secondary-text-color)">
         <rect class="ptbox" x=${GX} y=${cy - BH / 2 - 1} width=${w} height=${BH + 2} rx="3"></rect>
         ${chevron(GX + 8, cy, pOpen)}

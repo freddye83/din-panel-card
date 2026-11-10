@@ -2,6 +2,10 @@
 
 Chaque nouvelle version incrémente le numéro dans `package.json` (injecté dans le bundle et affiché dans la console du navigateur).
 
+## 1.16.3
+- Vue schéma : le cadre du titre de tableau tient compte de l'espacement des lettres (le texte débordait avec certaines polices).
+- Captures du README régénérées avec une configuration fictive (anonymisées).
+
 ## 1.16.2
 - README : retrait d'un chemin de ressource non vérifié (YAML) ; on renvoie à la ligne affichée par le Marketplace.
 
