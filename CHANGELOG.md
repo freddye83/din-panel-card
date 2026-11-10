@@ -2,6 +2,9 @@
 
 Chaque nouvelle version incrémente le numéro dans `package.json` (injecté dans le bundle et affiché dans la console du navigateur).
 
+## 1.16.4
+- Documentation : README en anglais (version française en fin de page), référence de configuration détaillée champ par champ (tableaux), section de migration `groups`/`circuits` retirée.
+
 ## 1.16.3
 - Vue schéma : le cadre du titre de tableau tient compte de l'espacement des lettres (le texte débordait avec certaines polices).
 - Captures du README régénérées avec une configuration fictive (anonymisées).
