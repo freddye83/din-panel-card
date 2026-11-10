@@ -2,11 +2,49 @@
 
 Carte Lovelace pour Home Assistant qui dessine un **vrai tableau électrique modulaire vu de face** : coffret, rangées, rail DIN, appareils de largeur proportionnelle à leur nombre de modules (1, 2, 3, 4…), bornes à vis, leviers, plaquettes de repérage. Les mesures viennent de tes entités HA et se mettent à jour en direct.
 
+## Aperçu
+
+**Vue tableau** : coffret réaliste, rail DIN, appareils à leur largeur réelle, valeurs de capteurs colorées par type (W, kWh, A, V).
+
+![Vue tableau — rangées](docs/vue-tableau-rangees.png)
+
+Cadre **Arrivée** (total sans jauge, puis L1/L2/L3 avec jauge, intensité et tension) au-dessus des tableaux :
+
+![Vue tableau — arrivée et tableau principal](docs/vue-tableau-arrivee.png)
+
+Alimentation, télérupteur et relais (état coloré, liseré vert = enclenché / rouge = déclenché) :
+
+![Alimentation, télérupteur, relais](docs/modules-relais-alim.png)
+
+**Vue schéma** (bouton en haut de la carte) : schéma unifilaire avec troncs de phases, jauges, pastilles de mesure et zones repliables.
+
+![Vue schéma](docs/vue-schema.png)
+
 ## Installation
 
-**HACS** : *HACS → ⋮ → Dépôts personnalisés* → URL du dépôt, catégorie **Dashboard** → installer → recharger le navigateur.
+### Home Assistant 2026.11 et plus — Marketplace
 
-**Manuelle** : copier `dist/din-panel-card.js` dans `/config/www/`, puis *Paramètres → Tableaux de bord → ⋮ → Ressources* → ajouter `/local/din-panel-card.js` (type **Module JavaScript**).
+Depuis la 2026.11, HACS est intégré à Home Assistant sous le nom de **Marketplace** (une installation séparée de HACS n'est plus possible ; les dépôts personnalisés déjà ajoutés dans HACS sont migrés automatiquement).
+
+1. *Paramètres → **Marketplace*** (compte administrateur). À la première ouverture, lire l'avertissement et cocher la case d'acceptation.
+2. Cliquer sur **Ajouter depuis un lien** et saisir : `https://github.com/freddye83/din-panel-card`
+3. Valider la connexion GitHub (connexion par appareil : tu approuves sur GitHub, aucun mot de passe n'est saisi dans HA ; seules les infos publiques sont lues).
+4. Ouvrir la carte dans la liste puis **Installer**. Le fichier est placé dans `www/community` et ajouté **automatiquement comme ressource** du tableau de bord.
+5. **Recharger le navigateur** (Ctrl+F5), puis ajouter la carte : *Modifier le tableau de bord → Ajouter une carte → DIN Panel Card* (ou `type: custom:din-panel-card` en YAML).
+
+Notes :
+- Les dépôts ajoutés se retrouvent dans la page **Dépôts personnalisés** du Marketplace ; ils y restent tant qu'ils ne sont pas désinstallés.
+- Les mises à jour apparaissent dans *Paramètres → Mises à jour* (vérification toutes les 6 h).
+- Si tu gères les ressources du tableau de bord **en YAML**, le Marketplace ne peut pas l'ajouter : la fenêtre d'installation affiche la ligne à copier (`/local/community/din-panel-card/din-panel-card.js`, type `module`). Elle ne sera pas retirée automatiquement à la désinstallation.
+- Si le dossier `www` n'existait pas au démarrage de HA, une réparation demande d'abord un redémarrage.
+
+### Avant la 2026.11 — HACS
+
+*HACS → ⋮ → Dépôts personnalisés* → URL du dépôt, catégorie **Dashboard** → installer → recharger le navigateur.
+
+### Manuelle
+
+Copier `dist/din-panel-card.js` dans `/config/www/`, puis *Paramètres → Tableaux de bord → ⋮ → Ressources* → ajouter `/local/din-panel-card.js` (type **Module JavaScript**).
 
 ## Configuration
 

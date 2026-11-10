@@ -2,6 +2,9 @@
 
 Chaque nouvelle version incrémente le numéro dans `package.json` (injecté dans le bundle et affiché dans la console du navigateur).
 
+## 1.16.1
+- Documentation : captures d'écran dans le README (`docs/`) ; installation via le Marketplace de Home Assistant 2026.11 (HACS intégré), HACS et installation manuelle conservés.
+
 ## 1.16.0
 - Vue schéma : une zone sans `icon` affiche l'icône de son disjoncteur (icône du module, à défaut celle de son usage).
 - Vue tableau : l'infobulle au survol d'un module est maintenant riche — icône du module devant le titre, et pour chaque zone son icône (à défaut celle du disjoncteur) devant « étage · pièce ». Clavier : visible au focus.
