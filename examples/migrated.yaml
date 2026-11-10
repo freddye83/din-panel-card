@@ -1,0 +1,509 @@
+type: custom:din-panel-card
+language: fr
+sensors:
+  total:
+    entity: sensor.zlinky_papp
+    max_w: 15000
+  phases:
+    l1:
+      entity: sensor.zlinky_puissance_l1
+    l2:
+      entity: sensor.zlinky_puissance_l2
+    l3:
+      entity: sensor.zlinky_puissance_l3
+grid_options:
+  columns: full
+panels:
+  - id: tableau_1
+    label: Tableau principal
+    rows:
+      - id: Tri
+        label: Tri
+        phases:
+          - L1
+          - L2
+          - L3
+        accent: "#3182ce"
+        modules:
+          - id: Tri
+            type: differential
+            poles: 4
+            amp: 40
+            mA: 30
+            class: AC
+            sensor: sensor.compteur_principal_power
+            max_w: 4500
+            accent: "#3182ce"
+          - id: Piscine
+            amp: 20
+            icon: mdi:pool
+            sensor: sensor.energie_wifi_dual_meter_puissance_piscine
+            zones:
+              - floor: Pompe
+                sensor: sensor.energie_compteur_tri_puissance_pompe_piscine_3p
+              - floor: PAC
+                icon: mdi:heat-pump
+                sensor: sensor.puissance_pac_piscine_3p
+              - floor: Traitement
+                sensor: sensor.energie_compteur_tri_puissance_traitement_piscine_3p
+              - floor: Annexes
+                sensor: sensor.energie_compteur_tri_puissance_annexes_piscine_3p
+            type: breaker
+            usage: power
+            poles: 3
+          - id: Cumulus
+            amp: 16
+            sensor: sensor.energie_wifi_dual_meter_puissance_cumulus_3p
+            type: breaker
+            usage: power
+            poles: 3
+      - id: EXT
+        label: Extèrieur +Spa
+        phases:
+          - L1
+        modules:
+          - id: EXT
+            type: differential
+            label: Extèrieur +Spa
+            poles: 2
+            amp: 63
+            mA: 30
+            class: AC
+          - id: SPA
+            amp: 20
+            icon: mdi:heat-pump
+            sensor: sensor.energie_wifi_dual_meter_puissance_spa
+            zones:
+              - floor: Extèrieur
+                room: Jardin
+              - floor: RDC
+                room: Bureau
+            type: breaker
+            usage: power
+      - id: R1
+        label: RDC + Cuisine
+        phases:
+          - L1
+        accent: "#3182ce"
+        modules:
+          - id: R1
+            type: differential
+            label: RDC + Cuisine
+            poles: 2
+            amp: 63
+            mA: 30
+            class: AC
+            accent: "#3182ce"
+          - id: 1-3
+            amp: 20
+            label: Clim
+            icon: mdi:heat-pump
+            zones:
+              - floor: RDC
+                room: Salon / SAM
+              - floor: RDC
+                room: Bureau
+              - floor: BAS
+                room: Studio
+            type: breaker
+            usage: power
+          - id: 1-4
+            label: Chauffage (1-2)
+            amp: 16
+            zones:
+              - floor: RDC
+                room: Salle de sport
+            type: breaker
+            usage: socket
+          - id: 1-5
+            amp: 16
+            label: Chauffage 1-8
+            zones:
+              - floor: RDC
+            type: breaker
+            usage: socket
+          - id: 1-6
+            amp: 20
+            label: Entrée (1-7 / 1-9)
+            zones:
+              - floor: RDC
+                room: Entrée
+                sensor: sensor.0xa4c13857d3b462f9_power
+              - floor: RDC
+                room: Salon - canapé 1
+                sensor: sensor.prise_canape_1_power
+              - floor: RDC
+                room: Bureau (fenêtre)
+            type: breaker
+            usage: socket
+          - id: 1-7
+            amp: 20
+            label: Réfrigérateur (3-5)
+            zones:
+              - floor: RDC
+                room: Cuisine
+                sensor: sensor.refrigerateur_puissance
+            type: breaker
+            usage: socket
+          - id: 1-8
+            amp: 20
+            label: Prise (3-6)
+            zones:
+              - floor: RDC
+                room: Salle de bain
+            type: breaker
+            usage: socket
+          - id: 1-9
+            amp: 20
+            label: NAS
+            zones:
+              - floor: Etage
+                room: Placard
+            type: breaker
+            usage: socket
+          - id: 1-10
+            amp: 20
+            label: Cuisine (3-8)
+            zones:
+              - floor: RDC
+                room: Cuisine - Prises
+              - floor: RDC
+                room: Cuisine - Micro-onde
+            type: breaker
+            usage: socket
+          - id: 1-11
+            amp: 20
+            label: Bureau (4-2)
+            zones:
+              - floor: RDC
+                room: Bureau - Prises
+              - floor: RDC
+                room: Bureau - Volet
+            type: breaker
+            usage: socket
+          - id: 1-12
+            amp: 20
+            label: Salon (4-3/4-4)
+            zones:
+              - floor: RDC
+                room: Salon - TV
+                sensor: sensor.0xa4c138057c4eb35f_power
+              - floor: RDC
+                room: Salon - Cheminée
+                sensor: sensor.0x70b3d52b60050dee_power
+              - floor: RDC
+                room: Salon - Bar
+              - floor: RDC
+                room: Salon - Canapé 2
+                sensor: sensor.0x70b3d52b600505cf_power
+            type: breaker
+            usage: socket
+          - id: 1-13
+            amp: 10
+            label: Bureau (2-6)
+            zones:
+              - floor: RDC
+                room: Bureau
+              - floor: RDC
+                room: WC
+              - floor: RDC
+                room: Salle de bain
+            type: breaker
+            usage: light
+          - id: 1-14
+            amp: 10
+            label: Entrée (2-10)
+            zones:
+              - floor: RDC
+                room: Entrée
+              - floor: RDC
+                room: Escalier
+              - floor: RDC
+                room: Salle de bain
+            type: breaker
+            usage: light
+          - id: 1-15
+            amp: 10
+            label: Lumières (2-2)
+            zones:
+              - floor: Haut
+                room: MBR
+              - floor: Haut
+                room: Dressing
+              - floor: Haut
+                room: Couloir
+              - floor: Haut
+                room: Wc
+            type: breaker
+            usage: light
+      - id: R2
+        label: Etage + Cuisine + Garage + Extérieur
+        phases:
+          - L2
+        accent: "#3182ce"
+        modules:
+          - id: R2
+            type: differential
+            label: Etage + Cuisine + Garage + Extérieur
+            poles: 2
+            amp: 63
+            mA: 30
+            class: AC
+            accent: "#3182ce"
+          - id: 2-3
+            label: Clim (1-1/1-11)
+            amp: 20
+            icon: mdi:heat-pump
+            zones:
+              - floor: Haut
+                room: MBR
+              - floor: Haut
+                room: MBR
+                icon: mdi:power-socket-eu
+              - floor: Haut
+                room: Elina
+              - floor: Haut
+                room: Elina
+                icon: mdi:power-socket-eu
+            type: breaker
+            usage: power
+          - id: 2-4
+            amp: 16
+            label: Chauffage (1-5)
+            icon: mdi:heating-coil
+            zones:
+              - floor: Haut
+                room: Salle d'eau
+            type: breaker
+            usage: socket
+          - id: 2-5
+            amp: 16
+            label: Dressing (1-6)
+            zones:
+              - floor: Haut
+                room: Dressing led
+                sensor: sensor.prise_dressing_power
+            type: breaker
+            usage: socket
+          - id: 2-6
+            amp: 20
+            label: Four (3-2)
+            zones:
+              - floor: Bas
+                room: Cuisine
+            type: breaker
+            usage: socket
+          - id: 2-7
+            amp: 20
+            label: Prise (3-12)
+            zones:
+              - floor: Haut
+                room: MBR Volet
+              - floor: Haut
+                room: MBR
+              - floor: Haut
+                room: Elina
+            type: breaker
+            usage: socket
+          - id: 2-8
+            amp: 20
+            label: Prise (3-13)
+            zones:
+              - floor: Haut
+                room: Elina Volet
+              - floor: Haut
+                room: Elina
+              - floor: Haut
+                room: Dressing
+              - floor: Haut
+                room: Salle d'eau
+            type: breaker
+            usage: socket
+          - id: 2-9
+            amp: 10
+            label: Lumières (2-1)
+            zones:
+              - floor: Haut
+                room: Elina
+              - floor: Haut
+                room: Escalier
+              - floor: Haut
+                room: Salle d'eau
+              - floor: Haut
+                room: Wc
+            type: breaker
+            usage: light
+          - id: 2-10
+            amp: 10
+            label: Libre
+            type: breaker
+          - id: 2-11
+            amp: 10
+            label: Lumières (2-3)
+            zones:
+              - floor: Bas
+                room: Garage
+            type: breaker
+            usage: light
+          - id: 2-12
+            amp: 10
+            label: Lumières (2-13/2.13)
+            zones:
+              - floor: Jardin
+                room: Terrasse studio (2.13)
+              - floor: RDC
+                room: Salon prises commandées
+              - floor: RDC
+                room: Sas entrée
+              - floor: RDC
+                room: Salle de bain
+              - floor: RDC
+                room: Ext entrée (angle)
+            type: breaker
+            usage: light
+          - id: 2-13
+            amp: 20
+            label: Prise (4-1)
+            zones:
+              - floor: RDC
+                room: Garage
+              - floor: RDC
+                room: Baie Informatique
+            type: breaker
+            usage: socket
+          - id: 2-14
+            amp: 10
+            label: Lumières (2-8)
+            zones:
+              - floor: Jardin
+                room: Terrasse Sud
+            type: breaker
+            usage: light
+      - id: R3
+        label: Bas + Cuisine
+        phases:
+          - L3
+        accent: "#3182ce"
+        modules:
+          - id: R3
+            type: differential
+            label: Bas + Cuisine
+            poles: 2
+            amp: 63
+            mA: 30
+            class: AC
+            accent: "#3182ce"
+          - id: 3-3
+            label: Clim (1-1/1-11)
+            amp: 20
+            icon: mdi:heat-pump
+            zones:
+              - floor: RDC
+                room: Cuisine
+              - floor: RDC
+                room: Ciné
+            type: breaker
+            usage: power
+          - id: 3-4
+            amp: 16
+            label: Chauffage (1-4)
+            icon: mdi:heating-coil
+            zones:
+              - floor: RDC
+                room: Salle de bain
+            type: breaker
+            usage: socket
+          - id: 3-5
+            amp: 16
+            label: Prises (1-3)
+            zones:
+              - floor: RDC
+                room: Bureau
+              - floor: RDC
+                room: Bureau volet
+            type: breaker
+            usage: socket
+          - id: 3-6
+            amp: 32
+            label: Plaque induction (3-1)
+            zones:
+              - floor: RDC
+                room: Cuisine
+            type: breaker
+            usage: power
+          - id: 3-7
+            amp: 20
+            label: Prises (3-9)
+            zones:
+              - floor: Bas
+                room: Buanderie - Lave linge
+              - floor: Bas
+                room: Buanderie - Seche linge
+            type: breaker
+            usage: socket
+          - id: 3-8
+            amp: 20
+            label: VMC (3-10)
+            zones:
+              - floor: Bas
+                room: Buanderie - VMC
+              - floor: RDC
+                room: Esc cheminée ?
+            type: breaker
+            usage: socket
+          - id: 3-9
+            amp: 20
+            label: Prise (3-11)
+            zones:
+              - floor: Bas
+                room: Buanderie - bas escalier
+            type: breaker
+            usage: socket
+          - id: 3-10
+            amp: 20
+            label: Lave-vaisselle (3-3)
+            zones:
+              - floor: RDC
+                room: Cuisine
+            type: breaker
+            usage: socket
+          - id: 3-11
+            amp: 20
+            label: Libre
+            type: breaker
+          - id: 3-12
+            amp: 10
+            label: Lumières (2-9/2-11)
+            zones:
+              - floor: Bas
+                room: Cave
+              - floor: Bas
+                room: Cumulus
+            type: breaker
+            usage: light
+          - id: 3-13
+            amp: 10
+            label: Lumières (2-5)
+            zones:
+              - floor: RDC
+                room: Cuisine
+              - floor: RDC
+                room: Ciné
+              - floor: RDC
+                room: Salle de sport
+            type: breaker
+            usage: light
+          - id: 3-14
+            amp: 10
+            label: Lumières (2-4)
+            zones:
+              - floor: RDC
+                room: Salle à manger
+              - floor: RDC
+                room: Leds cuisine
+              - floor: RDC
+                room: Stores cuisine
+              - floor: Jardin
+                room: Terrasse + piscine
+            type: breaker
+            usage: light

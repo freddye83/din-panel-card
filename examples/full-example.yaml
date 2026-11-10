@@ -1,0 +1,64 @@
+type: custom:din-panel-card
+title: Tableaux électriques
+language: fr
+module_width: 46            # largeur d'un module DIN en px (défaut 46)
+sensors:
+  total: { entity: sensor.zlinky_papp, max_w: 15000 }
+  phases:
+    l1: { entity: sensor.zlinky_puissance_l1 }
+    l2: { entity: sensor.zlinky_puissance_l2 }
+    l3: { entity: sensor.zlinky_puissance_l3 }
+panels:
+  - id: tableau_1
+    label: Tableau principal
+    rows:
+      - id: row_1
+        label: Protection & comptage
+        modules:
+          - { type: meter, id: CPT, label: Compteur, sensor: sensor.zlinky_papp }
+          - { type: surge, id: PF, note: Type 2, state_entity: binary_sensor.parafoudre_ok }
+          - { type: breaker_4p, id: DIV, amp: 40, curve: C, label: Général, max_w: 9000 }
+      - id: row_2
+        label: Lumières & prises
+        phases: [L1]
+        accent: '#3182ce'
+        modules:
+          - { type: differential, id: ID1, amp: 40, mA: 30, poles: 2, class: AC }
+          - type: breaker
+            id: 1-1
+            amp: 10
+            curve: C
+            usage: light
+            label: Lumières RDC
+            sensor: sensor.lumieres_rdc_puissance
+            zones:
+              - { floor: RDC, room: Salon }
+              - { floor: RDC, room: Cuisine }
+          - type: breaker
+            id: 1-2
+            amp: 20
+            usage: socket
+            label: Prises salon
+            zones:
+              - { floor: RDC, room: Salon - TV, sensor: sensor.tv_power }
+              - { floor: RDC, room: Salon - Canapé, sensor: sensor.canape_power }
+          - { type: impulse, id: TL1, amp: 16, label: Éclairage extérieur, state_entity: switch.eclairage_ext }
+          - { type: relay, id: K1, amp: 16, label: Relais volets, state_entity: sensor.etat_relais_volets }   # état lu depuis un capteur
+          - { type: psu, id: AL1, width: 3, output: 24 V DC, amp: 2.5, label: Alimentation 24V, state_entity: binary_sensor.alim_24v_ok, sensor: sensor.alim_24v_power }
+          - { type: free, id: L1 }
+      - id: row_3
+        label: Chauffe-eau & puissance
+        phases: [L1, L2, L3]
+        modules:
+          - { type: differential, id: ID2, amp: 63, mA: 300, poles: 4, class: A, label: Triphasé }
+          - { type: contactor_daynight, id: HC, amp: 20, label: Cumulus HC/HP, state_entity: switch.cumulus }
+          - { type: contactor, id: KM1, amp: 25, label: Pompe, state_entity: switch.pompe }
+          - { type: breaker, id: 3-1, amp: 20, poles: 3, usage: power, label: PAC, icon: mdi:heat-pump }
+  - id: tableau_2
+    label: Garage
+    rows:
+      - id: g1
+        modules:
+          - { type: differential, id: G-ID, amp: 40, mA: 30, poles: 2 }
+          - { type: breaker, id: G-1, amp: 16, usage: socket, label: Atelier }
+          - { type: custom, id: G-X, label: Borne VE, icon: mdi:ev-station, amp: 32, width: 2 }

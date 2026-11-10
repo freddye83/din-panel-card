@@ -1,0 +1,51 @@
+import type { Lang } from '../types';
+
+const D = {
+  fr: {
+    total: 'Total', incoming: 'Arrivée', nominal_voltage: 'Tension nominale (V, défaut 230)', incoming_title: 'Titre du cadre d’arrivée (vue tableau)', phase: 'Phase', power: 'Puissance', current: 'Intensité', voltage: 'Tension',
+    load: 'Charge', zones: 'Zones', protects: 'Circuits protégés', unavailable: 'Indisponible',
+    close: 'Fermer', type: 'Type', id: 'Identifiant', rating: 'Calibre', poles: 'Pôles',
+    sensitivity: 'Sensibilité', cls: 'Classe', curve: 'Courbe', phases: 'Phases', usage: 'Usage',
+    sum_zones: 'Somme des capteurs de zones', sum_children: 'Somme des circuits (partielle si certains sans mesure)',
+    own_sensor: 'Capteur du module', no_data: 'Aucune mesure', max: 'Max', state: 'État',
+    t_differential: 'Interrupteur différentiel', t_breaker: 'Disjoncteur', t_contactor_daynight: 'Contacteur jour/nuit',
+    t_contactor: 'Contacteur de puissance', t_impulse: 'Télérupteur', t_relay: 'Relais', t_psu: 'Alimentation', output: 'Sortie', modules_per_row: 'Modules DIN par rangée', t_surge: 'Parafoudre',
+    t_meter: 'Compteur électrique', t_free: 'Module libre', t_custom: 'Module personnalisé',
+    u_power: 'Puissance', u_socket: 'Prises', u_light: 'Éclairage', u_other: 'Autre',
+    panel: 'Tableau', row: 'Rangée', module: 'Module', add_row: 'Ajouter une rangée', add_module: 'Ajouter un module',
+    add_panel: 'Ajouter un tableau', add_zone: 'Ajouter une zone', remove: 'Supprimer',
+    legacy: 'Ancien format (groups) détecté.', convert: 'Convertir en panels / rows / modules',
+    general: 'Général', global_sensors: 'Capteurs globaux', title: 'Titre', language: 'Langue', module_width: 'Largeur d’un module (px)',
+    total_entity: 'Capteur total (W ou kWh)', head_sensor: 'Capteur (W ou kWh)', total_max: 'Puissance max totale (W)',
+    label: 'Libellé', amp: 'Calibre (A)', width: 'Largeur (modules DIN)', icon: 'Icône', sensor: 'Capteur (W, kWh ou A)',
+    current_sensor: 'Capteur d’intensité', voltage_sensor: 'Capteur de tension', state_entity: 'État (capteur, switch… on/off)',
+    floor: 'Étage', room: 'Pièce', mA: 'Sensibilité (mA)', max_w: 'Puissance max (W)', accent: 'Couleur d’accent',
+    editor_note: 'Les options avancées restent éditables en YAML.', free: 'Libre',
+    view_tree: 'Schéma', collapse_level: 'Replier un niveau', collapsed: 'Repli initial', max_width: 'Largeur max du schéma (px)', view_panel: 'Tableau', expand_all: 'Tout déplier', collapse_all: 'Tout replier', view: 'Vue initiale', expand: 'Déplier / replier',
+  },
+  en: {
+    total: 'Total', incoming: 'Incoming', nominal_voltage: 'Nominal voltage (V, default 230)', incoming_title: 'Incoming frame title (panel view)', phase: 'Phase', power: 'Power', current: 'Current', voltage: 'Voltage',
+    load: 'Load', zones: 'Zones', protects: 'Protected circuits', unavailable: 'Unavailable',
+    close: 'Close', type: 'Type', id: 'Identifier', rating: 'Rating', poles: 'Poles',
+    sensitivity: 'Sensitivity', cls: 'Class', curve: 'Curve', phases: 'Phases', usage: 'Usage',
+    sum_zones: 'Sum of zone sensors', sum_children: 'Sum of circuits (partial if some have no measurement)',
+    own_sensor: 'Module sensor', no_data: 'No measurement', max: 'Max', state: 'State',
+    t_differential: 'RCD (differential switch)', t_breaker: 'Circuit breaker', t_contactor_daynight: 'Day/night contactor',
+    t_contactor: 'Power contactor', t_impulse: 'Impulse relay (télérupteur)', t_relay: 'Relay', t_psu: 'Power supply', output: 'Output', modules_per_row: 'DIN modules per row', t_surge: 'Surge arrester',
+    t_meter: 'Energy meter', t_free: 'Free module', t_custom: 'Custom module',
+    u_power: 'Power', u_socket: 'Sockets', u_light: 'Lighting', u_other: 'Other',
+    panel: 'Panel', row: 'Row', module: 'Module', add_row: 'Add row', add_module: 'Add module',
+    add_panel: 'Add panel', add_zone: 'Add zone', remove: 'Remove',
+    legacy: 'Legacy format (groups) detected.', convert: 'Convert to panels / rows / modules',
+    general: 'General', global_sensors: 'Global sensors', title: 'Title', language: 'Language', module_width: 'Module width (px)',
+    total_entity: 'Total sensor (W or kWh)', head_sensor: 'Sensor (W or kWh)', total_max: 'Max total power (W)',
+    label: 'Label', amp: 'Rating (A)', width: 'Width (DIN modules)', icon: 'Icon', sensor: 'Sensor (W, kWh or A)',
+    current_sensor: 'Current sensor', voltage_sensor: 'Voltage sensor', state_entity: 'State (sensor, switch… on/off)',
+    floor: 'Floor', room: 'Room', mA: 'Sensitivity (mA)', max_w: 'Max power (W)', accent: 'Accent colour',
+    editor_note: 'Advanced options remain editable in YAML.', free: 'Free',
+    view_tree: 'Diagram', collapse_level: 'Collapse one level', collapsed: 'Initial collapse', max_width: 'Max diagram width (px)', view_panel: 'Panel', expand_all: 'Expand all', collapse_all: 'Collapse all', view: 'Initial view', expand: 'Expand / collapse',
+  },
+} as const;
+
+export const t = (lang: Lang, key: string): string =>
+  (D[lang] as Record<string, string>)[key] ?? (D.fr as Record<string, string>)[key] ?? key;
