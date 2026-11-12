@@ -36,6 +36,7 @@ export interface ModuleConfig {
   zones?: (ZoneConfig | string)[];
   note?: string;
   output?: string;   // alimentation : sortie, ex. « 24 V DC »
+  section?: string | number; // section du câble (mm²), affichée sous le libellé
   circuit?: string | number; // référence à un circuit de l'ancien format groups
   group?: string | number;   // référence à un groupe de l'ancien format
 }
@@ -71,7 +72,7 @@ export interface Module {
   amp?: number; mA?: number; cls?: string; curve?: string; usage: Usage;
   icon?: string; accent?: string; phases: string[]; sensor?: string;
   current_sensor?: string; voltage_sensor?: string; state_entity?: string;
-  max_w?: number; zones: Zone[]; note?: string; output?: string; volts?: number;
+  max_w?: number; zones: Zone[]; note?: string; output?: string; section?: string; volts?: number;
   children?: Module[]; // pour un différentiel : modules qu'il protège
 }
 export interface Row { id: string; label?: string; phases: string[]; accent?: string; modules: Module[]; }

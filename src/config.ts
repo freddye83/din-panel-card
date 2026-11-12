@@ -96,7 +96,7 @@ function normModule(raw: ModuleConfig, row: { phases: string[]; id: string }, i:
     cls: str(m.class), curve: str(m.curve), usage, icon: m.icon, accent: m.accent, phases,
     sensor: m.sensor, current_sensor: m.current_sensor, voltage_sensor: m.voltage_sensor,
     state_entity: m.state_entity, max_w: m.max_w !== undefined ? Number(m.max_w) : undefined,
-    zones: (m.zones ?? []).map(normZone), note: str(m.note), output: str(m.output),
+    zones: (m.zones ?? []).map(normZone), note: str(m.note), output: str(m.output), section: str(m.section),
   };
 }
 

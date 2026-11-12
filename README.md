@@ -164,6 +164,7 @@ In the diagram, the line of each differential reads **`[differential id]  row la
 | `voltage_sensor` | entity | none | Voltage sensor (V) used in the detail sheet; lets the card derive I = P/U when there is no current sensor. |
 | `state_entity` | entity | none | Read-only state of a lever / relay / impulse relay / power supply ("DC OK") / surge arrester: a `switch`, `binary_sensor` or **any sensor** (`on/off`, `active/inactive`, `open/closed`, `1/0`, numeric > 0). Coloured green (on) / red (off) on the device and as an ON/OFF pill in the diagram. |
 | `output` | string | none | Power supply: printed output (e.g. `24 V DC`). |
+| `section` | string/number | none | Cable cross-section in mm², printed in red under the label (e.g. `1.5`). |
 | `max_w` | number (W) | `amp × nominal_voltage` (×3 if 3-pole) | Power limit: base of the gauge and of the load LED. |
 | `zones` | list | `[]` | Places supplied by this circuit, see [zones](#zones). |
 | `icon` | `mdi:…` | by type / usage | Icon on the nameplate and in the diagram (also the default icon of its zones). |
@@ -387,6 +388,7 @@ Dans le schéma, la ligne de chaque différentiel s'écrit **`[id du différenti
 | `voltage_sensor` | entité | aucun | Capteur de tension (V) utilisé dans la fiche ; permet de déduire I = P/U en l'absence de capteur d'intensité. |
 | `state_entity` | entité | aucune | État en lecture seule d'un levier / relais / télérupteur / alimentation (« DC OK ») / parafoudre : `switch`, `binary_sensor` ou **n'importe quel capteur** (`on/off`, `active/inactive`, `open/closed`, `1/0`, valeur numérique > 0). Coloré vert (on) / rouge (off) sur l'appareil et en pastille ON/OFF dans le schéma. |
 | `output` | texte | aucun | Alimentation : sortie imprimée (ex. `24 V DC`). |
+| `section` | texte/nombre | aucun | Section du câble en mm², imprimée en rouge sous le libellé (ex. `1.5`). |
 | `max_w` | nombre (W) | `amp × tension nominale` (×3 si tripolaire) | Limite de puissance : base de la jauge et de la LED de charge. |
 | `zones` | liste | `[]` | Lieux alimentés par ce circuit, voir [zones](#zones-1). |
 | `icon` | `mdi:…` | selon type / usage | Icône de la plaquette et du schéma (c'est aussi l'icône par défaut de ses zones). |

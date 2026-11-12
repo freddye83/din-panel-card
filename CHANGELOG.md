@@ -2,6 +2,13 @@
 
 Chaque nouvelle version incrémente le numéro dans `package.json` (injecté dans le bundle et affiché dans la console du navigateur).
 
+## 1.17.0
+- Vue tableau en style « schéma d'installation » : modules blancs à bornes carrées, manette noire bombée avec repère rouge « I On », bande bleutée du capot, vis rondes à tête fendue avec repère N, calibre à filets rouges, liseré noir entre appareils, peigne d'alimentation bleu, rail DIN visible en bout de rangée, légende sous chaque module (pictogramme encadré, libellé horizontal, section en rouge).
+- Disjoncteurs : l'identifiant s'affiche dans la bande bleutée au-dessus de la manette (toujours visible, même avec un capteur) ; la mesure reste sous le calibre.
+- Tous les types d'appareils adoptent le même gabarit : identifiant dans la bande bleue, bloc noir central (bouton-poussoir du télérupteur, bobine A1/A2 + voyant du relais, indicateur du contacteur, sélecteur I/A/O du jour/nuit, potentiomètre + DC OK de l'alimentation, fenêtre du parafoudre, afficheur du compteur), cadre de calibre/repère dessous ; obturateur gris pour les emplacements libres. Le liseré d'état (vert/rouge) est conservé.
+- Nouveau champ de module `section` (mm², texte ou nombre) : affiché en rouge sous le libellé (éditeur visuel + README).
+- Les icônes passent sous les modules (plus de bandeau vertical).
+
 ## 1.16.4
 - Documentation : README en anglais (version française en fin de page), référence de configuration détaillée champ par champ (tableaux), section de migration `groups`/`circuits` retirée.
 

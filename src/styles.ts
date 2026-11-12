@@ -3,7 +3,7 @@ import { css } from 'lit';
 export const cardStyles = css`
   :host { display: block; }
   ha-card {
-    --u: 46px; --h: calc(var(--u) * 2.8);
+    --u: 46px; --h: calc(var(--u) * 3.2);
     --box: #d3d6da; --box2: #b6bac0; --plate: #f3f0e6; --acc: #2b6cb0;
     padding: 12px; overflow: hidden;
   }
@@ -116,10 +116,11 @@ export const cardStyles = css`
   .tip-h { margin-bottom: 2px; } .tip-h b { font-size: 13px; } .tip-d { margin-left: auto; padding-left: 8px; color: var(--secondary-text-color); font-size: 11px; white-space: nowrap; }
   .tip-z { padding: 1px 0; }
   .face {
+    --sh: inset 1px 0 0 rgba(255,255,255,.8), inset -1px 0 0 rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.9), inset 0 -3px 4px rgba(0,0,0,.12), 0 0 0 1px rgba(0,0,0,.28), 0 4px 6px rgba(0,0,0,.45);
     margin: 0 1px;
     position: relative; height: var(--h); display: flex; flex-direction: column; border-radius: 3px; overflow: hidden;
     background: linear-gradient(180deg, #fdfdfd, #eceef0 55%, #d6d9dd);
-    box-shadow: inset 1px 0 0 rgba(255,255,255,.7), inset -1px 0 0 rgba(0,0,0,.14), inset 0 -3px 4px rgba(0,0,0,.1), 0 3px 5px rgba(0,0,0,.4);
+    box-shadow: var(--sh);
     color: #222; font-family: Arial, sans-serif;
   }
   ha-card.dark .face { filter: brightness(.93); }
@@ -180,8 +181,8 @@ export const cardStyles = css`
   .ind { width: 16px; height: 10px; border-radius: 2px; background: #555; box-shadow: inset 0 1px 2px #000; } .ind.on { background: #37d67a; box-shadow: 0 0 6px #37d67a, inset 0 1px 2px rgba(0,0,0,.3); }
   .sel { position: relative; width: 70%; height: 38px; margin: 4px 0; display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 2px 0; font: 700 9px Arial; border-radius: 4px; background: #d3d6da; box-shadow: inset 0 1px 3px rgba(0,0,0,.4); }
   /* État bien visible : liseré du module + bandeau et sélecteur colorés (vert = enclenché, rouge = déclenché) */
-  .mod.st-on .face { box-shadow: inset 0 0 0 2px #2f9e44, 0 0 8px rgba(47,158,68,.55), 0 3px 5px rgba(0,0,0,.4); }
-  .mod.st-off .face { box-shadow: inset 0 0 0 2px #e03131, 0 0 8px rgba(224,49,49,.5), 0 3px 5px rgba(0,0,0,.4); }
+  .mod.st-on .face { box-shadow: inset 0 0 0 2px #2f9e44, 0 2px 3px rgba(0,0,0,.25); }
+  .mod.st-off .face { box-shadow: inset 0 0 0 2px #e03131, 0 2px 3px rgba(0,0,0,.25); }
   .band.dn { background: #6b7280; } .band.dn.on { background: #2f9e44; } .band.dn.off { background: #e03131; }
   .sel.s-on { background: #b2f2bb; } .sel.s-off { background: #ffc9c9; }
   .t-contactor_daynight .face { background: linear-gradient(180deg, #f4f5f6, #dde0e4 60%, #c9cdd2); }
@@ -226,6 +227,114 @@ export const cardStyles = css`
   .plate ha-icon { --mdc-icon-size: 16px; margin: 3px 0; color: #333; flex: none; }
   .plate .txt { flex: 1; min-height: 0; padding: 7px 2px 2px; overflow: hidden; font: 600 11px/1.15 Arial, sans-serif; writing-mode: vertical-rl; transform: rotate(180deg); }
   .plate.h .txt { padding: 2px; writing-mode: horizontal-tb; transform: none; text-align: center; }
+
+
+  /* ---------- Style « schéma d'installation » : rail DIN, peigne bleu, modules blancs, légende dessous ---------- */
+  :host { --p: 0px; }
+  .scroller { padding-top: 16px; }
+  .panel { background: linear-gradient(180deg, #f7f8f9, #eceef0); box-shadow: inset 0 0 0 1px rgba(255,255,255,.8), 0 0 0 1px rgba(0,0,0,.18), 0 2px 8px rgba(0,0,0,.15); border: 0; }
+  ha-card.dark .panel { background: linear-gradient(180deg, #3a3d43, #2b2d31); }
+  .panel-title { border: 1px solid rgba(0,0,0,.25); background: #fff; box-shadow: none; }
+  .rail {
+    display: block; left: -8px; right: -8px; top: calc(var(--p) + var(--h) * .34); height: 30px; border-radius: 0;
+    background: linear-gradient(180deg, #f1f2f3, #d3d5d8 50%, #bfc2c6); box-shadow: 0 1px 0 rgba(0,0,0,.25), inset 0 1px 0 #fff;
+  }
+  .rail::after {
+    inset: 10px 0; border-radius: 5px; box-shadow: inset 0 1px 2px rgba(0,0,0,.5);
+    background: repeating-linear-gradient(90deg, transparent 0 14px, #7b7e84 14px 32px, transparent 32px 46px);
+  }
+  /* peigne d'alimentation bleu au-dessus des borniers */
+  .rail-wrap::before {
+    content: ''; position: absolute; left: 4px; right: 6px; top: -11px; height: 8px; z-index: 2; border-radius: 2px;
+    background: linear-gradient(180deg, #7fc0ff, #2a7fd6 60%, #1c62ad); box-shadow: 0 1px 2px rgba(0,0,0,.4);
+  }
+  .fill { flex: 1 1 0; min-width: 0; margin-top: var(--p); height: var(--h); background: none; box-shadow: none; }
+  /* module : blanc, liseré noir de 2 px entre appareils (comme sur le schéma d'installation) */
+  .face {
+    --sh: 0 2px 3px rgba(0,0,0,.25);
+    margin: 0; border: 1px solid #151515; box-sizing: border-box; border-radius: 0; background: #fff;
+  }
+  .mod + .mod .face { margin-left: -1px; }
+  .face::before { display: none; }
+  .t-differential .face { background: #fff; }
+  ha-card.dark .face { filter: brightness(.92); }
+  /* borniers : vis rondes à tête fendue, repère N */
+  .term { position: relative; height: 22px; background: #fff; box-shadow: none; justify-content: space-around; align-items: flex-end; padding-bottom: 3px; box-sizing: border-box; }
+  .term.bot { align-items: flex-start; padding: 3px 0 0; }
+  .term i { position: relative; width: 11px; height: 11px; border-radius: 50%; background: radial-gradient(circle at 40% 35%, #f4f4f4, #b9bcc0 65%, #8c8f94); box-shadow: 0 0 0 1px #6d7176; }
+  .term i::after { content: ''; position: absolute; left: 12%; right: 12%; top: 45%; height: 10%; background: #4a4d52; transform: rotate(-35deg); display: block; }
+  .term i:first-child::before { content: 'N'; position: absolute; left: 50%; transform: translateX(-50%); font: 600 7px/1 Arial, sans-serif; color: #333; }
+  .term.top i:first-child::before { top: -9px; } .term.bot i:first-child::before { bottom: -9px; }
+  .t-differential .term i:nth-child(3)::before { content: 'N'; position: absolute; left: 50%; transform: translateX(-50%); font: 600 7px/1 Arial, sans-serif; color: #333; }
+  .t-differential .term.top i:nth-child(3)::before { top: -9px; } .t-differential .term.bot i:nth-child(3)::before { bottom: -9px; }
+  /* disjoncteur / différentiel : bande bleutée (capot), zone manette, calibre encadré */
+  .mod:not(.t-free) .body { position: relative; gap: 0; padding: 0; align-items: stretch; }
+  .t-breaker .body:not(.ib)::before, .t-differential .body::before { content: ''; flex: none; height: 15px; background: linear-gradient(180deg, #d4e4f7, #c4d8f0); box-shadow: inset 0 1px 0 rgba(0,0,0,.35); }
+  .levers { margin-top: 0; width: 100%; height: 42px; flex: none; background: #fff; }
+  .levers .cell { align-items: stretch; }
+  .slot {
+    position: relative; width: 100%; height: 100%; border-radius: 0; box-shadow: none;
+    background:
+      linear-gradient(#555, #555) 9% 22% / 1px 62% no-repeat,
+      linear-gradient(#555, #555) 91% 22% / 1px 62% no-repeat, #fff;
+  }
+  .slot::before { content: ''; position: absolute; left: 17%; right: 17%; top: 0; bottom: 5px; background: linear-gradient(180deg, #2a2a2a, #0a0a0a 25%, #050505); border-radius: 55% 55% 0 0 / 38% 38% 0 0; }
+  .slot::after { content: ''; position: absolute; left: 23%; right: 23%; top: 3px; height: 5px; border-top: 1.5px solid #8a8d92; border-radius: 50% 50% 0 0; }
+  .slot.wide { width: 100%; height: 100%; }
+  .lever { left: 17%; right: 17%; bottom: 5px; top: auto; height: 11px; border-radius: 0; z-index: 1; display: grid; place-items: center; color: #f3d6d6; font: 600 5.5px/1 Arial, sans-serif; letter-spacing: .02em;
+    background: linear-gradient(180deg, #8f2222, #6f1414); box-shadow: inset 0 1px 0 rgba(255,255,255,.18); }
+  .lever.on, .lever.off { top: auto; bottom: 5px; }
+  .lever.off { background: linear-gradient(180deg, #666a70, #44474c); }
+  .lever.on::after { content: 'I On'; } .lever.off::after { content: 'O Off'; }
+  .levers .bar { display: none; }
+  /* calibre : cadre blanc à filets rouges (gauche et bas) */
+  .print.amp { align-self: stretch; margin: 0 2px; padding: 1px 4px 0; border: 0; border-left: 1.5px solid #c1121f; border-bottom: 1.5px solid #c1121f; border-radius: 0; background: #fff;
+    font: 400 17px/1.35 Arial, sans-serif; letter-spacing: 0; text-align: left; color: #1d1f22; flex: none; }
+  .body > .levers + .print.amp { margin-top: 2px; }
+  .t-differential .levers { width: 52%; align-self: flex-start; }
+  .t-differential .print.amp { width: 52%; align-self: flex-start; box-sizing: border-box; margin-right: 0; }
+  .dtype { position: absolute; right: 3px; top: 20px; display: flex; flex-direction: column; align-items: flex-end; font: 400 9px/1.2 Arial, sans-serif; color: #222; }
+  .dtype span + span { }
+  .dtype span:first-child { order: 2; font-size: 6px; opacity: .8; } .dtype span:nth-child(2) { order: 1; font-size: 10px; }
+  .dtools { position: absolute; right: 3px; top: 63px; gap: 3px; }
+  .test { width: 22px; height: 10px; border-radius: 1px; background: #c4c7cb; color: #222; font: 700 7px/10px Arial; box-shadow: inset 0 0 0 1px #8d9096; }
+  .win { width: 6px; height: 6px; border-radius: 50%; }
+  .body > .readouts { margin: auto 3px 0; }
+  .readout { box-shadow: inset 0 1px 3px #000, 0 0 0 1px rgba(0,0,0,.45); }
+  .mod:not(.t-free) .pid { margin: 2px 0 3px; background: transparent; box-shadow: none; font-weight: 600; color: #666; font-size: 8px; }
+  .body.ib > .pid:first-child { margin: 0; flex: none; height: 15px; padding: 0; border-radius: 0; box-sizing: border-box; text-align: center; font: 700 9px/15px Arial, sans-serif; color: #1d3557; background: linear-gradient(180deg, #d4e4f7, #c4d8f0); box-shadow: inset 0 1px 0 rgba(0,0,0,.35); }
+  /* autres appareils : même gabarit (id en bande bleue, bloc noir, cadre blanc), repères propres */
+  .mod[class*="t-"] .face { background: #fff; }
+  .mod.t-free .face { background: linear-gradient(180deg, #7d8187, #5d6166); }
+  .zone { height: 42px; flex: none; display: flex; padding: 4px 13% 5px; background: #fff; box-sizing: border-box; }
+  .blk { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; border-radius: 3px; color: #ddd; font: 600 6px/1 Arial, sans-serif;
+    background: linear-gradient(180deg, #2c2c2e, #070707); box-shadow: inset 0 1px 0 #555, 0 0 0 1px #111; }
+  .coil2 { display: flex; justify-content: space-between; width: 80%; } .coil2 b { font-weight: 700; }
+  .zlens { width: 9px; height: 9px; border-radius: 50%; background: #6b7280; box-shadow: inset 0 1px 2px rgba(0,0,0,.6); }
+  .zlens.on { background: #37d67a; box-shadow: 0 0 6px #37d67a, inset 0 1px 2px rgba(0,0,0,.3); } .zlens.off { background: #e03131; box-shadow: 0 0 5px #e03131; }
+  .zmi { width: 70%; height: 7px; background: #e9ecef; border-radius: 1px; } .zmi.on { background: #c92a2a; }
+  .zbtn { width: 15px; height: 15px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #f2f2f2, #9a9ea3 65%, #5c6066); box-shadow: 0 1px 2px #000; }
+  .zpot { position: relative; width: 16px; height: 16px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #e5e7eb, #8f949a 65%, #565a60); }
+  .zpot b { position: absolute; left: 50%; top: 2px; width: 2px; height: 6px; margin-left: -1px; background: #222; transform: rotate(35deg); transform-origin: 50% 6px; }
+  .blk .dc { display: flex; align-items: center; gap: 3px; font-size: 5.5px; }
+  .zspd { width: 70%; height: 14px; border-radius: 2px; } .zspd.ok { background: #2f9e44; } .zspd.bad { background: #e03131; }
+  .zsw { display: flex; gap: 2px; font: 700 8px/1 Arial; } .zsw span { padding: 2px 3px; border-radius: 1px; color: #888; } .zsw span.act { background: #c92a2a; color: #fff; }
+  .blk.mt { background: linear-gradient(180deg, #b5cf9b, #9fbf83); box-shadow: inset 0 2px 3px rgba(0,0,0,.45), 0 0 0 1px #111; color: #1b3a1f; }
+  .zlcd { font: 700 11px/1 ui-monospace, Menlo, monospace; color: #1b3a1f; }
+  .blk ha-icon { --mdc-icon-size: 22px; color: #eee; }
+  .print.amp.txt { font-size: 13px; }
+  .print.sm { font: 600 8px/1.1 Arial; color: #555; text-align: center; }
+  /* légende sous le module : pictogramme encadré, libellé, section en rouge */
+  .plate {
+    height: auto; margin: 8px 0 0; padding: 0 1px; overflow: visible; align-items: center; gap: 3px; background: none; box-shadow: none; border-radius: 0; color: #222;
+  }
+  .plate::after, .plate .cap { display: none; }
+  .pi { width: 30px; height: 30px; display: grid; place-items: center; border: 1px solid #444; border-radius: 3px; background: #fff; color: #111; box-sizing: border-box; flex: none; }
+  .pi ha-icon { --mdc-icon-size: 22px; display: block; }
+  .plate .txt { flex: none; min-height: 0; padding: 0; writing-mode: horizontal-tb; transform: none; text-align: center; width: 100%; overflow: visible; overflow-wrap: anywhere; hyphens: auto; font: 500 8.5px/1.15 Arial, sans-serif; letter-spacing: -.2px; color: #2b2d31; }
+  .plate .sec { font: 600 9px/1.1 Arial, sans-serif; color: #c1121f; text-align: center; }
+  ha-card.dark .plate .txt { color: #e6e8ea; } ha-card.dark .pi { background: #ddd; }
+  .mod:hover .face { filter: brightness(1.03); }
 
   /* ---------- Dialogue de détails ---------- */
   dialog { padding: 0; border: 0; border-radius: 14px; max-width: min(520px, 94vw); width: 100%; color: var(--primary-text-color); background: var(--card-background-color, #fff); }

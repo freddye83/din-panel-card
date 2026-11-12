@@ -11,7 +11,6 @@ export type Face = (a: FaceArgs) => TemplateResult;
 
 const ampText = (m: Module) =>
   m.amp !== undefined ? html`<div class="print amp">${m.curve ?? ''}${m.amp}${m.curve ? '' : 'A'}</div>` : nothing;
-const stateTag = (st: boolean | null) => (st === null ? nothing : html`<div class="stt ${st ? 'on' : 'off'}">${st ? 'ON' : 'OFF'}</div>`);
 
 /** Leviers individuels reliés par une barre de manœuvre pour les appareils multipolaires. */
 function levers(m: Module, on: boolean) {
@@ -24,83 +23,68 @@ function levers(m: Module, on: boolean) {
 
 const breaker: Face = ({ mod: m, ctx }) => {
   const st = isOn(ctx.hass, m.state_entity);
-  return html`${ampText(m)}${levers(m, st !== false)}`;
+  return html`${levers(m, st !== false)}${ampText(m)}`;
 };
 
 const differential: Face = ({ mod: m, ctx }) => {
   const st = isOn(ctx.hass, m.state_entity);
   const on = st !== false;
   return html`
-    <div class="band">${m.cls ?? 'DIFF'}</div>
-    ${m.amp !== undefined ? html`<div class="print amp">${m.amp}A</div>` : nothing}
-    ${m.mA !== undefined ? html`<div class="mA">${m.mA} mA</div>` : nothing}
     <div class="levers single ${on ? 'on' : 'off'}"><div class="slot wide"><div class="lever ${on ? 'on' : 'off'}"></div></div></div>
+    <div class="dtype"><span>Type ${m.cls ?? 'AC'}</span>${m.mA !== undefined ? html`<span>${m.mA}mA</span>` : nothing}</div>
+    ${m.amp !== undefined ? html`<div class="print amp">${m.amp}A</div>` : nothing}
     <div class="dtools"><span class="test">T</span><span class="win ${on ? 'ok' : 'trip'}"></span></div>`;
 };
+
+/** Zone centrale commune (même emplacement que la manette) : bloc noir contenant le repère propre à l'appareil. */
+const zone = (cls: string, inner: TemplateResult | typeof nothing) => html`<div class="zone"><div class="blk ${cls}">${inner}</div></div>`;
+/** Calibre encadré : `text` s'il est donné, sinon le calibre du module. */
+const cal = (m: Module, text?: string) => {
+  const v = text ?? (m.amp !== undefined ? `${m.curve ?? ''}${m.amp}${m.curve ? '' : 'A'}` : '');
+  return v ? html`<div class="print amp ${text ? 'txt' : ''}">${v}</div>` : nothing;
+};
+const lens = (st: boolean | null) => html`<i class="zlens ${st === true ? 'on' : st === false ? 'off' : ''}"></i>`;
 
 const daynight: Face = ({ mod: m, ctx }) => {
   const st = isOn(ctx.hass, m.state_entity);
   const pos = st === true ? 'on' : st === false ? 'off' : 'auto';
-  return html`${ampText(m)}
-    <div class="band dn ${pos}">${st === true ? 'ON' : st === false ? 'OFF' : 'J / N'}</div>
-    <div class="sel s-${pos}"><span>I</span><span>A</span><span>O</span><i class="knob ${pos}"></i></div>
-    <div class="print sm">J/N</div>`;
+  return html`${zone('dn', html`<div class="zsw"><span class=${pos === 'on' ? 'act' : ''}>I</span><span class=${pos === 'auto' ? 'act' : ''}>A</span><span class=${pos === 'off' ? 'act' : ''}>O</span></div>`)}${cal(m, m.amp !== undefined ? undefined : 'J/N')}`;
 };
 
 const contactor: Face = ({ mod: m, ctx }) => {
   const st = isOn(ctx.hass, m.state_entity);
-  return html`<div class="coil"><span>A1</span><span>A2</span></div>
-    ${ampText(m)}<div class="print">KM</div>
-    <div class="ind ${st === true ? 'on' : ''}"></div>${stateTag(st)}`;
+  return html`${zone('ct', html`<span class="coil2"><b>A1</b><b>A2</b></span><i class="zmi ${st === true ? 'on' : ''}"></i>`)}${cal(m, m.amp !== undefined ? undefined : 'KM')}`;
 };
 
-/** Relais modulaire : bobine A1/A2, voyant et indicateur mécanique ; état lu depuis state_entity (capteur, switch…). */
+/** Relais modulaire : bobine A1/A2 et voyant ; état lu depuis state_entity (capteur, switch…). */
 const relay: Face = ({ mod: m, ctx }) => {
   const st = isOn(ctx.hass, m.state_entity);
-  return html`<div class="band">REL</div>
-    <div class="coil dark"><span>A1</span><span>A2</span></div>
-    ${ampText(m)}
-    <div class="led-lens ${st === true ? 'on' : st === false ? 'off' : ''}"></div>
-    <div class="flag ${st === true ? 'on' : 'off'}"></div>
-    ${stateTag(st)}`;
+  return html`${zone('rl', html`<span class="coil2"><b>A1</b><b>A2</b></span>${lens(st)}`)}${cal(m, m.amp !== undefined ? undefined : 'REL')}`;
 };
 
-/** Télérupteur : bouton-poussoir, voyant d'état, repère TL. */
+/** Télérupteur : bouton-poussoir et voyant d'état. */
 const impulse: Face = ({ mod: m, ctx }) => {
   const st = isOn(ctx.hass, m.state_entity);
-  return html`<div class="band">TL</div>
-    ${ampText(m)}
-    <div class="win ${st === false ? 'trip' : st === true ? 'ok' : 'idle'} big"></div>
-    <div class="push"></div>
-    ${stateTag(st)}`;
+  return html`${zone('tl', html`<i class="zbtn"></i>${lens(st)}`)}${cal(m, m.amp !== undefined ? undefined : 'TL')}`;
 };
 
-/** Alimentation (AC/DC modulaire) : tension de sortie, potentiomètre, voyant DC OK. */
+/** Alimentation (AC/DC modulaire) : potentiomètre, voyant DC OK, sortie imprimée dans le cadre. */
 const psu: Face = ({ mod: m, ctx }) => {
   const st = isOn(ctx.hass, m.state_entity);
-  return html`<div class="band">AC / DC</div>
-    ${m.output ? html`<div class="out">${m.output}</div>` : nothing}
-    ${ampText(m)}
-    <div class="pot"><i></i></div>
-    <div class="dcok"><span class="ind ${st === false ? 'bad' : 'on'}"></span><small>DC OK</small></div>`;
+  return html`${zone('ps', html`<i class="zpot"><b></b></i><span class="dc">${lens(st === false ? false : true)}DC OK</span>`)}${cal(m, m.output ?? (m.amp !== undefined ? undefined : 'AC/DC'))}`;
 };
 
 const surge: Face = ({ mod: m, ctx }) => {
   const st = isOn(ctx.hass, m.state_entity);
-  return html`<div class="print">SPD</div>
-    <div class="spd ${st === false ? 'bad' : 'ok'}"></div>
-    ${m.note ? html`<div class="print sm">${m.note}</div>` : nothing}`;
+  return html`${zone('sp', html`<i class="zspd ${st === false ? 'bad' : 'ok'}"></i>`)}${cal(m, 'SPD')}${m.note ? html`<div class="print sm">${m.note}</div>` : nothing}`;
 };
 
 const meter: Face = ({ mod: m, power }) => html`
-  <div class="print">${m.label ?? ''}</div>
-  <div class="lcd">${power.value !== null ? fmtMeasure(power.kind, power.value) : '- - -'}</div>
-  <div class="btns"><i></i><i></i></div>`;
+  ${zone('mt', html`<span class="zlcd">${power.value !== null ? fmtMeasure(power.kind, power.value) : '- - -'}</span>`)}${cal(m, m.label ?? 'kWh')}`;
 
 const free: Face = () => html`<div class="blank"></div>`;
 
-const custom: Face = ({ mod: m }) => html`
-  ${m.icon ? html`<ha-icon icon=${m.icon}></ha-icon>` : nothing}${ampText(m)}`;
+const custom: Face = ({ mod: m }) => html`${zone('cu', m.icon ? html`<ha-icon icon=${m.icon}></ha-icon>` : nothing)}${cal(m)}`;
 
 export const FACES: Record<string, Face> = {
   differential, breaker, contactor_daynight: daynight, contactor, relay, impulse, psu, surge, meter, free, custom,

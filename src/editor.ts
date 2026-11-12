@@ -5,7 +5,7 @@ import type { CardConfig, Lang, ModuleConfig, PanelConfig, RowConfig, ZoneConfig
 import { t } from './utils/i18n';
 
 const TYPES = ['differential', 'breaker', 'contactor_daynight', 'contactor', 'relay', 'impulse', 'psu', 'surge', 'meter', 'free', 'custom'];
-const MOD_KEYS = ['id', 'type', 'label', 'amp', 'poles', 'width', 'mA', 'class', 'curve', 'usage', 'phases', 'sensor', 'current_sensor', 'voltage_sensor', 'state_entity', 'icon', 'max_w', 'accent', 'output'];
+const MOD_KEYS = ['id', 'type', 'label', 'amp', 'poles', 'width', 'mA', 'class', 'curve', 'usage', 'phases', 'sensor', 'current_sensor', 'voltage_sensor', 'state_entity', 'icon', 'max_w', 'accent', 'output', 'section'];
 const PH = ['l1', 'l2', 'l3'];
 const num = (min: number, max: number) => ({ number: { min, max, mode: 'box' } });
 
@@ -123,6 +123,7 @@ class DinPanelCardEditor extends LitElement {
         { name: 'voltage_sensor', selector: { entity: { domain: 'sensor' } } } ] },
       ...(type === 'psu' ? [{ name: 'output', selector: { text: {} } }] : []),
       { name: 'state_entity', selector: { entity: {} } },
+      { name: 'section', selector: { text: {} } },
       { type: 'grid', name: '', schema: [ { name: 'icon', selector: { icon: {} } }, { name: 'max_w', selector: num(0, 100000) } ] },
     ];
   }

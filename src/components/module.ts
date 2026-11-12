@@ -44,7 +44,7 @@ export function renderModule(m: Module, ctx: Ctx): TemplateResult {
   const pct = p.value !== null && limit ? Math.max(0, p.value) / limit : null;
   const led = pct === null ? '' : pct > 1 ? 'err' : pct >= 0.9 ? 'high' : pct >= 0.6 ? 'warn' : 'ok';
   const face = FACES[m.type] ?? FACES.custom;
-  const cells = Math.max(1, Math.min(m.poles, Math.max(m.width, 2))); // bornes : 2 (phase + neutre) même en 1 DIN
+  const cells = m.type === 'differential' ? Math.max(2, m.width * 2) : Math.max(2, Math.min(m.poles, Math.max(m.width, 2))); // bornes : 2 (phase + neutre) même en 1 DIN
   const title = moduleTitle(m, ctx);
   const showPlate = m.type !== 'free' || !!m.label;
   const icon = m.icon ?? (m.type === 'breaker' ? DEFAULT_ICONS[m.usage] : DEFAULT_ICONS[m.type]);
@@ -57,6 +57,7 @@ export function renderModule(m: Module, ctx: Ctx): TemplateResult {
     : nothing;
   // Appareils à état : liseré vert (enclenché) / rouge (déclenché) autour du module.
   const st = STATEFUL.has(m.type) ? isOn(ctx.hass, m.state_entity) : null;
+  const idBand = m.type !== 'differential' && m.type !== 'free'; // identifiant dans la bande bleutée au-dessus de la manette
   const stCls = st === null ? '' : st ? 'st-on' : 'st-off';
   const style = `--w:${m.width};${m.accent ? `--acc:${m.accent};--cap:${m.accent};` : ''}`;
   const open = (e: Event) => {
@@ -70,13 +71,14 @@ export function renderModule(m: Module, ctx: Ctx): TemplateResult {
     <div class="face">
       ${m.type !== 'free' ? terminals(cells, 'top') : nothing}
       ${led ? html`<i class="led ${led}"></i>` : nothing}
-      <div class="body">${face({ mod: m, ctx, power: p })}${readout}${m.type === 'differential' ? nothing : html`<div class="pid">${m.id}</div>`}</div>
+      <div class="body ${idBand ? 'ib' : ''}">${idBand ? html`<div class="pid">${m.id}</div>` : nothing}${face({ mod: m, ctx, power: p })}${readout}${m.type === 'differential' || idBand ? nothing : html`<div class="pid">${m.id}</div>`}</div>
       ${m.type !== 'free' ? terminals(cells, 'bot') : nothing}
     </div>
     ${showPlate
-      ? html`<div class="plate ${m.width >= 2 ? 'h' : ''}"><i class="cap"></i>
-          ${icon ? html`<ha-icon icon=${icon}></ha-icon>` : nothing}
-          <div class="txt">${title}</div></div>`
+      ? html`<div class="plate">
+          ${icon ? html`<span class="pi"><ha-icon icon=${icon}></ha-icon></span>` : nothing}
+          <div class="txt" lang=${ctx.lang}>${title}</div>
+          ${m.section ? html`<div class="sec">${m.section} mm²</div>` : nothing}</div>`
       : nothing}
   </div>`;
 }

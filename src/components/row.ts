@@ -18,7 +18,7 @@ export function renderRow(row: Row, ctx: Ctx, capacity?: number): TemplateResult
       : nothing}
     <div class="scroller"><div class="lines">
       ${chunkByWidth(row.modules, capacity).map((line) => html`<div class="rail-wrap ${capacity ? 'fixed' : ''}" style=${capacity ? `--n:${capacity}` : ''}><div class="rail"></div>
-        ${line.map((m) => renderModule(m, ctx))}${capacity ? nothing : html`<span class="pad"></span>`}
+        ${line.map((m) => renderModule(m, ctx))}<span class="fill"></span>
       </div>`)}
     </div></div>
   </section>`;
