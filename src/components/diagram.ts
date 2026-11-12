@@ -128,6 +128,11 @@ export function renderDiagram(panels: Panel[], ctx: Ctx, o: DiagramOpts): Templa
   /* ----- ligne Total + têtes de phases ----- */
   const headBubs = (ref?: { entity?: string; current_sensor?: string; voltage_sensor?: string; max_w?: number }): Bub[] =>
     headMeasures(ctx.hass, ref).map((h) => ({ value: h.value, kind: h.kind, partial: false, approx: h.approx, limit: h.kind === 'power' ? ref?.max_w : undefined, tip: h.approx ? 'U ≈ P / I' : h.entity }));
+  // Recherche : lignes non correspondantes estompées (un groupe reste net si l'un de ses circuits correspond)
+  const owner = new Map<Module, { row: Row; panel: Panel }>();
+  for (const pn of panels) for (const r of pn.rows) for (const m of r.modules) { owner.set(m, { row: r, panel: pn }); for (const c of m.children ?? []) owner.set(c, { row: r, panel: pn }); }
+  const hitOf = (x: Module) => { const w = owner.get(x); return !!w && !!ctx.search && ctx.search(x, w.row, w.panel); };
+  const sflag = (m: Module, kids = false) => (!ctx.search ? '' : hitOf(m) || (kids && (m.children ?? []).some(hitOf)) ? 's-hit' : 's-dim');
   const gauges = new Map(headGauges(ctx.hass, cfg.sensors, 'Total').map((g) => [g.key, g]));
   /** Jauge horizontale (sobre) entre le libellé et les pastilles ; à défaut, pointillés. */
   const headGauge = (cy: number, from: number, pct: number | null, has: boolean) => {
@@ -223,7 +228,7 @@ export function renderDiagram(panels: Panel[], ctx: Ctx, o: DiagramOpts): Templa
     const hasZ = m.zones.length > 0;
     const zOpen = hasZ && !o.collapsed.has(zkey);
     const bxc = x + boxW(m.id) + 5;
-    els.push(svg`<g style=${`--acc:${m.accent ?? accent}`}>
+    els.push(svg`<g class=${sflag(m)} style=${`--acc:${m.accent ?? accent}`}>
       ${busX !== undefined ? line(busX, cy, x, cy) : nothing}
       ${taps.length ? line(tx(taps[0]), cy, x, cy, 'tap', `stroke:${phaseColor(taps[0])}`) : nothing}
       ${taps.map((p) => svg`<circle cx=${tx(p)} cy=${cy} r="2.6" style=${`fill:${phaseColor(p)}`}></circle>`)}
@@ -253,7 +258,7 @@ export function renderDiagram(panels: Panel[], ctx: Ctx, o: DiagramOpts): Templa
     const accent = d.accent ?? row.accent ?? '#3182ce';
     const taps = (d.phases.length ? d.phases : row.phases).filter((p) => trunks.includes(p));
     for (const p of taps) tEnd.set(p, Math.max(tEnd.get(p) ?? 0, cy));
-    els.push(svg`<g style=${`--acc:${accent}`}>
+    els.push(svg`<g class=${sflag(d, true)} style=${`--acc:${accent}`}>
       ${taps.length ? line(tx(taps[0]), cy, GX, cy, 'tap', `stroke:${phaseColor(taps[0])}`) : nothing}
       ${taps.map((p) => svg`<circle cx=${tx(p)} cy=${cy} r="2.6" style=${`fill:${phaseColor(p)}`}></circle>`)}
       ${labelRow(cy, GX, d, label, false, kids.length ? (rOpen ? 'open' : 'closed') : undefined, modulePower(ctx.hass, d).configured, boxId)}

@@ -17,7 +17,7 @@ TypeScript strict, Lit 3 (`html`/`svg`), bundle esbuild ESM → `dist/din-panel-
 npm install
 npm run typecheck     # tsc --noEmit
 npm run build         # typecheck + bundle -> dist/din-panel-card.js
-npm test              # tsx --test (config + état), 20 tests
+npm test              # tsx --test (config + état + recherche), 22 tests
 npm run smoke         # rendu jsdom (vues tableau/schéma, repli, dialogue)
 npm run regress       # assertions jsdom de non-régression (schéma, vue mémorisée, langue, LED, clavier)
 npm run migrate       # convertit un ancien YAML groups/circuits
@@ -30,6 +30,7 @@ Vérifier systématiquement : build + tests + smoke + regress. Pour un contrôle
 - `config.ts` — normalisation : ancien format `groups/circuits` → `panels/rows/modules` (`legacyToPanels`, aucune donnée perdue, testé), alias de types, valeurs par défaut (pôles/largeur), enfants d'un différentiel = modules suivants jusqu'au prochain différentiel, `validateConfig`, `collectEntities`.
 - `types.ts` — types config brute et modèle normalisé.
 - `utils/state.ts` — lecture des capteurs : `readMeasure` (type par unité : W/kW→puissance, Wh/kWh→énergie, A/mA→intensité, V→tension ; repli device_class), `modulePower` → `Power.counters` (un compteur par type, sommes par type pour zones/enfants, `current_sensor` à côté de `sensor`), `headMeasures`/`headGauges` (lignes d'entrée : `entity` = W ou kWh seulement, `current_sensor`, `voltage_sensor` sinon U ≈ P/I), `isOn`, `loadLimit`, formats (`fmtMeasure`, `short` = 1 décimale kWh).
+- `utils/search.ts` — recherche multi-champ : `makeMatcher` (ET, `-exclusion`, accents/casse ignorés), `haystack`, `countMatches` ; `ctx.search` pilote l'estompage (`.s-dim` / `.s-hit`) en vue tableau et schéma ; option `search: false` pour masquer le champ.
 - `utils/layout.ts` — `chunkByWidth` (rangées en rails de N modules). `utils/i18n.ts` — fr/en.
 - `components/module.ts` (+ `modules/faces.ts` : visuel par type), `row.ts`, `panel.ts`, `circuit-details.ts` (dialogue), `diagram.ts` (vue schéma SVG), `ctx.ts`.
 - `styles.ts` — tout le CSS (`cardStyles`, `editorStyles`).

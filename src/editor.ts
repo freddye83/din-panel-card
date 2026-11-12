@@ -45,7 +45,7 @@ class DinPanelCardEditor extends LitElement {
 
   private _general() {
     const c = this._config;
-    const data = { title: c.title, incoming_title: c.incoming_title, nominal_voltage: c.nominal_voltage, language: c.language ?? this._hassLang, module_width: c.module_width, view: c.view ?? 'panel', modules_per_row: c.modules_per_row, max_width: c.max_width, collapsed: c.collapsed ?? 'none' };
+    const data = { title: c.title, incoming_title: c.incoming_title, nominal_voltage: c.nominal_voltage, language: c.language ?? this._hassLang, module_width: c.module_width, view: c.view ?? 'panel', modules_per_row: c.modules_per_row, max_width: c.max_width, collapsed: c.collapsed ?? 'none', search: c.search !== false };
     const schema = [
       { name: 'title', selector: { text: {} } },
       { name: 'incoming_title', selector: { text: {} } },
@@ -56,11 +56,12 @@ class DinPanelCardEditor extends LitElement {
       { name: 'nominal_voltage', selector: num(100, 480) },
       { name: 'modules_per_row', selector: num(1, 60) },
       { name: 'collapsed', selector: { select: { options: [{ value: 'none', label: '—' }, { value: 'zones', label: t(this.L, 'zones') }, { value: 'rows', label: t(this.L, 'row') }, { value: 'panels', label: t(this.L, 'panel') }] } } },
+      { name: 'search', selector: { boolean: {} } },
       { name: 'view', selector: { select: { options: [{ value: 'panel', label: t(this.L, 'view_panel') }, { value: 'tree', label: t(this.L, 'view_tree') }] } } },
     ];
     return html`<ha-form .hass=${this.hass} .data=${data} .schema=${schema} .computeLabel=${this._lbl}
       @value-changed=${(e: CustomEvent) => {
-        const v = e.detail.value, cfg: CardConfig = { ...c, title: v.title || undefined, incoming_title: v.incoming_title || undefined, nominal_voltage: v.nominal_voltage || undefined, language: v.language, module_width: v.module_width || undefined, view: v.view === 'tree' ? 'tree' : undefined, max_width: v.max_width || undefined, modules_per_row: v.modules_per_row || undefined, collapsed: v.collapsed && v.collapsed !== 'none' ? v.collapsed : undefined };
+        const v = e.detail.value, cfg: CardConfig = { ...c, title: v.title || undefined, incoming_title: v.incoming_title || undefined, nominal_voltage: v.nominal_voltage || undefined, language: v.language, module_width: v.module_width || undefined, view: v.view === 'tree' ? 'tree' : undefined, max_width: v.max_width || undefined, modules_per_row: v.modules_per_row || undefined, collapsed: v.collapsed && v.collapsed !== 'none' ? v.collapsed : undefined, search: v.search === false ? false : undefined };
         for (const k of Object.keys(cfg)) if (cfg[k] === undefined) delete cfg[k];
         this._emit(cfg);
       }}></ha-form>`;

@@ -75,4 +75,29 @@ el = await mk({ type: 'x', panels: [{ id: 'a', rows: [{ id: 'r', modules: [{ id:
 const tz = q(el, '.tip .tip-z ha-icon').map((e) => e.getAttribute('icon'));
 assert.deepEqual(tz, ['mdi:power-socket-eu', 'mdi:desk']);
 assert.ok(!el.shadowRoot.querySelector('.mod[title]'), 'plus d\'infobulle native');
+
+// 12. recherche multi-champ : estompe, compte, Entrée/Échap, vue schéma, désactivable
+{
+  const cfgS = { type: 'x', panels: [{ id: 'p', label: 'T', rows: [
+    { id: 'r1', label: 'RDC', modules: [{ type: 'differential', id: 'R1' }, { id: '1-1', label: 'Four', amp: 20, zones: [{ floor: 'RDC', room: 'Cuisine' }] }, { id: '1-2', label: 'Lumières salon', amp: 10 }] },
+    { id: 'r2', label: 'Étage', modules: [{ type: 'differential', id: 'R2' }, { id: '2-1', label: 'Chauffage', amp: 16 }] }] }] };
+  const e = await mk(cfgS);
+  const input = e.shadowRoot.querySelector('.search input');
+  assert.ok(input, 'champ de recherche présent');
+  input.value = 'cuisine 20'; input.dispatchEvent(new w.Event('input')); await e.updateComplete;
+  assert.equal(q(e, '.mod.s-hit').length, 1, 'un seul module correspond (ET)');
+  assert.ok(q(e, '.mod.s-dim').length >= 3, 'les autres sont estompés');
+  assert.equal(q(e, '.row.nomatch').length, 1, 'la rangée sans résultat est repliée');
+  assert.match(e.shadowRoot.querySelector('.search .count').textContent, /1 résultat/);
+  input.value = 'zzz'; input.dispatchEvent(new w.Event('input')); await e.updateComplete;
+  assert.match(e.shadowRoot.querySelector('.search .count').textContent, /aucun/);
+  input.value = 'etage'; input.dispatchEvent(new w.Event('input')); await e.updateComplete;
+  e._setView('tree'); await e.updateComplete;
+  assert.ok(q(e, '.dia g.s-hit').length >= 1 && q(e, '.dia g.s-dim').length >= 1, 'schéma : lignes estompées / nettes');
+  const input2 = e.shadowRoot.querySelector('.search input');
+  input2.dispatchEvent(new w.KeyboardEvent('keydown', { key: 'Escape' })); await e.updateComplete;
+  assert.equal(q(e, '.s-dim').length, 0, 'Échap efface la recherche');
+  const off = await mk({ ...cfgS, search: false });
+  assert.equal(off.shadowRoot.querySelector('.search'), null, 'search: false masque le champ');
+}
 console.log('regress OK');

@@ -2,6 +2,7 @@ import { LitElement, html, nothing } from 'lit';
 import { cardStyles } from './styles';
 import { collectEntities, normalizeConfig, validateConfig } from './config';
 import { renderPanel } from './components/panel';
+import { countMatches, makeMatcher } from './utils/search';
 import { renderDetails } from './components/circuit-details';
 import { boardWidth, collapseKeys, renderDiagram } from './components/diagram';
 import type { Level } from './components/diagram';
@@ -22,7 +23,7 @@ function cardHash(c: CardConfig): string {
 }
 
 class DinPanelCard extends LitElement {
-  static properties = { _config: { state: true }, _selected: { state: true }, _view: { state: true }, _collapsed: { state: true }, _cw: { state: true } };
+  static properties = { _config: { state: true }, _selected: { state: true }, _view: { state: true }, _collapsed: { state: true }, _cw: { state: true }, _q: { state: true } };
   static styles = cardStyles;
 
   declare _config?: CardConfig;
@@ -30,6 +31,8 @@ class DinPanelCard extends LitElement {
   declare _view: 'panel' | 'tree';
   private _viewKey = VIEW_KEY;
   declare _collapsed: Set<string>;
+  declare _q: string;
+  private _qi = -1;
   declare _cw: number;
   private _ro?: ResizeObserver;
   private _hass?: HomeAssistant;
@@ -139,6 +142,17 @@ class DinPanelCard extends LitElement {
     </div>`;
   }
 
+  /** Entrée : saute au résultat suivant ; Échap : efface la recherche. */
+  private _searchKey(e: KeyboardEvent) {
+    if (e.key === 'Escape') { this._q = ''; this._qi = -1; return; }
+    if (e.key !== 'Enter') return;
+    e.preventDefault();
+    const hits = [...(this.shadowRoot?.querySelectorAll('.mod.s-hit, .dia g.s-hit') ?? [])] as Element[];
+    if (!hits.length) return;
+    this._qi = (this._qi + 1) % hits.length;
+    hits[this._qi].scrollIntoView?.({ block: 'center', inline: 'center', behavior: 'smooth' });
+  }
+
   render() {
     if (!this._config || !this._hass) return nothing;
     const lang = this._lang;
@@ -147,6 +161,10 @@ class DinPanelCard extends LitElement {
       select: (m) => { this._selected = m; },
       moreInfo: (entityId) => this.dispatchEvent(new CustomEvent('hass-more-info', { detail: { entityId }, bubbles: true, composed: true })),
     };
+    const q = this._q ?? '';
+    const test = makeMatcher(q, lang);
+    if (test) ctx.search = test;
+    const found = test ? countMatches(this._panels, test) : 0;
     const dark = !!this._hass.themes?.darkMode;
     const u = Number(this._config.module_width);
     const tree = this._view === 'tree';
@@ -155,6 +173,14 @@ class DinPanelCard extends LitElement {
     return html`<ha-card class=${dark ? 'dark' : ''} style=${u > 0 ? `--u:${u}px` : ''}>
       <div class="toolbar">
         <h2>${this._config.title ?? ''}</h2>
+        ${this._config.search === false ? nothing : html`<div class="search">
+          <ha-icon icon="mdi:magnify"></ha-icon>
+          <input type="text" .value=${q} placeholder=${t(lang, 'search_ph')} aria-label=${t(lang, 'search')} enterkeyhint="search"
+            @input=${(e: Event) => { this._q = (e.target as HTMLInputElement).value; this._qi = -1; }}
+            @keydown=${(e: KeyboardEvent) => this._searchKey(e)} />
+          ${q ? html`<span class="count" aria-live="polite">${found ? `${found} ${t(lang, 'result')}${found > 1 ? 's' : ''}` : t(lang, 'no_result')}</span>
+            <button class="clr" title=${t(lang, 'clear')} aria-label=${t(lang, 'clear')} @click=${() => { this._q = ''; this._qi = -1; }}><ha-icon icon="mdi:close"></ha-icon></button>` : nothing}
+        </div>`}
         ${tree ? html`
           <button class="tbtn" @click=${() => { this._collapsed = new Set(); }}>
             <ha-icon icon="mdi:unfold-more-horizontal"></ha-icon><span>${t(lang, 'expand_all')}</span></button>
@@ -166,7 +192,7 @@ class DinPanelCard extends LitElement {
           <span>${t(lang, tree ? 'view_panel' : 'view_tree')}</span></button>
       </div>
       ${tree ? nothing : this._summary(lang)}
-      ${tree ? renderDiagram(this._panels, ctx, { config: this._config, width: boardW, maxWidth: maxW, collapsed: this._collapsed, toggle: (k: string) => this._toggle(k) }) : this._panels.map((p) => renderPanel(p, ctx))}
+      ${tree ? renderDiagram(this._panels, ctx, { config: this._config, width: boardW, maxWidth: maxW, collapsed: test ? new Set<string>() : this._collapsed, toggle: (k: string) => this._toggle(k) }) : this._panels.map((p) => renderPanel(p, ctx))}
       ${this._selected
         ? html`<dialog @close=${() => { this._selected = null; }}
             @click=${(e: Event) => { if (e.target === e.currentTarget) (e.currentTarget as HTMLDialogElement).close(); }}>

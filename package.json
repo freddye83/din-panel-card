@@ -1,13 +1,13 @@
 {
   "name": "din-panel-card",
-  "version": "1.17.6",
+  "version": "1.18.0",
   "description": "Carte Lovelace Home Assistant : tableau électrique modulaire graphique (rangées, rail DIN, modules)",
   "type": "module",
   "license": "MIT",
   "scripts": {
     "typecheck": "tsc --noEmit",
     "build": "npm run typecheck && node scripts/build.mjs",
-    "test": "tsx --test tests/config.test.ts tests/state.test.ts",
+    "test": "tsx --test tests/config.test.ts tests/state.test.ts tests/search.test.ts",
     "migrate": "tsx scripts/migrate.ts",
     "smoke": "node scripts/smoke.mjs",
     "regress": "node scripts/regress.mjs"

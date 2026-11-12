@@ -1,10 +1,13 @@
 import type { HomeAssistant, Lang, Module } from '../types';
+import type { Matcher } from '../utils/search';
 
 export interface Ctx {
   hass: HomeAssistant;
   lang: Lang;
   select: (m: Module) => void;
   moreInfo: (entityId: string) => void;
+  /** Recherche active : prédicat de correspondance (absent = pas de filtre). */
+  search?: Matcher;
 }
 
 export const DEFAULT_ICONS: Record<string, string> = {

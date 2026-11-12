@@ -1,14 +1,16 @@
 import { html, nothing, TemplateResult } from 'lit';
-import type { Row } from '../types';
+import type { Panel, Row } from '../types';
 import { fmtMeasure, modulePower } from '../utils/state';
 import type { Ctx } from './ctx';
 import { renderModule } from './module';
 import { chunkByWidth } from '../utils/layout';
 
-export function renderRow(row: Row, ctx: Ctx, capacity?: number): TemplateResult {
+export function renderRow(row: Row, ctx: Ctx, capacity?: number, panel?: Panel): TemplateResult {
+  const flag = (m: import('../types').Module) => (ctx.search && panel ? (ctx.search(m, row, panel) ? 'hit' : 'dim') : '');
+  const anyHit = !ctx.search || !panel || row.modules.some((m) => ctx.search!(m, row, panel));
   const diff = row.modules.find((m) => m.type === 'differential');
   const p = diff ? modulePower(ctx.hass, diff) : undefined;
-  return html`<section class="row" style=${row.accent ? `--acc:${row.accent}` : ''}>
+  return html`<section class="row ${anyHit ? '' : 'nomatch'}" style=${row.accent ? `--acc:${row.accent}` : ''}>
     ${row.label || row.phases.length || p?.configured
       ? html`<header class="row-head">
           ${row.label ? html`<b>${row.label}</b>` : nothing}
@@ -18,7 +20,7 @@ export function renderRow(row: Row, ctx: Ctx, capacity?: number): TemplateResult
       : nothing}
     <div class="scroller"><div class="lines">
       ${chunkByWidth(row.modules, capacity).map((line) => html`<div class="rail-wrap ${capacity ? 'fixed' : ''}" style=${capacity ? `--n:${capacity}` : ''}><div class="rail"></div>
-        ${line.map((m) => renderModule(m, ctx))}<span class="fill"></span>
+        ${line.map((m) => renderModule(m, ctx, flag(m)))}<span class="fill"></span>
       </div>`)}
     </div></div>
   </section>`;

@@ -38,7 +38,7 @@ function placeTip(e: Event) {
 
 const STATEFUL = new Set(['relay', 'impulse', 'contactor', 'contactor_daynight']);
 
-export function renderModule(m: Module, ctx: Ctx): TemplateResult {
+export function renderModule(m: Module, ctx: Ctx, flag = ''): TemplateResult {
   const p = modulePower(ctx.hass, m);
   const limit = loadLimit(m, p.kind);
   const pct = p.value !== null && limit ? Math.max(0, p.value) / limit : null;
@@ -66,7 +66,7 @@ export function renderModule(m: Module, ctx: Ctx): TemplateResult {
     e.preventDefault();
     ctx.select(m);
   };
-  return html`<div class="mod t-${m.type} u-${m.usage} p-${m.poles} ${stCls}" style=${style} role="button" tabindex="0"
+  return html`<div class="mod t-${m.type} u-${m.usage} p-${m.poles} ${stCls} ${flag ? `s-${flag}` : ''}" style=${style} role="button" tabindex="0"
       aria-label=${`${title} ${m.id}`} @click=${open} @keydown=${open} @mouseenter=${placeTip} @focus=${placeTip}>
     ${tip(m, title, icon)}
     <div class="face">

@@ -16,6 +16,23 @@ export const cardStyles = css`
   .toolbar { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
   .toolbar h2 { flex: 1; margin: 0; font-size: 20px; font-weight: 400; color: var(--primary-text-color); }
   .tbtn { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border: 1px solid var(--divider-color); border-radius: 18px; cursor: pointer; font: inherit; font-size: 13px; color: var(--primary-text-color); background: var(--card-background-color); }
+  .toolbar { flex-wrap: wrap; }
+  .search { display: flex; align-items: center; gap: 6px; min-width: 0; flex: 0 1 280px; padding: 2px 6px 2px 10px; border: 1px solid var(--divider-color, #c4c7cc); border-radius: 18px; background: var(--card-background-color, #fff); color: var(--secondary-text-color, #666); }
+  .search:focus-within { border-color: var(--primary-color); }
+  .search ha-icon { --mdc-icon-size: 18px; flex: none; }
+  .search input { flex: 1; min-width: 0; padding: 5px 0; border: 0; outline: 0; background: transparent; font: inherit; font-size: 13px; color: var(--primary-text-color, #222); }
+  .search .count { flex: none; font-size: 12px; white-space: nowrap; }
+  .search .clr { display: grid; place-items: center; padding: 2px; border: 0; border-radius: 50%; cursor: pointer; background: transparent; color: inherit; }
+  .search .clr:hover { background: var(--secondary-background-color); }
+  /* recherche : non correspondants estompés, correspondants cerclés ; rangées sans résultat repliées */
+  .mod { transition: opacity .2s, filter .2s; }
+  .mod.s-dim .face { filter: grayscale(.9); }
+  .mod.s-dim .face::before { display: block; content: ''; position: absolute; inset: 0; z-index: 6; background: rgba(244,246,248,.78); }
+  ha-card.dark .mod.s-dim .face::before { background: rgba(38,40,44,.78); }
+  .mod.s-dim .plate { opacity: .3; }
+  .mod.s-hit .face { outline: 2px solid var(--primary-color); outline-offset: 1px; }
+  .row.nomatch .scroller { display: none; } .row.nomatch { opacity: .4; }
+  .dia .s-dim { opacity: .22; }
   .tbtn:hover { background: var(--secondary-background-color); } .tbtn ha-icon { --mdc-icon-size: 18px; }
   @media (max-width: 480px) { .tbtn span { display: none; } .tbtn { padding: 6px 8px; } }
   .dia { margin: 0 auto; }

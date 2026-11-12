@@ -92,6 +92,7 @@ The configuration is a tree: **card → panels → rows → modules → zones**.
 | `collapsed` | `none` \| `zones` \| `rows` \| `panels` | `none` | Diagram view: initial collapse level (zones only, + rows, + panels). |
 | `nominal_voltage` | number (V) | `230` | Used to derive a power limit in W from a rating in A (`amp × voltage`, ×3 for 3-pole devices) when `max_w` is not set. |
 | `incoming_title` | string | `Arrivée` / `Incoming` | Title of the *Incoming* frame (panel view). Use `""` to hide it. |
+| `search` | boolean | `true` | Search field in the toolbar. `false` hides it. |
 | `sensors` | object | none | Incoming measurements, see [sensors](#sensors-incoming-lines). |
 | `floors` | map | auto colours | Colours of the floor pills in the diagram: `{ <floor name>: { bg: '#38a169', fg: white } }`. A floor without an entry gets a stable colour generated from its name. |
 
@@ -222,6 +223,10 @@ One-line diagram with **phase trunks** L1/L2/L3 (brown / black / grey), **Total*
 
 A click on a node opens its detail sheet; a click on the Total / a phase / a zone opens its sensor. **Collapse**: every panel title, every row (differential) and every circuit with zones has a clickable chevron (keyboard accessible). The *Expand all* and *Collapse one level* buttons (zones, then rows, then panels) act on the whole card.
 
+### Search
+
+The toolbar search field looks in **all fields at once** (case and accents ignored): module id, label, type (`differential`, `impulse`…), rating (`20A`, `20`, `C20`), floor and room of the zones, row and panel names, and the sensor / state entity ids. Several words are combined with **AND** (`kitchen 20` → 20 A modules linked to the kitchen); a word prefixed with `-` excludes (`floor -sockets`). Non-matching modules are **faded**, matching ones are outlined, rows without a match are collapsed, and a counter shows the number of results. In the diagram view, non-matching lines are faded and everything is expanded. `Enter` jumps to the next result, `Esc` clears the search.
+
 ### Panel width (modules per row)
 
 `modules_per_row` sets the capacity of a row in DIN modules. The rail and the enclosure are then exactly `N × module_width` px wide, and the *Incoming* frame uses the same width. If a row contains more than N DIN modules (sum of `width`), it continues on an **extra rail**; a module wider than N sits alone on its rail. On small screens the row scrolls horizontally.
@@ -238,7 +243,7 @@ npm run regress   # jsdom regression assertions (diagram, remembered view, langu
 
 Layout: `src/config.ts` (normalisation), `src/components/` (panel, row, module, details, `diagram.ts`, `modules/faces.ts` = look of each type), `src/editor.ts` (visual editor), `src/styles.ts`, `src/utils/`.
 
-Each new version bumps `version` in `package.json`; it is printed in the browser console on load. See [CHANGELOG.md](CHANGELOG.md) (in French). Current version: **1.17.6**.
+Each new version bumps `version` in `package.json`; it is printed in the browser console on load. See [CHANGELOG.md](CHANGELOG.md) (in French). Current version: **1.18.0**.
 
 ---
 
@@ -316,6 +321,7 @@ La configuration est un arbre : **carte → tableaux → rangées → modules �
 | `collapsed` | `none` \| `zones` \| `rows` \| `panels` | `none` | Vue schéma : niveau de repli initial (zones seules, + rangées, + tableaux). |
 | `nominal_voltage` | nombre (V) | `230` | Sert à déduire une limite en W d'un calibre en A (`amp × tension`, ×3 si tripolaire) quand `max_w` n'est pas renseigné. |
 | `incoming_title` | texte | `Arrivée` / `Incoming` | Titre du cadre *Arrivée* (vue tableau). `""` pour le masquer. |
+| `search` | booléen | `true` | Champ de recherche dans la barre d'outils. `false` le masque. |
 | `sensors` | objet | aucun | Mesures d'arrivée, voir [capteurs](#capteurs-lignes-darrivée). |
 | `floors` | map | couleurs auto | Couleurs des pastilles d'étage du schéma : `{ <nom d'étage>: { bg: '#38a169', fg: white } }`. Un étage sans entrée reçoit une couleur stable générée depuis son nom. |
 
@@ -446,6 +452,10 @@ Schéma unifilaire avec **troncs de phases** L1/L2/L3 (marron / noir / gris), li
 
 Un clic sur un nœud ouvre sa fiche ; un clic sur le Total / une phase / une zone ouvre son capteur. **Repli** : chaque titre de tableau, chaque rangée (différentiel) et chaque circuit possédant des zones a un chevron cliquable (accessible au clavier). Les boutons « Tout déplier » et « Replier un niveau » (zones, puis rangées, puis tableaux) agissent sur toute la carte.
 
+### Recherche
+
+Le champ de la barre d'outils cherche dans **tous les champs à la fois** (casse et accents ignorés) : id du module, libellé, type (`différentiel`, `télérupteur`…), calibre (`20A`, `20`, `C20`), étage et pièce des zones, noms de rangée et de tableau, identifiants des capteurs / entités d'état. Plusieurs mots se combinent en **ET** (`cuisine 20` → modules 20 A liés à la cuisine) ; un mot précédé de `-` exclut (`etage -prises`). Les modules non trouvés sont **estompés**, les trouvés sont cerclés, les rangées sans résultat se replient et un compteur indique le nombre de résultats. En vue schéma, les lignes non trouvées sont estompées et tout est déplié. `Entrée` saute au résultat suivant, `Échap` efface la recherche.
+
 ### Largeur du tableau (modules par rangée)
 
 `modules_per_row` fixe la capacité d'une rangée en modules DIN. Le rail et le coffret font alors exactement `N × module_width` px de large, et le cadre *Arrivée* prend la même largeur. Si une rangée contient plus de N modules DIN (somme des `width`), elle continue sur un **rail supplémentaire** ; un module plus large que N occupe seul son rail. Sur petit écran la rangée défile horizontalement.
@@ -462,4 +472,4 @@ npm run regress   # assertions de non-régression jsdom (schéma, vue mémorisé
 
 Structure : `src/config.ts` (normalisation), `src/components/` (panel, row, module, détails, `diagram.ts`, `modules/faces.ts` = rendu de chaque type), `src/editor.ts` (éditeur visuel), `src/styles.ts`, `src/utils/`.
 
-Chaque nouvelle version incrémente `version` dans `package.json` ; elle est affichée dans la console du navigateur au chargement. Voir [CHANGELOG.md](CHANGELOG.md). Version actuelle : **1.17.6**.
+Chaque nouvelle version incrémente `version` dans `package.json` ; elle est affichée dans la console du navigateur au chargement. Voir [CHANGELOG.md](CHANGELOG.md). Version actuelle : **1.18.0**.
