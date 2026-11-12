@@ -263,10 +263,8 @@ export const cardStyles = css`
   .term.bot { align-items: flex-start; padding: 3px 0 0; }
   .term i { position: relative; width: 11px; height: 11px; border-radius: 50%; background: radial-gradient(circle at 40% 35%, #f4f4f4, #b9bcc0 65%, #8c8f94); box-shadow: 0 0 0 1px #6d7176; }
   .term i::after { content: ''; position: absolute; left: 12%; right: 12%; top: 45%; height: 10%; background: #4a4d52; transform: rotate(-35deg); display: block; }
-  .term i:first-child::before { content: 'N'; position: absolute; left: 50%; transform: translateX(-50%); font: 600 7px/1 Arial, sans-serif; color: #333; }
-  .term.top i:first-child::before { top: -9px; } .term.bot i:first-child::before { bottom: -9px; }
-  .t-differential .term i:nth-child(3)::before { content: 'N'; position: absolute; left: 50%; transform: translateX(-50%); font: 600 7px/1 Arial, sans-serif; color: #333; }
-  .t-differential .term.top i:nth-child(3)::before { top: -9px; } .t-differential .term.bot i:nth-child(3)::before { bottom: -9px; }
+  .term.n i:first-child::before { content: 'N'; position: absolute; left: 50%; transform: translateX(-50%); font: 600 7px/1 Arial, sans-serif; color: #333; }
+  .term.top.n i:first-child::before { top: -9px; } .term.bot.n i:first-child::before { bottom: -9px; }
   /* disjoncteur / différentiel : bande bleutée (capot), zone manette, calibre encadré */
   .mod:not(.t-free) .body { position: relative; gap: 0; padding: 0; align-items: stretch; }
   .t-breaker .body:not(.ib)::before, .t-differential .body::before { content: ''; flex: none; height: 15px; background: linear-gradient(180deg, #d4e4f7, #c4d8f0); box-shadow: inset 0 1px 0 rgba(0,0,0,.35); }

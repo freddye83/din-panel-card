@@ -9,8 +9,8 @@ export function moduleTitle(m: Module, ctx: Ctx): string {
   return m.label ?? (m.type === 'free' ? t(ctx.lang, 'free') : m.id);
 }
 
-function terminals(n: number, pos: 'top' | 'bot') {
-  return html`<div class="term ${pos}">${Array.from({ length: n }, () => html`<i></i>`)}</div>`;
+function terminals(n: number, pos: 'top' | 'bot', neutral: boolean) {
+  return html`<div class="term ${pos} ${neutral ? 'n' : ''}">${Array.from({ length: n }, () => html`<i></i>`)}</div>`;
 }
 
 const ZONE_FALLBACK = 'mdi:map-marker-outline';
@@ -44,7 +44,8 @@ export function renderModule(m: Module, ctx: Ctx): TemplateResult {
   const pct = p.value !== null && limit ? Math.max(0, p.value) / limit : null;
   const led = pct === null ? '' : pct > 1 ? 'err' : pct >= 0.9 ? 'high' : pct >= 0.6 ? 'warn' : 'ok';
   const face = FACES[m.type] ?? FACES.custom;
-  const cells = m.type === 'differential' ? Math.max(2, m.width * 2) : Math.max(2, Math.min(m.poles, Math.max(m.width, 2))); // bornes : 2 (phase + neutre) même en 1 DIN
+  const cells = Math.max(2, m.poles); // une vis par pôle (2 mini : phase + neutre en 1 DIN)
+  const neutral = m.poles !== 3; // repère N sauf sur un 3 pôles (pas de neutre)
   const title = moduleTitle(m, ctx);
   const showPlate = m.type !== 'free' || !!m.label;
   const icon = m.icon ?? (m.type === 'breaker' ? DEFAULT_ICONS[m.usage] : DEFAULT_ICONS[m.type]);
@@ -69,10 +70,10 @@ export function renderModule(m: Module, ctx: Ctx): TemplateResult {
       aria-label=${`${title} ${m.id}`} @click=${open} @keydown=${open} @mouseenter=${placeTip} @focus=${placeTip}>
     ${tip(m, title, icon)}
     <div class="face">
-      ${m.type !== 'free' ? terminals(cells, 'top') : nothing}
+      ${m.type !== 'free' ? terminals(cells, 'top', neutral) : nothing}
       ${led ? html`<i class="led ${led}"></i>` : nothing}
       <div class="body ${idBand ? 'ib' : ''}">${idBand ? html`<div class="pid">${m.id}</div>` : nothing}${face({ mod: m, ctx, power: p })}${readout}${m.type === 'differential' || idBand ? nothing : html`<div class="pid">${m.id}</div>`}</div>
-      ${m.type !== 'free' ? terminals(cells, 'bot') : nothing}
+      ${m.type !== 'free' ? terminals(cells, 'bot', neutral) : nothing}
     </div>
     ${showPlate
       ? html`<div class="plate">

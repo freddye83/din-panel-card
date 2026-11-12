@@ -2,6 +2,9 @@
 
 Chaque nouvelle version incrémente le numéro dans `package.json` (injecté dans le bundle et affiché dans la console du navigateur).
 
+## 1.17.4
+- Vue tableau : une vis par pôle en haut et en bas (un différentiel 4 pôles n'en a plus 8), repère N seulement s'il y a un neutre (absent sur un 3 pôles).
+
 ## 1.17.3
 - Documentation : la « version actuelle » du README (EN + FR) était restée à 1.16.4 ; alignée sur `package.json`.
 
