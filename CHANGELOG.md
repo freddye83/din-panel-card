@@ -2,6 +2,9 @@
 
 Chaque nouvelle version incrémente le numéro dans `package.json` (injecté dans le bundle et affiché dans la console du navigateur).
 
+## 1.17.3
+- Documentation : la « version actuelle » du README (EN + FR) était restée à 1.16.4 ; alignée sur `package.json`.
+
 ## 1.17.2
 - Correctif : l'icône par défaut du relais (`mdi:relay`) n'existe pas dans MDI et s'affichait vide ; remplacée par `mdi:electric-switch`. Captures du README régénérées.
 
