@@ -231,7 +231,6 @@ var Me=globalThis,Se=Me.ShadowRoot&&(Me.ShadyCSS===void 0||Me.ShadyCSS.nativeSha
 
   /* ---------- Style « schéma d'installation » : rail DIN, peigne bleu, modules blancs, légende dessous ---------- */
   :host { --p: 0px; }
-  .scroller { padding-top: 16px; }
   .panel { background: linear-gradient(180deg, #f7f8f9, #eceef0); box-shadow: inset 0 0 0 1px rgba(255,255,255,.8), 0 0 0 1px rgba(0,0,0,.18), 0 2px 8px rgba(0,0,0,.15); border: 0; }
   ha-card.dark .panel { background: linear-gradient(180deg, #3a3d43, #2b2d31); }
   .panel-title { border: 1px solid rgba(0,0,0,.25); background: #fff; box-shadow: none; }
@@ -242,11 +241,6 @@ var Me=globalThis,Se=Me.ShadowRoot&&(Me.ShadyCSS===void 0||Me.ShadyCSS.nativeSha
   .rail::after {
     inset: 10px 0; border-radius: 5px; box-shadow: inset 0 1px 2px rgba(0,0,0,.5);
     background: repeating-linear-gradient(90deg, transparent 0 14px, #7b7e84 14px 32px, transparent 32px 46px);
-  }
-  /* peigne d'alimentation bleu au-dessus des borniers */
-  .rail-wrap::before {
-    content: ''; position: absolute; left: 4px; right: 6px; top: -11px; height: 8px; z-index: 2; border-radius: 2px;
-    background: linear-gradient(180deg, #7fc0ff, #2a7fd6 60%, #1c62ad); box-shadow: 0 1px 2px rgba(0,0,0,.4);
   }
   .fill { flex: 1 1 0; min-width: 0; margin-top: var(--p); height: var(--h); background: none; box-shadow: none; }
   /* module : blanc, liseré noir de 2 px entre appareils (comme sur le schéma d'installation) */
@@ -543,7 +537,7 @@ var Me=globalThis,Se=Me.ShadowRoot&&(Me.ShadyCSS===void 0||Me.ShadyCSS.nativeSha
       ${this._selected?p`<dialog @close=${()=>{this._selected=null}}
             @click=${c=>{c.target===c.currentTarget&&c.currentTarget.close()}}>
             ${Yt(this._selected,o,()=>this.shadowRoot?.querySelector("dialog")?.close())}</dialog>`:h}
-    </ha-card>`}updated(){let t=this.shadowRoot?.querySelector("dialog");t&&this._selected&&!t.open&&t.showModal()}};Ae.properties={_config:{state:!0},_selected:{state:!0},_view:{state:!0},_collapsed:{state:!0},_cw:{state:!0}},Ae.styles=Lt;customElements.get("din-panel-card")||customElements.define("din-panel-card",Ae);console.info("%c DIN-PANEL-CARD %c v1.17.5 ","color:#fff;background:#3182ce;font-weight:700","color:#3182ce;background:#fff");window.customCards=window.customCards||[];window.customCards.push({type:"din-panel-card",name:"DIN Panel Card",description:"Tableau \xE9lectrique modulaire graphique (rang\xE9es, rail DIN, modules) aliment\xE9 par les entit\xE9s Home Assistant.",preview:!1});
+    </ha-card>`}updated(){let t=this.shadowRoot?.querySelector("dialog");t&&this._selected&&!t.open&&t.showModal()}};Ae.properties={_config:{state:!0},_selected:{state:!0},_view:{state:!0},_collapsed:{state:!0},_cw:{state:!0}},Ae.styles=Lt;customElements.get("din-panel-card")||customElements.define("din-panel-card",Ae);console.info("%c DIN-PANEL-CARD %c v1.17.6 ","color:#fff;background:#3182ce;font-weight:700","color:#3182ce;background:#fff");window.customCards=window.customCards||[];window.customCards.push({type:"din-panel-card",name:"DIN Panel Card",description:"Tableau \xE9lectrique modulaire graphique (rang\xE9es, rail DIN, modules) aliment\xE9 par les entit\xE9s Home Assistant.",preview:!1});
 /*! Bundled license information:
 
 @lit/reactive-element/css-tag.js:

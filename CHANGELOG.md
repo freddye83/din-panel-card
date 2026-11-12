@@ -2,6 +2,9 @@
 
 Chaque nouvelle version incrémente le numéro dans `package.json` (injecté dans le bundle et affiché dans la console du navigateur).
 
+## 1.17.6
+- Vue tableau : suppression de la barre bleue (peigne) au-dessus des modules.
+
 ## 1.17.5
 - Documentation : capture « relais / alimentation » du README recadrée.
 
