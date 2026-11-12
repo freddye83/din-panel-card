@@ -100,4 +100,19 @@ assert.ok(!el.shadowRoot.querySelector('.mod[title]'), 'plus d\'infobulle native
   const off = await mk({ ...cfgS, search: false });
   assert.equal(off.shadowRoot.querySelector('.search'), null, 'search: false masque le champ');
 }
+
+// 13. schéma + recherche : seuls les trouvés sont dépliés ; zones non concernées estompées
+{
+  const e = await mk({ type: 'x', view: 'tree', panels: [{ id: 'p', label: 'T', rows: [
+    { id: 'r1', label: 'RDC', modules: [{ type: 'differential', id: 'R1' }, { id: '1-1', label: 'Four', amp: 20, zones: [{ floor: 'RDC', room: 'Cuisine' }, { floor: 'RDC', room: 'Salon' }] }, { id: '1-2', label: 'Lumières', amp: 10, zones: [{ floor: 'RDC', room: 'Garage' }] }] },
+    { id: 'r2', label: 'Etage', modules: [{ type: 'differential', id: 'R2' }, { id: '2-1', label: 'Chauffage', amp: 16, zones: [{ floor: 'R+1', room: 'Chambre' }] }] }] }] });
+  const before = q(e, '.dia g').length;
+  const input = e.shadowRoot.querySelector('.search input');
+  input.value = 'cuisine'; input.dispatchEvent(new w.Event('input')); await e.updateComplete;
+  const zones = q(e, '.dia g').filter((g) => /Cuisine|Salon|Garage|Chambre/.test(g.textContent));
+  assert.equal(zones.length, 2, 'seul le circuit trouvé est déplié (ses 2 zones), pas Garage ni Chambre');
+  assert.ok(zones.some((g) => !g.classList.contains('s-dim') && /Cuisine/.test(g.textContent)), 'zone concernée nette');
+  assert.ok(zones.some((g) => g.classList.contains('s-dim') && /Salon/.test(g.textContent)), 'zone non concernée estompée');
+  assert.ok(q(e, '.dia g').length < before + 5);
+}
 console.log('regress OK');

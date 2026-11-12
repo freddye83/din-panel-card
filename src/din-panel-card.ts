@@ -192,7 +192,7 @@ class DinPanelCard extends LitElement {
           <span>${t(lang, tree ? 'view_panel' : 'view_tree')}</span></button>
       </div>
       ${tree ? nothing : this._summary(lang)}
-      ${tree ? renderDiagram(this._panels, ctx, { config: this._config, width: boardW, maxWidth: maxW, collapsed: test ? new Set<string>() : this._collapsed, toggle: (k: string) => this._toggle(k) }) : this._panels.map((p) => renderPanel(p, ctx))}
+      ${tree ? renderDiagram(this._panels, ctx, { config: this._config, width: boardW, maxWidth: maxW, collapsed: this._collapsed, toggle: (k: string) => this._toggle(k) }) : this._panels.map((p) => renderPanel(p, ctx))}
       ${this._selected
         ? html`<dialog @close=${() => { this._selected = null; }}
             @click=${(e: Event) => { if (e.target === e.currentTarget) (e.currentTarget as HTMLDialogElement).close(); }}>

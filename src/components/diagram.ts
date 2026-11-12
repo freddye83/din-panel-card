@@ -1,5 +1,5 @@
 import { html, svg, nothing, TemplateResult } from 'lit';
-import type { CardConfig, Module, Panel, Row } from '../types';
+import type { CardConfig, Module, Panel, Row, Zone } from '../types';
 import { fmtMeasure, headGauges, headMeasures, isOn, loadLimit, modulePower, readMeasure } from '../utils/state';
 import type { Counter } from '../utils/state';
 import type { Kind } from '../utils/state';
@@ -133,6 +133,21 @@ export function renderDiagram(panels: Panel[], ctx: Ctx, o: DiagramOpts): Templa
   for (const pn of panels) for (const r of pn.rows) for (const m of r.modules) { owner.set(m, { row: r, panel: pn }); for (const c of m.children ?? []) owner.set(c, { row: r, panel: pn }); }
   const hitOf = (x: Module) => { const w = owner.get(x); return !!w && !!ctx.search && ctx.search(x, w.row, w.panel); };
   const sflag = (m: Module, kids = false) => (!ctx.search ? '' : hitOf(m) || (kids && (m.children ?? []).some(hitOf)) ? 's-hit' : 's-dim');
+  // Recherche : seuls les nœuds trouvés sont dépliés (tableau, différentiel, zones) ; le reste est replié
+  const collapsedSet = (() => {
+    if (!ctx.search) return o.collapsed;
+    const s = new Set<string>();
+    for (const pn of panels) {
+      if (!pn.rows.some((r) => r.modules.some((m) => hitOf(m) || (m.children ?? []).some(hitOf)))) s.add(`p:${pn.id}`);
+      for (const r of pn.rows) for (const m of r.modules) {
+        if (m.type === 'differential' && !(hitOf(m) || (m.children ?? []).some(hitOf))) s.add(`r:${pn.id}/${r.id}/${m.id}`);
+        for (const c of [m, ...(m.children ?? [])]) if (c.zones.length && !hitOf(c)) s.add(`z:${pn.id}/${r.id}/${c.id}`);
+      }
+    }
+    return s;
+  })();
+  // une zone est « concernée » si la requête correspond au module réduit à cette seule zone
+  const zoneHit = (m: Module, z: Zone) => { const w = owner.get(m); return !ctx.search || (!!w && ctx.search({ ...m, zones: [z] }, w.row, w.panel)); };
   const gauges = new Map(headGauges(ctx.hass, cfg.sensors, 'Total').map((g) => [g.key, g]));
   /** Jauge horizontale (sobre) entre le libellé et les pastilles ; à défaut, pointillés. */
   const headGauge = (cy: number, from: number, pct: number | null, has: boolean) => {
@@ -206,7 +221,7 @@ export function renderDiagram(panels: Panel[], ctx: Ctx, o: DiagramOpts): Templa
       const ix = x + LEVEL + (z.floor ? pw + 4 : 0);   // icône de zone : après l'étage, avant la pièce
       const rx = ix + (zIcon ? 16 : 0);
       const room = fit(z.room ?? '', PWR_X - 8 - rx);
-      els.push(svg`<g>
+      els.push(svg`<g class=${zoneHit(m, z) ? '' : 's-dim'}>
         ${line(busX, cy, x + LEVEL, cy)}
         ${col ? svg`<rect x=${x + LEVEL} y=${cy - 6} width=${pw} height="12" rx="6" style=${`fill:${col.bg}`}></rect>
           <text class="pillt" x=${x + LEVEL + pw / 2} y=${cy + 2.3} text-anchor="middle" style=${`fill:${col.fg}`}>${z.floor}</text>` : nothing}
@@ -226,7 +241,7 @@ export function renderDiagram(panels: Panel[], ctx: Ctx, o: DiagramOpts): Templa
     for (const p of taps) tEnd.set(p, Math.max(tEnd.get(p) ?? 0, cy));
     const zkey = `z:${pk}/${rk}/${m.id}`;
     const hasZ = m.zones.length > 0;
-    const zOpen = hasZ && !o.collapsed.has(zkey);
+    const zOpen = hasZ && !collapsedSet.has(zkey);
     const bxc = x + boxW(m.id) + 5;
     els.push(svg`<g class=${sflag(m)} style=${`--acc:${m.accent ?? accent}`}>
       ${busX !== undefined ? line(busX, cy, x, cy) : nothing}
@@ -253,7 +268,7 @@ export function renderDiagram(panels: Panel[], ctx: Ctx, o: DiagramOpts): Templa
     const cy = y + RH / 2;
     const rkey = `r:${pk}/${row.id}/${d.id}`;
     const kids = d.children ?? [];
-    const rOpen = kids.length > 0 && !o.collapsed.has(rkey);
+    const rOpen = kids.length > 0 && !collapsedSet.has(rkey);
     const bxg = GX + boxW(boxId) + 5;
     const accent = d.accent ?? row.accent ?? '#3182ce';
     const taps = (d.phases.length ? d.phases : row.phases).filter((p) => trunks.includes(p));
@@ -277,7 +292,7 @@ export function renderDiagram(panels: Panel[], ctx: Ctx, o: DiagramOpts): Templa
   /* ----- parcours des tableaux ----- */
   for (const panel of panels) {
     const pkey = `p:${panel.id}`;
-    const pOpen = !o.collapsed.has(pkey);
+    const pOpen = !collapsedSet.has(pkey);
     if (panel.label) {
       // Titre du tableau aligné sur les rangées (même abscisse GX que les différentiels)
       const cy = y + RH / 2, w = Math.max(60, tw(panel.label, 9.8) + 28);

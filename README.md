@@ -225,7 +225,7 @@ A click on a node opens its detail sheet; a click on the Total / a phase / a zon
 
 ### Search
 
-The toolbar search field looks in **all fields at once** (case and accents ignored): module id, label, type (`differential`, `impulse`…), rating (`20A`, `20`, `C20`), floor and room of the zones, row and panel names, and the sensor / state entity ids. Several words are combined with **AND** (`kitchen 20` → 20 A modules linked to the kitchen); a word prefixed with `-` excludes (`floor -sockets`). Non-matching modules are **faded**, matching ones are outlined, rows without a match are collapsed, and a counter shows the number of results. In the diagram view, non-matching lines are faded and everything is expanded. `Enter` jumps to the next result, `Esc` clears the search.
+The toolbar search field looks in **all fields at once** (case and accents ignored): module id, label, type (`differential`, `impulse`…), rating (`20A`, `20`, `C20`), floor and room of the zones, row and panel names, and the sensor / state entity ids. Several words are combined with **AND** (`kitchen 20` → 20 A modules linked to the kitchen); a word prefixed with `-` excludes (`floor -sockets`). Non-matching modules are **faded**, matching ones are outlined, rows without a match are collapsed, and a counter shows the number of results. In the diagram view, **only the matching nodes are expanded** (panel, differential, circuit zones), non-matching lines are faded, and so are the zones that don't match. `Enter` jumps to the next result, `Esc` clears the search.
 
 ### Panel width (modules per row)
 
@@ -243,7 +243,7 @@ npm run regress   # jsdom regression assertions (diagram, remembered view, langu
 
 Layout: `src/config.ts` (normalisation), `src/components/` (panel, row, module, details, `diagram.ts`, `modules/faces.ts` = look of each type), `src/editor.ts` (visual editor), `src/styles.ts`, `src/utils/`.
 
-Each new version bumps `version` in `package.json`; it is printed in the browser console on load. See [CHANGELOG.md](CHANGELOG.md) (in French). Current version: **1.18.0**.
+Each new version bumps `version` in `package.json`; it is printed in the browser console on load. See [CHANGELOG.md](CHANGELOG.md) (in French). Current version: **1.19.0**.
 
 ---
 
@@ -454,7 +454,7 @@ Un clic sur un nœud ouvre sa fiche ; un clic sur le Total / une phase / une zon
 
 ### Recherche
 
-Le champ de la barre d'outils cherche dans **tous les champs à la fois** (casse et accents ignorés) : id du module, libellé, type (`différentiel`, `télérupteur`…), calibre (`20A`, `20`, `C20`), étage et pièce des zones, noms de rangée et de tableau, identifiants des capteurs / entités d'état. Plusieurs mots se combinent en **ET** (`cuisine 20` → modules 20 A liés à la cuisine) ; un mot précédé de `-` exclut (`etage -prises`). Les modules non trouvés sont **estompés**, les trouvés sont cerclés, les rangées sans résultat se replient et un compteur indique le nombre de résultats. En vue schéma, les lignes non trouvées sont estompées et tout est déplié. `Entrée` saute au résultat suivant, `Échap` efface la recherche.
+Le champ de la barre d'outils cherche dans **tous les champs à la fois** (casse et accents ignorés) : id du module, libellé, type (`différentiel`, `télérupteur`…), calibre (`20A`, `20`, `C20`), étage et pièce des zones, noms de rangée et de tableau, identifiants des capteurs / entités d'état. Plusieurs mots se combinent en **ET** (`cuisine 20` → modules 20 A liés à la cuisine) ; un mot précédé de `-` exclut (`etage -prises`). Les modules non trouvés sont **estompés**, les trouvés sont cerclés, les rangées sans résultat se replient et un compteur indique le nombre de résultats. En vue schéma, **seuls les nœuds trouvés sont dépliés** (tableau, différentiel, zones d'un circuit), les lignes non trouvées sont estompées, ainsi que les zones non concernées. `Entrée` saute au résultat suivant, `Échap` efface la recherche.
 
 ### Largeur du tableau (modules par rangée)
 
@@ -472,4 +472,4 @@ npm run regress   # assertions de non-régression jsdom (schéma, vue mémorisé
 
 Structure : `src/config.ts` (normalisation), `src/components/` (panel, row, module, détails, `diagram.ts`, `modules/faces.ts` = rendu de chaque type), `src/editor.ts` (éditeur visuel), `src/styles.ts`, `src/utils/`.
 
-Chaque nouvelle version incrémente `version` dans `package.json` ; elle est affichée dans la console du navigateur au chargement. Voir [CHANGELOG.md](CHANGELOG.md). Version actuelle : **1.18.0**.
+Chaque nouvelle version incrémente `version` dans `package.json` ; elle est affichée dans la console du navigateur au chargement. Voir [CHANGELOG.md](CHANGELOG.md). Version actuelle : **1.19.0**.

@@ -2,6 +2,9 @@
 
 Chaque nouvelle version incrémente le numéro dans `package.json` (injecté dans le bundle et affiché dans la console du navigateur).
 
+## 1.19.0
+- Recherche en vue schéma : seuls les nœuds trouvés sont dépliés (tableau, différentiel, zones), le reste est replié ; les zones non concernées par la requête sont estompées.
+
 ## 1.18.0
 - Champ de recherche multi-champ dans la barre d'outils (option `search`, activée par défaut) : id, libellé, type, calibre, étage/pièce, rangée/tableau, entités ; mots combinés en ET, `-mot` pour exclure ; accents et casse ignorés. Vue tableau : modules non trouvés estompés, trouvés cerclés, rangées sans résultat repliées ; vue schéma : lignes estompées et tout déplié. Compteur de résultats, `Entrée` = résultat suivant, `Échap` = effacer. Tests ajoutés (22 tests).
 
