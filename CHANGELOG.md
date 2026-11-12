@@ -2,6 +2,9 @@
 
 Chaque nouvelle version incrémente le numéro dans `package.json` (injecté dans le bundle et affiché dans la console du navigateur).
 
+## 1.17.1
+- Documentation : captures d'écran du README régénérées avec le nouveau look (données anonymisées).
+
 ## 1.17.0
 - Vue tableau en style « schéma d'installation » : modules blancs à bornes carrées, manette noire bombée avec repère rouge « I On », bande bleutée du capot, vis rondes à tête fendue avec repère N, calibre à filets rouges, liseré noir entre appareils, peigne d'alimentation bleu, rail DIN visible en bout de rangée, légende sous chaque module (pictogramme encadré, libellé horizontal, section en rouge).
 - Disjoncteurs : l'identifiant s'affiche dans la bande bleutée au-dessus de la manette (toujours visible, même avec un capteur) ; la mesure reste sous le calibre.
