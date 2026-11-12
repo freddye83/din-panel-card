@@ -10,5 +10,5 @@ export interface Ctx {
 export const DEFAULT_ICONS: Record<string, string> = {
   power: 'mdi:flash', socket: 'mdi:power-socket-eu', light: 'mdi:lightbulb', other: 'mdi:electric-switch',
   differential: 'mdi:current-ac', surge: 'mdi:flash-alert', meter: 'mdi:counter',
-  contactor: 'mdi:electric-switch-closed', contactor_daynight: 'mdi:theme-light-dark', impulse: 'mdi:toggle-switch', relay: 'mdi:relay', psu: 'mdi:power-plug-outline',
+  contactor: 'mdi:electric-switch-closed', contactor_daynight: 'mdi:theme-light-dark', impulse: 'mdi:toggle-switch', relay: 'mdi:electric-switch', psu: 'mdi:power-plug-outline',
 };
