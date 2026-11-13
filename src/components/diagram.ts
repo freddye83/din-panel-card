@@ -51,7 +51,7 @@ export function collapseKeys(panels: Panel[], level: Level): string[] {
   for (const p of panels) {
     if (level === 'panels') { out.push(`p:${p.id}`); continue; }
     for (const r of p.rows) for (const m of r.modules) {
-      if (level === 'rows' && m.type === 'differential' && m.children?.length) out.push(`r:${p.id}/${r.id}/${m.id}`);
+      if (level === 'rows' && m.children?.length) out.push(`r:${p.id}/${r.id}/${m.id}`);
       if (level === 'zones' && m.type !== 'differential' && m.zones.length) out.push(`z:${p.id}/${r.id}/${m.id}`);
     }
   }
@@ -140,7 +140,7 @@ export function renderDiagram(panels: Panel[], ctx: Ctx, o: DiagramOpts): Templa
     for (const pn of panels) {
       if (!pn.rows.some((r) => r.modules.some((m) => hitOf(m) || (m.children ?? []).some(hitOf)))) s.add(`p:${pn.id}`);
       for (const r of pn.rows) for (const m of r.modules) {
-        if (m.type === 'differential' && !(hitOf(m) || (m.children ?? []).some(hitOf))) s.add(`r:${pn.id}/${r.id}/${m.id}`);
+        if (m.children && !(hitOf(m) || (m.children ?? []).some(hitOf))) s.add(`r:${pn.id}/${r.id}/${m.id}`);
         for (const c of [m, ...(m.children ?? [])]) if (c.zones.length && !hitOf(c)) s.add(`z:${pn.id}/${r.id}/${c.id}`);
       }
     }
@@ -305,7 +305,7 @@ export function renderDiagram(panels: Panel[], ctx: Ctx, o: DiagramOpts): Templa
     }
     if (!pOpen && panel.label) continue;
     for (const row of panel.rows) {
-      const diffs = row.modules.filter((m) => m.type === 'differential');
+      const diffs = row.modules.filter((m) => m.children !== undefined); // têtes de groupe : différentiels (ou disjoncteur de tête)
       const firstDiff = diffs.length ? row.modules.indexOf(diffs[0]) : row.modules.length;
       for (const m of row.modules.slice(0, firstDiff)) {
         if (m.type === 'free' && !m.label) continue;

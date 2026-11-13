@@ -76,7 +76,11 @@ const psu: Face = ({ mod: m, ctx }) => {
 
 const surge: Face = ({ mod: m, ctx }) => {
   const st = isOn(ctx.hass, m.state_entity);
-  return html`${zone('sp', html`<i class="zspd ${st === false ? 'bad' : 'ok'}"></i>`)}${cal(m, 'SPD')}${m.note ? html`<div class="print sm">${m.note}</div>` : nothing}`;
+  // une pastille carrée par ligne protégée (L1/L2/L3) ; une seule barre pour un parafoudre monophasé
+  const n = Math.min(3, m.phases.length || (m.poles >= 3 ? 3 : 1));
+  const cells = n < 2 ? html`<i class="zspd ${st === false ? 'bad' : 'ok'}"></i>`
+    : html`<span class="zspds">${Array.from({ length: n }, (_, i) => html`<span class="zph"><i class="zspd sq ${st === false ? 'bad' : 'ok'}"></i><b>${m.phases[i] ?? `L${i + 1}`}</b></span>`)}</span>`;
+  return html`${zone('sp', cells)}${cal(m, 'SPD')}${m.note ? html`<div class="print sm">${m.note}</div>` : nothing}`;
 };
 
 const meter: Face = ({ mod: m, power }) => html`

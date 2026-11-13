@@ -327,6 +327,8 @@ export const cardStyles = css`
   .zpot b { position: absolute; left: 50%; top: 2px; width: 2px; height: 6px; margin-left: -1px; background: #222; transform: rotate(35deg); transform-origin: 50% 6px; }
   .blk .dc { display: flex; align-items: center; gap: 3px; font-size: 5.5px; }
   .zspd { width: 70%; height: 14px; border-radius: 2px; } .zspd.ok { background: #2f9e44; } .zspd.bad { background: #e03131; }
+  .zspds { display: flex; gap: 4px; } .zph { display: flex; flex-direction: column; align-items: center; gap: 2px; } .zph b { font: 700 5.5px/1 Arial, sans-serif; color: #ccc; }
+  .zspd.sq { width: 15px; height: 15px; border-radius: 2px; } .zph b { font-size: 6px; }
   .zsw { display: flex; gap: 2px; font: 700 8px/1 Arial; } .zsw span { padding: 2px 3px; border-radius: 1px; color: #888; } .zsw span.act { background: #c92a2a; color: #fff; }
   .blk.mt { background: linear-gradient(180deg, #b5cf9b, #9fbf83); box-shadow: inset 0 2px 3px rgba(0,0,0,.45), 0 0 0 1px #111; color: #1b3a1f; }
   .zlcd { font: 700 11px/1 ui-monospace, Menlo, monospace; color: #1b3a1f; }

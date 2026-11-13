@@ -131,7 +131,7 @@ Phase keys are `l1`, `l2`, `l3` (case-insensitive). Values of different kinds ar
 
 ### Rows
 
-A row is a DIN rail. A differential protects the modules that **follow it in the row**, up to the next differential.
+A row is a DIN rail. A differential protects the modules that **follow it in the row**, up to the next differential. A row that **starts with a plain circuit breaker** (without zones) followed by other modules uses that breaker as the group head, so in the diagram view the modules are grouped on one line instead of hanging separately on the phase trunks.
 
 | Field | Type | Default | Description |
 |---|---|---|---|
@@ -243,7 +243,7 @@ npm run regress   # jsdom regression assertions (diagram, remembered view, langu
 
 Layout: `src/config.ts` (normalisation), `src/components/` (panel, row, module, details, `diagram.ts`, `modules/faces.ts` = look of each type), `src/editor.ts` (visual editor), `src/styles.ts`, `src/utils/`.
 
-Each new version bumps `version` in `package.json`; it is printed in the browser console on load. See [CHANGELOG.md](CHANGELOG.md) (in French). Current version: **1.19.0**.
+Each new version bumps `version` in `package.json`; it is printed in the browser console on load. See [CHANGELOG.md](CHANGELOG.md) (in French). Current version: **1.20.0**.
 
 ---
 
@@ -360,7 +360,7 @@ Les clés de phases sont `l1`, `l2`, `l3` (casse indifférente). Les valeurs de 
 
 ### Rangées (`rows`)
 
-Une rangée est un rail DIN. Un différentiel protège les modules qui **le suivent dans la rangée**, jusqu'au prochain différentiel.
+Une rangée est un rail DIN. Un différentiel protège les modules qui **le suivent dans la rangée**, jusqu'au prochain différentiel. Une rangée qui **commence par un simple disjoncteur** (sans zones) suivi d'autres modules l'utilise comme tête de groupe : en vue schéma, les modules sont regroupés sur une ligne au lieu d'être accrochés séparément aux troncs de phases.
 
 | Champ | Type | Défaut | Description |
 |---|---|---|---|
@@ -472,4 +472,4 @@ npm run regress   # assertions de non-régression jsdom (schéma, vue mémorisé
 
 Structure : `src/config.ts` (normalisation), `src/components/` (panel, row, module, détails, `diagram.ts`, `modules/faces.ts` = rendu de chaque type), `src/editor.ts` (éditeur visuel), `src/styles.ts`, `src/utils/`.
 
-Chaque nouvelle version incrémente `version` dans `package.json` ; elle est affichée dans la console du navigateur au chargement. Voir [CHANGELOG.md](CHANGELOG.md). Version actuelle : **1.19.0**.
+Chaque nouvelle version incrémente `version` dans `package.json` ; elle est affichée dans la console du navigateur au chargement. Voir [CHANGELOG.md](CHANGELOG.md). Version actuelle : **1.20.0**.

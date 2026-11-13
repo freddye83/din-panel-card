@@ -2,6 +2,10 @@
 
 Chaque nouvelle version incrémente le numéro dans `package.json` (injecté dans le bundle et affiché dans la console du navigateur).
 
+## 1.20.0
+- Vue schéma : une rangée qui commence par un simple disjoncteur (sans zones) suivi d'autres modules regroupe ces modules sous lui (ligne « [id] libellé rangée - libellé »), comme pour un différentiel, au lieu de les laisser accrochés séparément aux troncs.
+- Vue tableau : un parafoudre triphasé (3 phases, ou 3 pôles) affiche 3 carrés verts (rouges en défaut) repérés L1/L2/L3 ; une barre unique pour un parafoudre monophasé.
+
 ## 1.19.0
 - Recherche en vue schéma : seuls les nœuds trouvés sont dépliés (tableau, différentiel, zones), le reste est replié ; les zones non concernées par la requête sont estompées.
 

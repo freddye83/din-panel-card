@@ -13,7 +13,14 @@ const q = (el, s) => [...el.shadowRoot.querySelectorAll(s)];
 
 // 5. circuits avant le premier différentiel / rangée sans différentiel : reliés aux troncs
 let el = await mk({ type: 'x', view: 'tree', panels: [{ id: 'a', rows: [{ id: 'r', phases: ['L1'], modules: [{ id: 'c1', label: 'Libre' }, { id: 'c2', label: 'Libre 2' }] }] }] });
-assert.equal(q(el, '.tap').length, 1 + 2, 'tronc L1 + 2 piquages de circuits');
+assert.equal(q(el, '.tap').length, 1 + 1, 'rangée commençant par un disjoncteur : tête de groupe sur le tronc L1, les autres modules groupés dessous');
+{
+  const e1 = await mk({ type: 'x', view: 'tree', panels: [{ id: 'a', rows: [{ id: 'r', phases: ['L1'], modules: [{ id: 'c1' }] }] }] });
+  assert.equal(q(e1, '.tap').length, 1 + 1, 'disjoncteur seul : un piquage direct');
+  const e2 = await mk({ type: 'x', panels: [{ id: 'a', rows: [{ id: 'r', phases: ['L1', 'L2', 'L3'], modules: [{ type: 'surge', id: 'S1' }, { type: 'surge', id: 'S2', phases: ['L1'] }] }] }] });
+  assert.equal(q(e2, '.t-surge')[0].querySelectorAll('.zspd.sq').length, 3, 'parafoudre 3 lignes : 3 carrés');
+  assert.equal(q(e2, '.t-surge')[1].querySelectorAll('.zspd.sq').length, 0, 'parafoudre monophasé : une barre');
+}
 assert.ok(q(el, '.trunk').length === 1);
 
 // 6. clic sur total avec voltage_sensor seul

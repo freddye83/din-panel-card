@@ -8,7 +8,7 @@ import { chunkByWidth } from '../utils/layout';
 export function renderRow(row: Row, ctx: Ctx, capacity?: number, panel?: Panel): TemplateResult {
   const flag = (m: import('../types').Module) => (ctx.search && panel ? (ctx.search(m, row, panel) ? 'hit' : 'dim') : '');
   const anyHit = !ctx.search || !panel || row.modules.some((m) => ctx.search!(m, row, panel));
-  const diff = row.modules.find((m) => m.type === 'differential');
+  const diff = row.modules.find((m) => m.children !== undefined);
   const p = diff ? modulePower(ctx.hass, diff) : undefined;
   return html`<section class="row ${anyHit ? '' : 'nomatch'}" style=${row.accent ? `--acc:${row.accent}` : ''}>
     ${row.label || row.phases.length || p?.configured
