@@ -122,4 +122,16 @@ assert.ok(!el.shadowRoot.querySelector('.mod[title]'), 'plus d\'infobulle native
   assert.ok(zones.some((g) => g.classList.contains('s-dim') && /Salon/.test(g.textContent)), 'zone non concernée estompée');
   assert.ok(q(e, '.dia g').length < before + 5);
 }
+
+// 14. rangée sans différentiel ni disjoncteur de tête : une ligne [id rangée] ; rattachement des mono visible au dépliement
+{
+  const cfgP = (collapsed) => ({ type: 'x', view: 'tree', collapsed, sensors: { phases: { l1: { entity: 'sensor.a' }, l2: { entity: 'sensor.b' }, l3: { entity: 'sensor.c' } } }, panels: [{ id: 'P', rows: [{ id: 'L1', phases: ['L1', 'L2', 'L3'], modules: [
+    { type: 'contactor', id: '5-1', poles: 3, width: 3, label: 'Pompe', phases: ['L1', 'L2', 'L3'] },
+    { id: '5-4', phases: ['L1'], label: 'PAC' }, { id: '5-5', phases: ['L2'], label: 'Traitement' }, { id: '5-6', phases: ['L3'], label: 'Local' }] }] }] });
+  const open = await mk(cfgP(undefined)), closed = await mk(cfgP('rows'));
+  const boxes = (e) => q(e, '.dia text').map((t) => t.textContent);
+  assert.ok(boxes(open).includes('L1') && boxes(open).includes('5-4'), 'ligne [L1] + modules dessous');
+  assert.ok(!boxes(closed).includes('5-4'), 'replié : modules masqués');
+  assert.equal(q(open, '.tap').length - q(closed, '.tap').length, 3, 'les 3 mono : rattachement visible seulement déplié ; la contacteur tri (mêmes phases que la ligne) n\'a pas de piquage');
+}
 console.log('regress OK');

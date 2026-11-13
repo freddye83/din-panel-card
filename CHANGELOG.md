@@ -2,6 +2,9 @@
 
 Chaque nouvelle version incrémente le numéro dans `package.json` (injecté dans le bundle et affiché dans la console du navigateur).
 
+## 1.21.0
+- Vue schéma : une rangée sans différentiel ni disjoncteur de tête (≥ 2 modules) devient une ligne nommée par l'id (et le libellé) de la rangée, avec tous ses modules dessous (tri ou mono). La ligne se raccorde aux phases des modules tri (sinon à l'union) ; les modules à phases différentes (mono dans une ligne tri) montrent leur raccordement aux troncs seulement une fois la ligne dépliée. Repli/dépli et recherche pris en charge.
+
 ## 1.20.0
 - Vue schéma : une rangée qui commence par un simple disjoncteur (sans zones) suivi d'autres modules regroupe ces modules sous lui (ligne « [id] libellé rangée - libellé »), comme pour un différentiel, au lieu de les laisser accrochés séparément aux troncs.
 - Vue tableau : un parafoudre triphasé (3 phases, ou 3 pôles) affiche 3 carrés verts (rouges en défaut) repérés L1/L2/L3 ; une barre unique pour un parafoudre monophasé.

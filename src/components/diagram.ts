@@ -44,6 +44,30 @@ export interface DiagramOpts {
   collapsed: Set<string>; toggle: (key: string) => void;
 }
 
+/** Modules d'une rangée placés avant la première tête de groupe (différentiel / disjoncteur de tête), hors emplacements libres sans libellé. */
+const leadModules = (row: Row): Module[] => {
+  const idx = row.modules.findIndex((m) => m.children !== undefined);
+  return row.modules.slice(0, idx < 0 ? row.modules.length : idx).filter((m) => !(m.type === 'free' && !m.label));
+};
+const leadCache = new WeakMap<Row, Module | null>();
+/** Groupe synthétique « ligne » : rangée sans différentiel de tête → un seul nœud (id/libellé de la rangée) qui porte tous ses modules.
+ *  Ses phases = celles des modules triphasés (sinon l'union) ; les modules dont les phases diffèrent (mono dans une ligne tri) n'affichent leur rattachement qu'une fois le groupe déplié. */
+export function leadGroup(row: Row): Module | undefined {
+  if (leadCache.has(row)) return leadCache.get(row) ?? undefined;
+  const lead = leadModules(row);
+  let g: Module | null = null;
+  if (lead.length >= 2) {
+    const sets = lead.map((m) => (m.phases.length ? m.phases : row.phases));
+    const tri = sets.filter((s) => s.length >= 2);
+    const src = tri.length ? tri : sets;
+    const phases = ['L1', 'L2', 'L3'].filter((p) => src.some((s) => s.includes(p)));
+    g = { id: row.id, type: 'custom', label: row.label, poles: 1, width: 1, usage: 'other', phases, zones: [], children: lead };
+  }
+  leadCache.set(row, g);
+  return g ?? undefined;
+}
+const phaseKey = (xs: string[]) => [...xs].sort().join('/');
+
 /* Clés de repli : p:<tableau> · r:<tableau>/<rangée>/<différentiel> · z:<tableau>/<rangée>/<circuit> */
 export type Level = 'panels' | 'rows' | 'zones';
 export function collapseKeys(panels: Panel[], level: Level): string[] {
@@ -51,6 +75,7 @@ export function collapseKeys(panels: Panel[], level: Level): string[] {
   for (const p of panels) {
     if (level === 'panels') { out.push(`p:${p.id}`); continue; }
     for (const r of p.rows) for (const m of r.modules) {
+      if (level === 'rows' && m === r.modules[0] && leadGroup(r)) out.push(`r:${p.id}/${r.id}/${r.id}`);
       if (level === 'rows' && m.children?.length) out.push(`r:${p.id}/${r.id}/${m.id}`);
       if (level === 'zones' && m.type !== 'differential' && m.zones.length) out.push(`z:${p.id}/${r.id}/${m.id}`);
     }
@@ -139,6 +164,10 @@ export function renderDiagram(panels: Panel[], ctx: Ctx, o: DiagramOpts): Templa
     const s = new Set<string>();
     for (const pn of panels) {
       if (!pn.rows.some((r) => r.modules.some((m) => hitOf(m) || (m.children ?? []).some(hitOf)))) s.add(`p:${pn.id}`);
+      for (const r of pn.rows) {
+        const lg = leadGroup(r);
+        if (lg && !(lg.children ?? []).some(hitOf)) s.add(`r:${pn.id}/${r.id}/${lg.id}`);
+      }
       for (const r of pn.rows) for (const m of r.modules) {
         if (m.children && !(hitOf(m) || (m.children ?? []).some(hitOf))) s.add(`r:${pn.id}/${r.id}/${m.id}`);
         for (const c of [m, ...(m.children ?? [])]) if (c.zones.length && !hitOf(c)) s.add(`z:${pn.id}/${r.id}/${c.id}`);
@@ -264,7 +293,7 @@ export function renderDiagram(panels: Panel[], ctx: Ctx, o: DiagramOpts): Templa
   const moduleLabel = (m: Module) => m.label;
   const tipOf = (m: Module) => [m.label, m.id, m.amp !== undefined ? `${m.amp} A` : '', m.mA !== undefined ? `${m.mA} mA` : ''].filter(Boolean).join(' · ');
 
-  function group(d: Module, row: Row, label: string | undefined, pk: string, boxId = d.id) {
+  function group(d: Module, row: Row, label: string | undefined, pk: string, boxId = d.id, childTaps?: (c: Module) => string[]) {
     const cy = y + RH / 2;
     const rkey = `r:${pk}/${row.id}/${d.id}`;
     const kids = d.children ?? [];
@@ -285,7 +314,7 @@ export function renderDiagram(panels: Panel[], ctx: Ctx, o: DiagramOpts): Templa
     const bus = GX + 8;
     const busStart = els.length;
     let last = cy;
-    for (const c of kids) last = circuit(c, GX + LEVEL, accent, pk, row.id, bus);
+    for (const c of kids) last = circuit(c, GX + LEVEL, accent, pk, row.id, bus, childTaps ? childTaps(c) : []);
     if (kids.length) els.splice(busStart, 0, svg`<g style=${`--acc:${accent}`}>${line(bus, cy + BH / 2, bus, last)}</g>`);
   }
 
@@ -307,7 +336,13 @@ export function renderDiagram(panels: Panel[], ctx: Ctx, o: DiagramOpts): Templa
     for (const row of panel.rows) {
       const diffs = row.modules.filter((m) => m.children !== undefined); // têtes de groupe : différentiels (ou disjoncteur de tête)
       const firstDiff = diffs.length ? row.modules.indexOf(diffs[0]) : row.modules.length;
-      for (const m of row.modules.slice(0, firstDiff)) {
+      const lg = leadGroup(row);
+      if (lg) {
+        // rangée sans différentiel de tête : une ligne [id rangée] libellé, tous les modules dessous ; rattachement des modules aux phases
+        // différentes de celles de la ligne (ex. mono dans une ligne tri) visible seulement au dépliement
+        const lk = phaseKey(lg.phases);
+        group(lg, row, row.label, panel.id, row.id, (c) => { const ph = (c.phases.length ? c.phases : row.phases); return phaseKey(ph) === lk ? [] : ph.filter((p) => trunks.includes(p)); });
+      } else for (const m of row.modules.slice(0, firstDiff)) {
         if (m.type === 'free' && !m.label) continue;
         // circuit hors différentiel : relié directement aux troncs de ses phases
         circuit(m, GX, row.accent ?? '#3182ce', panel.id, row.id, undefined, (m.phases.length ? m.phases : row.phases).filter((p) => trunks.includes(p)));
