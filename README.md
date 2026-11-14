@@ -131,7 +131,7 @@ Phase keys are `l1`, `l2`, `l3` (case-insensitive). Values of different kinds ar
 
 ### Rows
 
-A row is a DIN rail. A differential protects the modules that **follow it in the row**, up to the next differential. A row **without a leading differential** (≥ 2 modules) is drawn in the diagram as **one line** named after its `id` (and `label`) carrying all its modules; it connects to the phases of the three-phase modules (otherwise to the union of phases), and modules whose phases differ (single-phase in a three-phase line) show their own connection only when the line is expanded. A row that **starts with a plain circuit breaker** (without zones) followed by other modules uses that breaker as the group head, so in the diagram view the modules are grouped on one line instead of hanging separately on the phase trunks.
+A row is a DIN rail. A differential protects the modules that **follow it in the row**, up to the next differential. A row **without a leading differential** (≥ 2 modules) is drawn in the diagram as **one line** named after its `id` (and `label`) carrying all its modules; it connects to the phases of the three-phase modules (otherwise to the union of phases), and modules whose phases differ (single-phase in a three-phase line) show their own connection only when the line is expanded. Only a differential is a group head: a leading circuit breaker is just a module of that row line. In the panel view, a mixed row (modules on different phases) shows a phase tag (L1 / L2 / L3) above each module.
 
 | Field | Type | Default | Description |
 |---|---|---|---|
@@ -243,7 +243,7 @@ npm run regress   # jsdom regression assertions (diagram, remembered view, langu
 
 Layout: `src/config.ts` (normalisation), `src/components/` (panel, row, module, details, `diagram.ts`, `modules/faces.ts` = look of each type), `src/editor.ts` (visual editor), `src/styles.ts`, `src/utils/`.
 
-Each new version bumps `version` in `package.json`; it is printed in the browser console on load. See [CHANGELOG.md](CHANGELOG.md) (in French). Current version: **1.21.0**.
+Each new version bumps `version` in `package.json`; it is printed in the browser console on load. See [CHANGELOG.md](CHANGELOG.md) (in French). Current version: **1.22.0**.
 
 ---
 
@@ -360,7 +360,7 @@ Les clés de phases sont `l1`, `l2`, `l3` (casse indifférente). Les valeurs de 
 
 ### Rangées (`rows`)
 
-Une rangée est un rail DIN. Un différentiel protège les modules qui **le suivent dans la rangée**, jusqu'au prochain différentiel. Une rangée **sans différentiel de tête** (≥ 2 modules) est affichée en schéma comme **une ligne** nommée par son `id` (et son `label`) qui porte tous ses modules ; elle se raccorde aux phases des modules triphasés (sinon à l'union des phases), et les modules dont les phases diffèrent (mono dans une ligne tri) montrent leur propre raccordement une fois la ligne dépliée. Une rangée qui **commence par un simple disjoncteur** (sans zones) suivi d'autres modules l'utilise comme tête de groupe : en vue schéma, les modules sont regroupés sur une ligne au lieu d'être accrochés séparément aux troncs de phases.
+Une rangée est un rail DIN. Un différentiel protège les modules qui **le suivent dans la rangée**, jusqu'au prochain différentiel. Une rangée **sans différentiel de tête** (≥ 2 modules) est affichée en schéma comme **une ligne** nommée par son `id` (et son `label`) qui porte tous ses modules ; elle se raccorde aux phases des modules triphasés (sinon à l'union des phases), et les modules dont les phases diffèrent (mono dans une ligne tri) montrent leur propre raccordement une fois la ligne dépliée. Seul un différentiel est tête de groupe : un disjoncteur en début de rangée n'est qu'un module de la ligne de rangée. En vue tableau, une rangée mixte (modules sur des phases différentes) affiche un repère de phase (L1 / L2 / L3) au-dessus de chaque module.
 
 | Champ | Type | Défaut | Description |
 |---|---|---|---|
@@ -472,4 +472,4 @@ npm run regress   # assertions de non-régression jsdom (schéma, vue mémorisé
 
 Structure : `src/config.ts` (normalisation), `src/components/` (panel, row, module, détails, `diagram.ts`, `modules/faces.ts` = rendu de chaque type), `src/editor.ts` (éditeur visuel), `src/styles.ts`, `src/utils/`.
 
-Chaque nouvelle version incrémente `version` dans `package.json` ; elle est affichée dans la console du navigateur au chargement. Voir [CHANGELOG.md](CHANGELOG.md). Version actuelle : **1.21.0**.
+Chaque nouvelle version incrémente `version` dans `package.json` ; elle est affichée dans la console du navigateur au chargement. Voir [CHANGELOG.md](CHANGELOG.md). Version actuelle : **1.22.0**.

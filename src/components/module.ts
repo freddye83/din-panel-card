@@ -38,7 +38,7 @@ function placeTip(e: Event) {
 
 const STATEFUL = new Set(['relay', 'impulse', 'contactor', 'contactor_daynight']);
 
-export function renderModule(m: Module, ctx: Ctx, flag = ''): TemplateResult {
+export function renderModule(m: Module, ctx: Ctx, flag = '', phases: string[] = []): TemplateResult {
   const p = modulePower(ctx.hass, m);
   const limit = loadLimit(m, p.kind);
   const pct = p.value !== null && limit ? Math.max(0, p.value) / limit : null;
@@ -68,6 +68,7 @@ export function renderModule(m: Module, ctx: Ctx, flag = ''): TemplateResult {
   };
   return html`<div class="mod t-${m.type} u-${m.usage} p-${m.poles} ${stCls} ${flag ? `s-${flag}` : ''}" style=${style} role="button" tabindex="0"
       aria-label=${`${title} ${m.id}`} @click=${open} @keydown=${open} @mouseenter=${placeTip} @focus=${placeTip}>
+    ${phases.length ? html`<div class="phtag" title=${phases.join(' / ')}>${phases.map((ph) => html`<i class="ph-${ph.toLowerCase()}">${ph}</i>`)}</div>` : nothing}
     ${tip(m, title, icon)}
     <div class="face">
       ${m.type !== 'free' ? terminals(cells, 'top', neutral) : nothing}

@@ -105,12 +105,9 @@ function normRow(r: RowConfig, ri: number, idx: Index): Row {
   const phases = (r.phases ?? []).map((p) => String(p).toUpperCase());
   const modules = (r.modules ?? []).map((m, i) => normModule(m, { phases, id }, i, idx));
   // Un différentiel protège les modules qui le suivent jusqu'au prochain différentiel.
-  // Rangée qui commence par un simple disjoncteur (sans zones) suivi d'autres modules : il joue le rôle de tête de groupe.
   let cur: Module | undefined;
-  const lead = modules[0];
-  const leadHead = !!lead && lead.type === 'breaker' && !lead.zones.length && !!modules[1] && modules[1].type !== 'differential';
   for (const m of modules) {
-    if (m.type === 'differential' || (leadHead && m === lead)) { cur = m; m.children = []; }
+    if (m.type === 'differential') { cur = m; m.children = []; }
     else if (cur && m.type !== 'free' && m.type !== 'meter') cur.children!.push(m);
   }
   return { id, label: str(r.label), phases, accent: r.accent, modules };

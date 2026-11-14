@@ -114,14 +114,10 @@ test('migration : différentiel de groupe triphasé = 4 pôles ; tension nominal
   assert.equal(loadLimit(p.rows[0].modules[1], 'power'), 16 * 240 * 3);
 });
 
-test('rangée commençant par un disjoncteur : il devient tête de groupe (enfants jusqu\'au prochain différentiel)', () => {
+test('rangée commençant par un disjoncteur : seul le différentiel est tête de groupe', () => {
   const [p] = normalizeConfig({ type: 'x', panels: [{ id: 'p', rows: [
-    { id: 'a', modules: [{ id: 'h' }, { id: 'c1' }, { id: 'c2' }, { type: 'differential', id: 'D' }, { id: 'c3' }] },
-    { id: 'b', modules: [{ id: 'solo' }] },
-    { id: 'c', modules: [{ id: 'z', zones: [{ room: 'Salon' }] }, { id: 'y' }] }] }] } as any);
+    { id: 'a', modules: [{ id: 'h' }, { id: 'c1' }, { type: 'differential', id: 'D' }, { id: 'c3' }] }] }] } as any);
   const a = p.rows[0].modules;
-  assert.deepEqual(a[0].children?.map((m) => m.id), ['c1', 'c2']);
-  assert.deepEqual(a[3].children?.map((m) => m.id), ['c3']);
-  assert.equal(p.rows[1].modules[0].children, undefined, 'seul : pas de groupe');
-  assert.equal(p.rows[2].modules[0].children, undefined, 'avec zones : reste un circuit');
+  assert.equal(a[0].children, undefined, 'un disjoncteur n\'est jamais tête de groupe');
+  assert.deepEqual(a[2].children?.map((m) => m.id), ['c3']);
 });

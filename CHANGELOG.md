@@ -2,6 +2,10 @@
 
 Chaque nouvelle version incrémente le numéro dans `package.json` (injecté dans le bundle et affiché dans la console du navigateur).
 
+## 1.22.0
+- Vue schéma : seul un différentiel est tête de groupe ; un disjoncteur en début de rangée n'en est plus une (revient sur 1.20.0). Une rangée sans différentiel = ligne [id rangée] portant tous ses modules, disjoncteurs compris.
+- Vue tableau : dans une rangée mixte (phases différentes selon les modules), un repère de phase (L1 / L2 / L3, ou L1 L2 L3 pour un tri) est affiché au-dessus de chaque module.
+
 ## 1.21.0
 - Vue schéma : une rangée sans différentiel ni disjoncteur de tête (≥ 2 modules) devient une ligne nommée par l'id (et le libellé) de la rangée, avec tous ses modules dessous (tri ou mono). La ligne se raccorde aux phases des modules tri (sinon à l'union) ; les modules à phases différentes (mono dans une ligne tri) montrent leur raccordement aux troncs seulement une fois la ligne dépliée. Repli/dépli et recherche pris en charge.
 

@@ -1,6 +1,6 @@
 {
   "name": "din-panel-card",
-  "version": "1.21.0",
+  "version": "1.22.0",
   "description": "Carte Lovelace Home Assistant : tableau électrique modulaire graphique (rangées, rail DIN, modules)",
   "type": "module",
   "license": "MIT",

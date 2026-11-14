@@ -17,6 +17,10 @@ assert.equal(q(el, '.tap').length, 1 + 1, 'rangée commençant par un disjoncteu
 {
   const e1 = await mk({ type: 'x', view: 'tree', panels: [{ id: 'a', rows: [{ id: 'r', phases: ['L1'], modules: [{ id: 'c1' }] }] }] });
   assert.equal(q(e1, '.tap').length, 1 + 1, 'disjoncteur seul : un piquage direct');
+  const e3 = await mk({ type: 'x', panels: [{ id: 'a', rows: [{ id: 'r', phases: ['L1', 'L2', 'L3'], modules: [{ id: 'a', phases: ['L1'] }, { id: 'b', phases: ['L2'] }, { type: 'contactor', id: 'c', poles: 3, phases: ['L1', 'L2', 'L3'] }] }, { id: 'r2', phases: ['L1'], modules: [{ id: 'd' }, { id: 'e' }] }] }] });
+  assert.equal(q(e3, '.phtag').length, 3, 'rangée mixte tri/mono : repère de phase au-dessus de chaque module');
+  assert.equal(q(e3, '.phtag')[2].querySelectorAll('i').length, 3, 'module tri : L1 L2 L3');
+  assert.equal(q(e3, '.rail-wrap.ph').length, 1, 'rangée homogène : pas de repère');
   const e2 = await mk({ type: 'x', panels: [{ id: 'a', rows: [{ id: 'r', phases: ['L1', 'L2', 'L3'], modules: [{ type: 'surge', id: 'S1' }, { type: 'surge', id: 'S2', phases: ['L1'] }] }] }] });
   assert.equal(q(e2, '.t-surge')[0].querySelectorAll('.zspd.sq').length, 3, 'parafoudre 3 lignes : 3 carrés');
   assert.equal(q(e2, '.t-surge')[1].querySelectorAll('.zspd.sq').length, 0, 'parafoudre monophasé : une barre');

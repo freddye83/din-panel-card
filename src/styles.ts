@@ -107,6 +107,10 @@ export const cardStyles = css`
   .lines { display: inline-flex; flex-direction: column; gap: 12px; min-width: 100%; box-sizing: border-box; }
   .rail-wrap { position: relative; display: flex; align-items: flex-start; min-width: 100%; box-sizing: border-box; }
   /* Capacité fixée : le rail fait exactement N modules DIN de large (le coffret s'ajuste dessus) */
+  .rail-wrap.ph { padding-top: 16px; }
+  .phtag { position: absolute; left: 0; right: 0; top: -15px; height: 13px; display: flex; gap: 1px; z-index: 2; pointer-events: none; }
+  .phtag i { flex: 1; min-width: 0; border-radius: 3px 3px 0 0; font: 700 9px/13px Arial, sans-serif; font-style: normal; text-align: center; color: #fff; overflow: hidden; }
+  .phtag .ph-l1 { background: #8a5a2b; } .phtag .ph-l2 { background: #222; } .phtag .ph-l3 { background: #777; }
   .rail-wrap.fixed { width: calc(var(--n) * var(--u)); min-width: 0; }
   .panel.fixed { width: fit-content; max-width: 100%; box-sizing: border-box; margin-left: auto; margin-right: auto; }
   .pad { flex: 0 0 18px; }

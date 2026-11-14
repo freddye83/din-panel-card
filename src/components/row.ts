@@ -8,6 +8,10 @@ import { chunkByWidth } from '../utils/layout';
 export function renderRow(row: Row, ctx: Ctx, capacity?: number, panel?: Panel): TemplateResult {
   const flag = (m: import('../types').Module) => (ctx.search && panel ? (ctx.search(m, row, panel) ? 'hit' : 'dim') : '');
   const anyHit = !ctx.search || !panel || row.modules.some((m) => ctx.search!(m, row, panel));
+  // Rangée mixte (phases différentes selon les modules) : repère de phase au-dessus de chaque module.
+  const eff = (m: import('../types').Module) => (m.phases.length ? m.phases : row.phases);
+  const real = row.modules.filter((m) => m.type !== 'free' && m.type !== 'meter');
+  const mixed = new Set(real.map((m) => [...eff(m)].sort().join('/'))).size > 1;
   const diff = row.modules.find((m) => m.children !== undefined);
   const p = diff ? modulePower(ctx.hass, diff) : undefined;
   return html`<section class="row ${anyHit ? '' : 'nomatch'}" style=${row.accent ? `--acc:${row.accent}` : ''}>
@@ -19,8 +23,8 @@ export function renderRow(row: Row, ctx: Ctx, capacity?: number, panel?: Panel):
         </header>`
       : nothing}
     <div class="scroller"><div class="lines">
-      ${chunkByWidth(row.modules, capacity).map((line) => html`<div class="rail-wrap ${capacity ? 'fixed' : ''}" style=${capacity ? `--n:${capacity}` : ''}><div class="rail"></div>
-        ${line.map((m) => renderModule(m, ctx, flag(m)))}<span class="fill"></span>
+      ${chunkByWidth(row.modules, capacity).map((line) => html`<div class="rail-wrap ${capacity ? 'fixed' : ''} ${mixed ? 'ph' : ''}" style=${capacity ? `--n:${capacity}` : ''}><div class="rail"></div>
+        ${line.map((m) => renderModule(m, ctx, flag(m), mixed && m.type !== 'free' && m.type !== 'meter' ? eff(m) : []))}<span class="fill"></span>
       </div>`)}
     </div></div>
   </section>`;
