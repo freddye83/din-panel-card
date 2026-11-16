@@ -332,7 +332,10 @@ export const cardStyles = css`
   .blk .dc { display: flex; align-items: center; gap: 3px; font-size: 5.5px; }
   .zspd { width: 70%; height: 14px; border-radius: 2px; } .zspd.ok { background: #2f9e44; } .zspd.bad { background: #e03131; }
   .zspds { display: flex; gap: 4px; } .zph { display: flex; flex-direction: column; align-items: center; gap: 2px; } .zph b { font: 700 5.5px/1 Arial, sans-serif; color: #ccc; }
-  .zspd.sq { width: 15px; height: 15px; border-radius: 2px; } .zph b { font-size: 6px; }
+  .zspd.sq { width: auto; flex: 1; height: 15px; border-radius: 2px; }
+  .zspds { width: 100%; gap: 2px; } .zone.z-sp { padding-left: 4px; padding-right: 4px; }
+  .term.sp { height: 26px; padding-left: 4px; padding-right: 4px; } .term.sp .tc { flex: 1; display: flex; justify-content: center; position: relative; }
+  .term.sp .tc b { position: absolute; top: -9px; left: 0; right: 0; text-align: center; font: 600 7px/1 Arial, sans-serif; color: #333; }
   .zsw { display: flex; gap: 2px; font: 700 8px/1 Arial; } .zsw span { padding: 2px 3px; border-radius: 1px; color: #888; } .zsw span.act { background: #c92a2a; color: #fff; }
   .blk.mt { background: linear-gradient(180deg, #b5cf9b, #9fbf83); box-shadow: inset 0 2px 3px rgba(0,0,0,.45), 0 0 0 1px #111; color: #1b3a1f; }
   .zlcd { font: 700 11px/1 ui-monospace, Menlo, monospace; color: #1b3a1f; }

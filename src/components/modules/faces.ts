@@ -37,7 +37,7 @@ const differential: Face = ({ mod: m, ctx }) => {
 };
 
 /** Zone centrale commune (même emplacement que la manette) : bloc noir contenant le repère propre à l'appareil. */
-const zone = (cls: string, inner: TemplateResult | typeof nothing) => html`<div class="zone"><div class="blk ${cls}">${inner}</div></div>`;
+const zone = (cls: string, inner: TemplateResult | typeof nothing) => html`<div class="zone z-${cls}"><div class="blk ${cls}">${inner}</div></div>`;
 /** Calibre encadré : `text` s'il est donné, sinon le calibre du module. */
 const cal = (m: Module, text?: string) => {
   const v = text ?? (m.amp !== undefined ? `${m.curve ?? ''}${m.amp}${m.curve ? '' : 'A'}` : '');
@@ -74,12 +74,16 @@ const psu: Face = ({ mod: m, ctx }) => {
   return html`${zone('ps', html`<i class="zpot"><b></b></i><span class="dc">${lens(st === false ? false : true)}DC OK</span>`)}${cal(m, m.output ?? (m.amp !== undefined ? undefined : 'AC/DC'))}`;
 };
 
+/** Colonnes d'un parafoudre : 1-2 pôles = N + phase ; 3 pôles = L1 L2 L3 ; 4 pôles = N L1 L2 L3 (une vis et un carré par colonne). */
+export function surgeCols(m: Module): string[] {
+  const ph = (n: number) => Array.from({ length: n }, (_, i) => m.phases[i] ?? `L${i + 1}`);
+  return m.poles >= 4 ? ['N', ...ph(3)] : m.poles === 3 ? ph(3) : ['N', m.phases[0] ?? 'L'];
+}
+
 const surge: Face = ({ mod: m, ctx }) => {
   const st = isOn(ctx.hass, m.state_entity);
-  // une pastille carrée par ligne protégée (L1/L2/L3) ; une seule barre pour un parafoudre monophasé
-  const n = Math.min(3, m.phases.length || (m.poles >= 3 ? 3 : 1));
-  const cells = n < 2 ? html`<i class="zspd ${st === false ? 'bad' : 'ok'}"></i>`
-    : html`<span class="zspds">${Array.from({ length: n }, (_, i) => html`<span class="zph"><i class="zspd sq ${st === false ? 'bad' : 'ok'}"></i><b>${m.phases[i] ?? `L${i + 1}`}</b></span>`)}</span>`;
+  // un carré vert sous chaque vis (N, L1, L2, L3)
+  const cells = html`<span class="zspds">${surgeCols(m).map(() => html`<i class="zspd sq ${st === false ? 'bad' : 'ok'}"></i>`)}</span>`;
   return html`${zone('sp', cells)}${cal(m, 'SPD')}${m.note ? html`<div class="print sm">${m.note}</div>` : nothing}`;
 };
 

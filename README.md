@@ -183,7 +183,7 @@ In the diagram, the line of each differential reads **`[differential id]  row la
 | `relay` (`relais`) | Relay (A1/A2 coil, state LED) | 2 poles / width 1 |
 | `impulse` (`telerupteur`) | Impulse relay | 2 poles / width 1 |
 | `psu` (`alimentation`) | DC power supply | 2 poles / width 2 |
-| `surge` (`surge_arrester`) | Surge arrester | 2 poles / width = poles |
+| `surge` (`surge_arrester`) | Surge arrester | 2 poles / width = poles; 4 poles = N L1 L2 L3, 3 = L1 L2 L3, 1-2 = N + L; one earth screw at the bottom |
 | `meter` | Energy meter (LCD) | 2 poles / width 4 |
 | `free` | Empty slot | 1 pole / width 1 |
 | `custom` | Generic device (any other value) | 1 pole / width 1 |
@@ -243,7 +243,7 @@ npm run regress   # jsdom regression assertions (diagram, remembered view, langu
 
 Layout: `src/config.ts` (normalisation), `src/components/` (panel, row, module, details, `diagram.ts`, `modules/faces.ts` = look of each type), `src/editor.ts` (visual editor), `src/styles.ts`, `src/utils/`.
 
-Each new version bumps `version` in `package.json`; it is printed in the browser console on load. See [CHANGELOG.md](CHANGELOG.md) (in French). Current version: **1.22.0**.
+Each new version bumps `version` in `package.json`; it is printed in the browser console on load. See [CHANGELOG.md](CHANGELOG.md) (in French). Current version: **1.23.0**.
 
 ---
 
@@ -412,7 +412,7 @@ Dans le schéma, la ligne de chaque différentiel s'écrit **`[id du différenti
 | `relay` (`relais`) | Relais (bobine A1/A2, voyant d'état) | 2 pôles / largeur 1 |
 | `impulse` (`telerupteur`) | Télérupteur | 2 pôles / largeur 1 |
 | `psu` (`alimentation`) | Alimentation DC | 2 pôles / largeur 2 |
-| `surge` (`surge_arrester`) | Parafoudre | 2 pôles / largeur = pôles |
+| `surge` (`surge_arrester`) | Parafoudre | 2 pôles / largeur = pôles ; 4 pôles = N L1 L2 L3, 3 = L1 L2 L3, 1-2 = N + L ; une vis de terre en bas |
 | `meter` | Compteur d'énergie (LCD) | 2 pôles / largeur 4 |
 | `free` | Emplacement vide | 1 pôle / largeur 1 |
 | `custom` | Appareil générique (toute autre valeur) | 1 pôle / largeur 1 |
@@ -472,4 +472,4 @@ npm run regress   # assertions de non-régression jsdom (schéma, vue mémorisé
 
 Structure : `src/config.ts` (normalisation), `src/components/` (panel, row, module, détails, `diagram.ts`, `modules/faces.ts` = rendu de chaque type), `src/editor.ts` (éditeur visuel), `src/styles.ts`, `src/utils/`.
 
-Chaque nouvelle version incrémente `version` dans `package.json` ; elle est affichée dans la console du navigateur au chargement. Voir [CHANGELOG.md](CHANGELOG.md). Version actuelle : **1.22.0**.
+Chaque nouvelle version incrémente `version` dans `package.json` ; elle est affichée dans la console du navigateur au chargement. Voir [CHANGELOG.md](CHANGELOG.md). Version actuelle : **1.23.0**.

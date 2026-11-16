@@ -2,6 +2,9 @@
 
 Chaque nouvelle version incrémente le numéro dans `package.json` (injecté dans le bundle et affiché dans la console du navigateur).
 
+## 1.23.0
+- Parafoudre (vue tableau) : un carré vert par vis, large et placé sous sa ligne ; 4 pôles = N L1 L2 L3 (4 carrés), 3 pôles = L1 L2 L3, 1-2 pôles = 2 vis (la première = N). Noms des lignes au-dessus des vis du haut ; en bas, une seule vis (terre) quel que soit le nombre de pôles.
+
 ## 1.22.0
 - Vue schéma : seul un différentiel est tête de groupe ; un disjoncteur en début de rangée n'en est plus une (revient sur 1.20.0). Une rangée sans différentiel = ligne [id rangée] portant tous ses modules, disjoncteurs compris.
 - Vue tableau : dans une rangée mixte (phases différentes selon les modules), un repère de phase (L1 / L2 / L3, ou L1 L2 L3 pour un tri) est affiché au-dessus de chaque module.

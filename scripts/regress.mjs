@@ -21,9 +21,14 @@ assert.equal(q(el, '.tap').length, 1 + 1, 'rangée commençant par un disjoncteu
   assert.equal(q(e3, '.phtag').length, 3, 'rangée mixte tri/mono : repère de phase au-dessus de chaque module');
   assert.equal(q(e3, '.phtag')[2].querySelectorAll('i').length, 3, 'module tri : L1 L2 L3');
   assert.equal(q(e3, '.rail-wrap.ph').length, 1, 'rangée homogène : pas de repère');
-  const e2 = await mk({ type: 'x', panels: [{ id: 'a', rows: [{ id: 'r', phases: ['L1', 'L2', 'L3'], modules: [{ type: 'surge', id: 'S1' }, { type: 'surge', id: 'S2', phases: ['L1'] }] }] }] });
-  assert.equal(q(e2, '.t-surge')[0].querySelectorAll('.zspd.sq').length, 3, 'parafoudre 3 lignes : 3 carrés');
-  assert.equal(q(e2, '.t-surge')[1].querySelectorAll('.zspd.sq').length, 0, 'parafoudre monophasé : une barre');
+  const e2 = await mk({ type: 'x', panels: [{ id: 'a', rows: [{ id: 'r', phases: ['L1', 'L2', 'L3'], modules: [{ type: 'surge', id: 'S1', poles: 4 }, { type: 'surge', id: 'S2', poles: 3 }, { type: 'surge', id: 'S3', poles: 1 }] }] }] });
+  const sp = q(e2, '.t-surge');
+  assert.equal(sp[0].querySelectorAll('.zspd.sq').length, 4, 'parafoudre 4 pôles : 4 carrés');
+  assert.deepEqual([...sp[0].querySelectorAll('.term.top b')].map((b) => b.textContent), ['N', 'L1', 'L2', 'L3'], '4 pôles : N L1 L2 L3');
+  assert.deepEqual([...sp[1].querySelectorAll('.term.top b')].map((b) => b.textContent), ['L1', 'L2', 'L3'], '3 pôles : L1 L2 L3');
+  assert.equal(sp[2].querySelectorAll('.term.top i').length, 2, '1 pôle : 2 vis, la première = N');
+  assert.equal(sp[2].querySelector('.term.top b').textContent, 'N');
+  for (const m of sp) assert.equal(m.querySelectorAll('.term.bot i').length, 1, 'une seule vis en bas (terre)');
 }
 assert.ok(q(el, '.trunk').length === 1);
 
