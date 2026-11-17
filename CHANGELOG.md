@@ -2,6 +2,9 @@
 
 Chaque nouvelle version incrémente le numéro dans `package.json` (injecté dans le bundle et affiché dans la console du navigateur).
 
+## 1.25.1
+- Documentation : images du README régénérées avec le rendu actuel (sans point de charge, vue schéma avec ligne de rangée).
+
 ## 1.25.0
 - Disjoncteurs : le petit point (LED) de charge n'est plus affiché par défaut (redondant avec la mesure de puissance). Le niveau de charge colore désormais l'affichage de la mesure : orange à partir de 60 %, rouge à partir de 90 %, rouge clignotant au-delà de 100 %. Option `show_led: true` pour rétablir le point.
 
