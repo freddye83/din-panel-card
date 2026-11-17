@@ -57,7 +57,7 @@ export function renderModule(m: Module, ctx: Ctx, flag = '', phases: string[] = 
   const diffMod = m.type === 'differential';
   const cs = p.counters.filter((c) => !(diffMod && c.value === null));
   const readout = p.configured && m.type !== 'meter' && cs.length
-    ? html`<div class="readouts">${cs.map((c) => html`<div class="readout k-${c.kind} ${c.value === null ? 'bad' : ''}" title=${t(ctx.lang, c.source === 'children' ? 'sum_children' : c.source === 'zones' ? 'sum_zones' : 'own_sensor')}>
+    ? html`<div class="readouts">${cs.map((c) => html`<div class="readout k-${c.kind} ${c.value === null ? 'bad' : ''} ${c.kind === 'power' && !ctx.showLed && (led === 'warn' || led === 'high' || led === 'err') ? `ld-${led}` : ''}" title=${t(ctx.lang, c.source === 'children' ? 'sum_children' : c.source === 'zones' ? 'sum_zones' : 'own_sensor')}>
         ${c.value === null ? 'n/d' : fmtMeasure(c.kind, c.value, true)}</div>`)}</div>`
     : nothing;
   // Appareils à état : liseré vert (enclenché) / rouge (déclenché) autour du module.
@@ -76,7 +76,7 @@ export function renderModule(m: Module, ctx: Ctx, flag = '', phases: string[] = 
     ${tip(m, title, icon)}
     <div class="face">
       ${m.type === 'surge' ? spdTerminals(surgeCols(m)) : m.type !== 'free' ? terminals(cells, 'top', neutral) : nothing}
-      ${led ? html`<i class="led ${led}"></i>` : nothing}
+      ${led && ctx.showLed ? html`<i class="led ${led}"></i>` : nothing}
       <div class="body ${idBand ? 'ib' : ''}">${idBand ? html`<div class="pid">${m.id}</div>` : nothing}${face({ mod: m, ctx, power: p })}${readout}${m.type === 'differential' || idBand ? nothing : html`<div class="pid">${m.id}</div>`}</div>
       ${m.type === 'surge' ? terminals(1, 'bot', false) : m.type !== 'free' ? terminals(cells, 'bot', neutral) : nothing}
     </div>

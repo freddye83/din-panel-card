@@ -55,9 +55,13 @@ assert.notEqual(el.shadowRoot.querySelector('.panel-title').textContent, before)
 
 // 10. LED : rouge clignotante > 100 %, négatif borné
 el = await mk({ type: 'x', panels: [{ id: 'a', rows: [{ id: 'r', modules: [{ id: 'c', amp: 10, sensor: 's' }] }] }] }, { s: S('3000', 'W') });
-assert.equal(q(el, '.led.err').length, 1);
+assert.equal(q(el, '.led').length, 0, 'point de charge masqué par défaut');
+assert.equal(q(el, '.readout.ld-err').length, 1, 'surcharge : mesure en rouge clignotant');
+el = await mk({ type: 'x', show_led: true, panels: [{ id: 'a', rows: [{ id: 'r', modules: [{ id: 'c', amp: 10, sensor: 's' }] }] }] }, { s: S('3000', 'W') });
+assert.equal(q(el, '.led.err').length, 1, 'show_led : point rétabli');
 el = await mk({ type: 'x', panels: [{ id: 'a', rows: [{ id: 'r', modules: [{ id: 'c', amp: 10, sensor: 's' }] }] }] }, { s: S('-500', 'W') });
-assert.equal(q(el, '.led.ok').length, 1);
+assert.equal(q(el, '.led').length, 0);
+assert.equal(q(el, '.readout[class*="ld-"]').length, 0, 'charge normale : mesure inchangée');
 
 // accessibilité : zones focusables
 el = await mk({ type: 'x', view: 'tree', panels: [{ id: 'a', rows: [{ id: 'r', modules: [{ id: 'c1' }] }] }] });

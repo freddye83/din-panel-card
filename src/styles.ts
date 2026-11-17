@@ -169,6 +169,8 @@ export const cardStyles = css`
   .readout.k-current { color: #74c0fc; background: #121f2b; }
   .readout.k-voltage { color: #e599f7; background: #241629; }
   .readout.bad { color: #999; background: #2a2a2a; }
+  .readout.k-power.ld-warn { color: #ffd27a; background: #3a2a0c; } .readout.k-power.ld-high { color: #ffb3b3; background: #4a1414; }
+  .readout.k-power.ld-err { color: #fff; background: #b71c1c; animation: ledblink 1s infinite; }
   .led { position: absolute; top: 17px; right: 4px; width: 5px; height: 5px; border-radius: 50%; background: #777; z-index: 2; }
   .led.ok { background: #37d67a; box-shadow: 0 0 5px #37d67a; } .led.warn { background: #ffb020; box-shadow: 0 0 5px #ffb020; }
   .led.high { background: #ff4d4f; box-shadow: 0 0 6px #ff4d4f; }

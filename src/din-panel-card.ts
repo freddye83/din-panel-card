@@ -164,6 +164,7 @@ class DinPanelCard extends LitElement {
     const q = this._q ?? '';
     const test = makeMatcher(q, lang);
     if (test) ctx.search = test;
+    if (this._config.show_led) ctx.showLed = true;
     const found = test ? countMatches(this._panels, test) : 0;
     const dark = !!this._hass.themes?.darkMode;
     const u = Number(this._config.module_width);

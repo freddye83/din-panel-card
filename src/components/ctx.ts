@@ -8,6 +8,8 @@ export interface Ctx {
   moreInfo: (entityId: string) => void;
   /** Recherche active : prédicat de correspondance (absent = pas de filtre). */
   search?: Matcher;
+  /** Affiche le petit point de charge (désactivé par défaut). */
+  showLed?: boolean;
 }
 
 export const DEFAULT_ICONS: Record<string, string> = {
