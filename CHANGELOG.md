@@ -2,6 +2,9 @@
 
 Chaque nouvelle version incrémente le numéro dans `package.json` (injecté dans le bundle et affiché dans la console du navigateur).
 
+## 1.24.0
+- Ajout du workflow GitHub « HACS » (`hacs/action`, catégorie plugin), prérequis pour la soumission à hacs/default (Marketplace).
+
 ## 1.23.0
 - Parafoudre (vue tableau) : un carré vert par vis, large et placé sous sa ligne ; 4 pôles = N L1 L2 L3 (4 carrés), 3 pôles = L1 L2 L3, 1-2 pôles = 2 vis (la première = N). Noms des lignes au-dessus des vis du haut ; en bas, une seule vis (terre) quel que soit le nombre de pôles.
 
