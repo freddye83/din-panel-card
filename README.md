@@ -185,7 +185,7 @@ In the diagram, the line of each differential reads **`[differential id]  row la
 | `impulse` (`telerupteur`) | Impulse relay | 2 poles / width 1 |
 | `psu` (`alimentation`) | DC power supply | 2 poles / width 2 |
 | `surge` (`surge_arrester`) | Surge arrester | 2 poles / width = poles; 4 poles = N L1 L2 L3, 3 = L1 L2 L3, 1-2 = N + L; one earth screw at the bottom |
-| `socket` (`outlet`, `prise`) | Socket outlet 2P+T (DIN-rail) | 2 poles / width 2; screws L N at the top, one earth screw (with the earth symbol) at the bottom; large socket face in a light rectangle; rating and `sensor` supported |
+| `socket` (`outlet`, `prise`) | Socket outlet 2P+T (DIN-rail) | 2 poles / width 2; screws N L at the top (neutral on the left), one earth screw (with the earth symbol) at the bottom; large socket face in a light rectangle; rating and `sensor` supported |
 | `switch_disconnector` (`disconnector`, `isolator`, `sectionneur`) | Switch disconnector (I-O, standard symbol) | 2 poles / width = poles; one standard symbol per pole, aligned on the screws; `state_entity` opens / closes the blades and colors the outline |
 | `meter` | Energy meter (LCD) | 2 poles / width 4 |
 | `free` | Empty slot | 1 pole / width 1 |
@@ -246,7 +246,7 @@ npm run regress   # jsdom regression assertions (diagram, remembered view, langu
 
 Layout: `src/config.ts` (normalisation), `src/components/` (panel, row, module, details, `diagram.ts`, `modules/faces.ts` = look of each type), `src/editor.ts` (visual editor), `src/styles.ts`, `src/utils/`.
 
-Each new version bumps `version` in `package.json`; it is printed in the browser console on load. See [CHANGELOG.md](CHANGELOG.md) (in French). Current version: **1.29.0**.
+Each new version bumps `version` in `package.json`; it is printed in the browser console on load. See [CHANGELOG.md](CHANGELOG.md) (in French). Current version: **1.29.1**.
 
 ---
 
@@ -417,7 +417,7 @@ Dans le schéma, la ligne de chaque différentiel s'écrit **`[id du différenti
 | `impulse` (`telerupteur`) | Télérupteur | 2 pôles / largeur 1 |
 | `psu` (`alimentation`) | Alimentation DC | 2 pôles / largeur 2 |
 | `surge` (`surge_arrester`) | Parafoudre | 2 pôles / largeur = pôles ; 4 pôles = N L1 L2 L3, 3 = L1 L2 L3, 1-2 = N + L ; une vis de terre en bas |
-| `socket` (`outlet`, `prise`) | Prise 2P+T (sur rail DIN) | 2 pôles / largeur 2 ; vis L N en haut, une seule vis de terre (avec le symbole) en bas ; grande face de prise dans un rectangle clair ; calibre et `sensor` pris en charge |
+| `socket` (`outlet`, `prise`) | Prise 2P+T (sur rail DIN) | 2 pôles / largeur 2 ; vis N L en haut (neutre à gauche), une seule vis de terre (avec le symbole) en bas ; grande face de prise dans un rectangle clair ; calibre et `sensor` pris en charge |
 | `switch_disconnector` (`disconnector`, `isolator`, `sectionneur`) | Interrupteur sectionneur (I-O, symbole normalisé) | 2 pôles / largeur = pôles ; un symbole normalisé par pôle, aligné sur les vis ; `state_entity` ouvre / ferme les lames et colore le liseré |
 | `meter` | Compteur d'énergie (LCD) | 2 pôles / largeur 4 |
 | `free` | Emplacement vide | 1 pôle / largeur 1 |
@@ -478,4 +478,4 @@ npm run regress   # assertions de non-régression jsdom (schéma, vue mémorisé
 
 Structure : `src/config.ts` (normalisation), `src/components/` (panel, row, module, détails, `diagram.ts`, `modules/faces.ts` = rendu de chaque type), `src/editor.ts` (éditeur visuel), `src/styles.ts`, `src/utils/`.
 
-Chaque nouvelle version incrémente `version` dans `package.json` ; elle est affichée dans la console du navigateur au chargement. Voir [CHANGELOG.md](CHANGELOG.md). Version actuelle : **1.29.0**.
+Chaque nouvelle version incrémente `version` dans `package.json` ; elle est affichée dans la console du navigateur au chargement. Voir [CHANGELOG.md](CHANGELOG.md). Version actuelle : **1.29.1**.

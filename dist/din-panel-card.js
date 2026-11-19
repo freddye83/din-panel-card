@@ -405,7 +405,7 @@ var ze=globalThis,Ee=ze.ShadowRoot&&(ze.ShadyCSS===void 0||ze.ShadyCSS.nativeSha
     ${o.length?u`<div class="phtag" title=${o.join(" / ")}>${o.map(E=>u`<i class="ph-${E.toLowerCase()}">${E}</i>`)}</div>`:f}
     ${go(e,g,v)}
     <div class="face">
-      ${e.type==="surge"?en(st(e)):e.type==="socket"?en(["L","N"]):e.type!=="free"?at(c,"top",x):f}
+      ${e.type==="surge"?en(st(e)):e.type==="socket"?en(["N","L"]):e.type!=="free"?at(c,"top",x):f}
       ${d&&t.showLed?u`<i class="led ${d}"></i>`:f}
       <div class="body ${ne?"ib":""}">${ne?u`<div class="pid">${e.id}</div>`:f}${l({mod:e,ctx:t,power:s})}${A}${e.type==="differential"||ne?f:u`<div class="pid">${e.id}</div>`}</div>
       ${e.type==="surge"?at(1,"bot",!1):e.type==="socket"?ho():e.type!=="free"?at(c,"bot",x):f}
@@ -578,7 +578,7 @@ var ze=globalThis,Ee=ze.ShadowRoot&&(ze.ShadyCSS===void 0||ze.ShadyCSS.nativeSha
       ${this._selected?u`<dialog @close=${()=>{this._selected=null}}
             @click=${h=>{h.target===h.currentTarget&&h.currentTarget.close()}}>
             ${cn(this._selected,o,()=>this.shadowRoot?.querySelector("dialog")?.close())}</dialog>`:f}
-    </ha-card>`}updated(){let n=this.shadowRoot?.querySelector("dialog");n&&this._selected&&!n.open&&n.showModal()}};Me.properties={_config:{state:!0},_selected:{state:!0},_view:{state:!0},_collapsed:{state:!0},_cw:{state:!0},_q:{state:!0}},Me.styles=Dt;customElements.get("din-panel-card")||customElements.define("din-panel-card",Me);console.info("%c DIN-PANEL-CARD %c v1.29.0 ","color:#fff;background:#3182ce;font-weight:700","color:#3182ce;background:#fff");window.customCards=window.customCards||[];window.customCards.push({type:"din-panel-card",name:"DIN Panel Card",description:"Tableau \xE9lectrique modulaire graphique (rang\xE9es, rail DIN, modules) aliment\xE9 par les entit\xE9s Home Assistant.",preview:!1});
+    </ha-card>`}updated(){let n=this.shadowRoot?.querySelector("dialog");n&&this._selected&&!n.open&&n.showModal()}};Me.properties={_config:{state:!0},_selected:{state:!0},_view:{state:!0},_collapsed:{state:!0},_cw:{state:!0},_q:{state:!0}},Me.styles=Dt;customElements.get("din-panel-card")||customElements.define("din-panel-card",Me);console.info("%c DIN-PANEL-CARD %c v1.29.1 ","color:#fff;background:#3182ce;font-weight:700","color:#3182ce;background:#fff");window.customCards=window.customCards||[];window.customCards.push({type:"din-panel-card",name:"DIN Panel Card",description:"Tableau \xE9lectrique modulaire graphique (rang\xE9es, rail DIN, modules) aliment\xE9 par les entit\xE9s Home Assistant.",preview:!1});
 /*! Bundled license information:
 
 @lit/reactive-element/css-tag.js:

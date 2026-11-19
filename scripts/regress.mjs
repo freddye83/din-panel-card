@@ -165,7 +165,7 @@ assert.ok(!el.shadowRoot.querySelector('.mod[title]'), 'plus d\'infobulle native
   const e = await mk({ type: 'x', panels: [{ id: 'a', rows: [{ id: 'r', modules: [{ type: 'socket', id: 'P1', amp: 16 }, { type: 'prise', id: 'P2' }, { type: 'switch_disconnector', id: 'S1', amp: 63, poles: 4, state_entity: 'sensor.s' }, { type: 'sectionneur', id: 'S2' }] }] }] }, { 'sensor.s': { state: 'on', attributes: {} } });
   assert.equal(q(e, '.t-socket').length, 2, 'prise 2P+T (alias prise)');
   assert.equal(q(e, '.t-switch_disconnector').length, 2, 'interrupteur sectionneur (alias sectionneur)');
-  assert.deepEqual([...q(e, '.t-socket')[0].querySelectorAll('.term.top b')].map((b) => b.textContent), ['L', 'N'], 'prise : 2 pôles, bornes L N');
+  assert.deepEqual([...q(e, '.t-socket')[0].querySelectorAll('.term.top b')].map((b) => b.textContent), ['N', 'L'], 'prise : 2 pôles, neutre à gauche puis phase');
   assert.equal(q(e, '.t-socket')[0].querySelectorAll('.zsock').length, 1);
   assert.equal(q(e, '.t-socket')[0].querySelectorAll('.blk').length, 0, 'prise : pas de bloc noir');
   assert.equal(q(e, '.t-socket')[0].querySelectorAll('.term.bot i').length, 1, 'prise : une seule vis en bas');

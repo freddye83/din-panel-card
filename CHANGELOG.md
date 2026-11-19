@@ -2,6 +2,9 @@
 
 Chaque nouvelle version incrémente le numéro dans `package.json` (injecté dans le bundle et affiché dans la console du navigateur).
 
+## 1.29.1
+- Prise 2P+T : le neutre (N) est à gauche, la phase (L) à droite, en haut.
+
 ## 1.29.0
 - Prise 2P+T : une seule vis en bas, repérée par le symbole de terre.
 
