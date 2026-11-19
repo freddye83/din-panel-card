@@ -75,10 +75,10 @@ export function renderModule(m: Module, ctx: Ctx, flag = '', phases: string[] = 
     ${phases.length ? html`<div class="phtag" title=${phases.join(' / ')}>${phases.map((ph) => html`<i class="ph-${ph.toLowerCase()}">${ph}</i>`)}</div>` : nothing}
     ${tip(m, title, icon)}
     <div class="face">
-      ${m.type === 'surge' ? spdTerminals(surgeCols(m)) : m.type === 'socket' ? spdTerminals(['L', 'N', 'PE']) : m.type !== 'free' ? terminals(cells, 'top', neutral) : nothing}
+      ${m.type === 'surge' ? spdTerminals(surgeCols(m)) : m.type === 'socket' ? spdTerminals(['L', 'N']) : m.type !== 'free' ? terminals(cells, 'top', neutral) : nothing}
       ${led && ctx.showLed ? html`<i class="led ${led}"></i>` : nothing}
       <div class="body ${idBand ? 'ib' : ''}">${idBand ? html`<div class="pid">${m.id}</div>` : nothing}${face({ mod: m, ctx, power: p })}${readout}${m.type === 'differential' || idBand ? nothing : html`<div class="pid">${m.id}</div>`}</div>
-      ${m.type === 'surge' ? terminals(1, 'bot', false) : m.type === 'socket' ? terminals(3, 'bot', false) : m.type !== 'free' ? terminals(cells, 'bot', neutral) : nothing}
+      ${m.type === 'surge' ? terminals(1, 'bot', false) : m.type === 'socket' ? terminals(2, 'bot', false) : m.type !== 'free' ? terminals(cells, 'bot', neutral) : nothing}
     </div>
     ${showPlate
       ? html`<div class="plate">

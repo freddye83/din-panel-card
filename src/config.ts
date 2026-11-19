@@ -21,7 +21,7 @@ const ALIASES: Record<string, { type: ModuleType; poles?: number }> = {
 
 const DEFAULTS: Record<ModuleType, { poles: number; width?: number }> = {
   differential: { poles: 2 }, breaker: { poles: 1 }, contactor_daynight: { poles: 1, width: 2 },
-  contactor: { poles: 1, width: 2 }, impulse: { poles: 2, width: 1 }, relay: { poles: 2, width: 1 }, psu: { poles: 2, width: 2 }, surge: { poles: 2 }, socket: { poles: 2, width: 3 }, switch_disconnector: { poles: 2 },
+  contactor: { poles: 1, width: 2 }, impulse: { poles: 2, width: 1 }, relay: { poles: 2, width: 1 }, psu: { poles: 2, width: 2 }, surge: { poles: 2 }, socket: { poles: 2, width: 2 }, switch_disconnector: { poles: 2 },
   meter: { poles: 2, width: 4 }, free: { poles: 1, width: 1 }, custom: { poles: 1, width: 1 },
 };
 

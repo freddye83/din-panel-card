@@ -165,9 +165,12 @@ assert.ok(!el.shadowRoot.querySelector('.mod[title]'), 'plus d\'infobulle native
   const e = await mk({ type: 'x', panels: [{ id: 'a', rows: [{ id: 'r', modules: [{ type: 'socket', id: 'P1', amp: 16 }, { type: 'prise', id: 'P2' }, { type: 'switch_disconnector', id: 'S1', amp: 63, poles: 4, state_entity: 'sensor.s' }, { type: 'sectionneur', id: 'S2' }] }] }] }, { 'sensor.s': { state: 'on', attributes: {} } });
   assert.equal(q(e, '.t-socket').length, 2, 'prise 2P+T (alias prise)');
   assert.equal(q(e, '.t-switch_disconnector').length, 2, 'interrupteur sectionneur (alias sectionneur)');
-  assert.deepEqual([...q(e, '.t-socket')[0].querySelectorAll('.term.top b')].map((b) => b.textContent), ['L', 'N', 'PE'], 'prise : bornes L N PE');
+  assert.deepEqual([...q(e, '.t-socket')[0].querySelectorAll('.term.top b')].map((b) => b.textContent), ['L', 'N'], 'prise : 2 pôles, bornes L N');
   assert.equal(q(e, '.t-socket')[0].querySelectorAll('.zsock').length, 1);
-  assert.equal(q(e, '.t-switch_disconnector')[0].querySelectorAll('.zsd').length, 1);
-  assert.ok(q(e, '.t-switch_disconnector')[0].classList.contains('st-on'), 'sectionneur : liseré d\'état');
+  assert.equal(q(e, '.t-socket')[0].querySelectorAll('.blk').length, 0, 'prise : pas de bloc noir');
+  assert.equal(q(e, '.t-socket')[0].style.getPropertyValue('--w'), '2', 'prise : 2 modules');
+  assert.equal(q(e, '.t-switch_disconnector')[0].querySelectorAll('.zsd').length, 4, 'sectionneur 4 pôles : 4 symboles');
+  assert.equal(q(e, '.t-switch_disconnector')[0].querySelectorAll('.zlens').length, 0, 'sectionneur : pas de voyant');
+    assert.ok(q(e, '.t-switch_disconnector')[0].classList.contains('st-on'), 'sectionneur : liseré d\'état');
 }
 console.log('regress OK');

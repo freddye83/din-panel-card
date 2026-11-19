@@ -2,6 +2,10 @@
 
 Chaque nouvelle version incrémente le numéro dans `package.json` (injecté dans le bundle et affiché dans la console du navigateur).
 
+## 1.28.0
+- Prise 2P+T : 2 modules / 2 pôles (vis L N), grande face de prise dans un simple rectangle clair (sans bloc noir) qui contient aussi le calibre, en petit.
+- Interrupteur sectionneur : un symbole par pôle aligné sur les vis, sans voyant ; la lame s'ouvre si `state_entity` est off (liseré d'état conservé).
+
 ## 1.27.0
 - Nouveaux modules : `socket` (prise 2P+T sur rail DIN, alias `outlet`, `prise` ; bornes L N PE, calibre et capteur) et `switch_disconnector` (interrupteur sectionneur, alias `disconnector`, `isolator`, `sectionneur` ; symbole normalisé, voyant et liseré d'état avec `state_entity`). Disponibles dans l'éditeur, les deux vues et la recherche.
 

@@ -5,6 +5,7 @@ Carte Lovelace personnalisée pour Home Assistant (`custom:din-panel-card`) : vu
 ## Règles de travail (demandées par Eric)
 - **Répondre en français**, concis, technique et direct.
 - **À chaque modification : incrémenter la version dans `package.json`** (mineure pour une évolution, ex. 1.14.0 → 1.15.0) et l'**annoncer dans la réponse** (« Version x.y.z »). Mettre à jour `CHANGELOG.md`, la ligne « Current version / Version actuelle » du `README.md` (EN + FR) et, si la config change, les tableaux du README.
+- **Ne rien pousser sur GitHub (ni publier) sans validation explicite d'Eric** : présenter d'abord l'aperçu / le résultat, demander, puis pousser seulement après son accord (règle valable à chaque modification).
 - Ne pas demander quelle version d'une carte/outil il utilise : supposer la dernière, consulter GitHub si besoin.
 - Priorités : 1) qualité graphique, 2) ne perdre aucune donnée / fonctionnalité, 3) configuration simple.
 - Livrables habituels : `dist/din-panel-card.js` (bundle), zip du projet (sans `node_modules`), YAML d'exemple.

@@ -87,13 +87,14 @@ const surge: Face = ({ mod: m, ctx }) => {
   return html`${zone('sp', cells)}${cal(m, 'SPD')}${m.note ? html`<div class="print sm">${m.note}</div>` : nothing}`;
 };
 
-/** Prise modulaire 2P+T : face ronde avec deux alvéoles et la broche de terre. */
-const socket: Face = ({ mod: m }) => html`${zone('so', html`<svg class="zsock" viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="13" fill="#e9ebee"/><circle cx="9.5" cy="16" r="2.2" fill="#222"/><circle cx="20.5" cy="16" r="2.2" fill="#222"/><rect x="13.6" y="3" width="2.8" height="5" rx="1.2" fill="#222"/></svg><b class="zlab">2P+T</b>`)}${cal(m)}`;
+/** Prise modulaire 2P+T (2 modules, 2 pôles) : face de prise la plus grande possible dans un simple rectangle clair, sans bloc noir. */
+const socket: Face = ({ mod: m }) => html`<div class="zone z-so"><div class="sockplate"><svg class="zsock" viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="12.4" fill="#fff" stroke="#8d9299" stroke-width="1"/><circle cx="10" cy="16.6" r="2.1" fill="#222"/><circle cx="20" cy="16.6" r="2.1" fill="#222"/><rect x="13.5" y="5.2" width="3" height="5.4" rx="1.3" fill="#222"/></svg>${m.amp !== undefined ? html`<b class="sockamp">${m.curve ?? ''}${m.amp}${m.curve ? '' : 'A'}</b>` : nothing}</div></div>`;
 
-/** Interrupteur sectionneur : symbole normalisé (lame inclinée + barre de coupure), voyant d'état si `state_entity`. */
+/** Interrupteur sectionneur : un symbole normalisé (lame inclinée + barre de coupure) par pôle, aligné sur les vis ; la lame s'ouvre si `state_entity` est off. */
 const disconnector: Face = ({ mod: m, ctx }) => {
   const st = isOn(ctx.hass, m.state_entity);
-  return html`${zone('sd', html`<svg class="zsd" viewBox="0 0 30 30" aria-hidden="true"><g stroke="#f1f1f1" stroke-width="2" stroke-linecap="round" fill="none"><path d="M15 2v8"/><path d="${st === false ? 'M15 10l9 7' : 'M15 10l7 11'}"/><path d="${st === false ? 'M19 11l5 -4' : 'M17.4 14.4l6 -3'}"/><path d="M15 21v7"/></g></svg><b class="zlab">I-O</b>${st === null ? nothing : lens(st)}`)}${cal(m)}`;
+  const sym = html`<svg class="zsd" viewBox="0 0 30 30" aria-hidden="true"><g stroke="#f1f1f1" stroke-width="2" stroke-linecap="round" fill="none"><path d="M15 2v8"/><path d="${st === false ? 'M15 10l9 7' : 'M15 10l7 11'}"/><path d="${st === false ? 'M19 11l5 -4' : 'M17.4 14.4l6 -3'}"/><path d="M15 21v7"/></g></svg>`;
+  return html`${zone('sd', html`<span class="zsds">${Array.from({ length: Math.max(1, m.poles) }, () => sym)}</span>`)}${cal(m, m.amp !== undefined ? undefined : 'I-O')}`;
 };
 
 const meter: Face = ({ mod: m, power }) => html`
