@@ -334,6 +334,7 @@ export const cardStyles = css`
   .blk .dc { display: flex; align-items: center; gap: 3px; font-size: 5.5px; }
   .zspd { width: 70%; height: 14px; border-radius: 2px; } .zspd.ok { background: #2f9e44; } .zspd.bad { background: #e03131; }
   .sockplate { position: relative; }
+  .term.sp.pe { height: 22px; justify-content: center; align-items: flex-start; padding: 3px 0 0; } .term.sp.pe .tc { flex: none; position: relative; } .term.sp .tc .earth { position: absolute; left: calc(100% + 5px); top: 1px; width: 12px; height: 10px; }
   .zone.z-so { height: auto; flex: 1; min-height: 0; padding: 3px 5px; } .sockplate { flex: 1; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 2px 0; box-sizing: border-box; background: #eceef1; border: 1px solid #a3a8ae; border-radius: 3px; box-shadow: inset 0 1px 2px rgba(0,0,0,.15); }
   .zsock { flex: 1; min-height: 0; aspect-ratio: 1; max-width: 100%; display: block; } .sockamp { position: absolute; right: 3px; bottom: 2px; font: 700 10px/1 Arial, sans-serif; color: #333; }
   .zone.z-sd { padding-left: 4px; padding-right: 4px; } .zsds { display: flex; width: 100%; align-items: center; } .zsds .zsd { flex: 1; min-width: 0; height: 30px; display: block; }

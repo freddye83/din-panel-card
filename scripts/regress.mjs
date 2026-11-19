@@ -168,6 +168,8 @@ assert.ok(!el.shadowRoot.querySelector('.mod[title]'), 'plus d\'infobulle native
   assert.deepEqual([...q(e, '.t-socket')[0].querySelectorAll('.term.top b')].map((b) => b.textContent), ['L', 'N'], 'prise : 2 pôles, bornes L N');
   assert.equal(q(e, '.t-socket')[0].querySelectorAll('.zsock').length, 1);
   assert.equal(q(e, '.t-socket')[0].querySelectorAll('.blk').length, 0, 'prise : pas de bloc noir');
+  assert.equal(q(e, '.t-socket')[0].querySelectorAll('.term.bot i').length, 1, 'prise : une seule vis en bas');
+  assert.equal(q(e, '.t-socket')[0].querySelectorAll('.term.bot .earth').length, 1, 'prise : symbole de terre');
   assert.equal(q(e, '.t-socket')[0].style.getPropertyValue('--w'), '2', 'prise : 2 modules');
   assert.equal(q(e, '.t-switch_disconnector')[0].querySelectorAll('.zsd').length, 4, 'sectionneur 4 pôles : 4 symboles');
   assert.equal(q(e, '.t-switch_disconnector')[0].querySelectorAll('.zlens').length, 0, 'sectionneur : pas de voyant');

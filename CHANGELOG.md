@@ -2,6 +2,9 @@
 
 Chaque nouvelle version incrémente le numéro dans `package.json` (injecté dans le bundle et affiché dans la console du navigateur).
 
+## 1.29.0
+- Prise 2P+T : une seule vis en bas, repérée par le symbole de terre.
+
 ## 1.28.0
 - Prise 2P+T : 2 modules / 2 pôles (vis L N), grande face de prise dans un simple rectangle clair (sans bloc noir) qui contient aussi le calibre, en petit.
 - Interrupteur sectionneur : un symbole par pôle aligné sur les vis, sans voyant ; la lame s'ouvre si `state_entity` est off (liseré d'état conservé).

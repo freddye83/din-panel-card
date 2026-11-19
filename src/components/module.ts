@@ -13,6 +13,11 @@ function spdTerminals(cols: string[]) {
   return html`<div class="term top sp">${cols.map((c) => html`<span class="tc"><b>${c}</b><i></i></span>`)}</div>`;
 }
 
+/** Prise : une seule borne en bas, repérée par le symbole de terre. */
+function earthTerminal() {
+  return html`<div class="term bot sp pe"><span class="tc"><i></i><svg class="earth" viewBox="0 0 12 10" aria-label="PE"><path d="M6 0v4M1 4h10M2.7 6.4h6.6M4.4 8.8h3.2" stroke="#333" stroke-width="1.3" stroke-linecap="round" fill="none"/></svg></span></div>`;
+}
+
 function terminals(n: number, pos: 'top' | 'bot', neutral: boolean) {
   return html`<div class="term ${pos} ${neutral ? 'n' : ''}">${Array.from({ length: n }, () => html`<i></i>`)}</div>`;
 }
@@ -78,7 +83,7 @@ export function renderModule(m: Module, ctx: Ctx, flag = '', phases: string[] = 
       ${m.type === 'surge' ? spdTerminals(surgeCols(m)) : m.type === 'socket' ? spdTerminals(['L', 'N']) : m.type !== 'free' ? terminals(cells, 'top', neutral) : nothing}
       ${led && ctx.showLed ? html`<i class="led ${led}"></i>` : nothing}
       <div class="body ${idBand ? 'ib' : ''}">${idBand ? html`<div class="pid">${m.id}</div>` : nothing}${face({ mod: m, ctx, power: p })}${readout}${m.type === 'differential' || idBand ? nothing : html`<div class="pid">${m.id}</div>`}</div>
-      ${m.type === 'surge' ? terminals(1, 'bot', false) : m.type === 'socket' ? terminals(2, 'bot', false) : m.type !== 'free' ? terminals(cells, 'bot', neutral) : nothing}
+      ${m.type === 'surge' ? terminals(1, 'bot', false) : m.type === 'socket' ? earthTerminal() : m.type !== 'free' ? terminals(cells, 'bot', neutral) : nothing}
     </div>
     ${showPlate
       ? html`<div class="plate">
