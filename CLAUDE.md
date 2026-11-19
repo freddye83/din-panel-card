@@ -49,7 +49,7 @@ panels:
               sensor, current_sensor, voltage_sensor, state_entity, icon, max_w, accent, output,
               zones: [{ floor, room, icon, sensor }] }
 ```
-Types : `differential, breaker, contactor_daynight, contactor, relay, impulse (télérupteur), psu, surge, meter, free, custom` (+ alias : `breaker_3p`, `relais`, `telerupteur`, `alimentation`…). Ancien format `groups` toujours accepté.
+Types : `differential, breaker, contactor_daynight, contactor, relay, impulse (télérupteur), psu, surge, socket (prise 2P+T), switch_disconnector (sectionneur), meter, free, custom` (+ alias : `breaker_3p`, `relais`, `telerupteur`, `alimentation`…). Ancien format `groups` toujours accepté.
 
 ## Comportements à connaître
 - Un différentiel protège les modules qui le suivent (seul un différentiel est tête de groupe : `children` défini ; un disjoncteur n'en est jamais une depuis 1.22) ; sa mesure = capteur propre, sinon somme zones, sinon somme enfants (une somme par type de mesure, côte à côte).

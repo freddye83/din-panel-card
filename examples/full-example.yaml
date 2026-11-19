@@ -17,6 +17,8 @@ panels:
         modules:
           - { type: meter, id: CPT, label: Compteur, sensor: sensor.zlinky_papp }
           - { type: surge, id: PF, note: Type 2, state_entity: binary_sensor.parafoudre_ok }
+          - { type: switch_disconnector, id: SS, amp: 63, poles: 2, label: Sectionneur }
+          - { type: socket, id: PR, amp: 16, label: Prise atelier }
           - { type: breaker_4p, id: DIV, amp: 40, curve: C, label: Général, max_w: 9000 }
       - id: row_2
         label: Lumières & prises
