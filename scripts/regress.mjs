@@ -160,4 +160,14 @@ assert.ok(!el.shadowRoot.querySelector('.mod[title]'), 'plus d\'infobulle native
   assert.deepEqual([0, 1, 2, 3].map((i) => n(i, 'bot')), [1, 2, 3, 4], 'une vis par pôle en bas');
   assert.deepEqual([0, 1, 2, 3].map((i) => m[i].querySelectorAll('.term.n').length > 0), [false, true, false, true], 'repère N : 2 et 4 pôles seulement');
 }
+// 16. prise 2P+T et interrupteur sectionneur
+{
+  const e = await mk({ type: 'x', panels: [{ id: 'a', rows: [{ id: 'r', modules: [{ type: 'socket', id: 'P1', amp: 16 }, { type: 'prise', id: 'P2' }, { type: 'switch_disconnector', id: 'S1', amp: 63, poles: 4, state_entity: 'sensor.s' }, { type: 'sectionneur', id: 'S2' }] }] }] }, { 'sensor.s': { state: 'on', attributes: {} } });
+  assert.equal(q(e, '.t-socket').length, 2, 'prise 2P+T (alias prise)');
+  assert.equal(q(e, '.t-switch_disconnector').length, 2, 'interrupteur sectionneur (alias sectionneur)');
+  assert.deepEqual([...q(e, '.t-socket')[0].querySelectorAll('.term.top b')].map((b) => b.textContent), ['L', 'N', 'PE'], 'prise : bornes L N PE');
+  assert.equal(q(e, '.t-socket')[0].querySelectorAll('.zsock').length, 1);
+  assert.equal(q(e, '.t-switch_disconnector')[0].querySelectorAll('.zsd').length, 1);
+  assert.ok(q(e, '.t-switch_disconnector')[0].classList.contains('st-on'), 'sectionneur : liseré d\'état');
+}
 console.log('regress OK');

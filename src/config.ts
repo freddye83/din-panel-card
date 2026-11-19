@@ -14,12 +14,14 @@ const ALIASES: Record<string, { type: ModuleType; poles?: number }> = {
   relay: { type: 'relay' }, relais: { type: 'relay' },
   psu: { type: 'psu' }, power_supply: { type: 'psu' }, alimentation: { type: 'psu' },
   surge: { type: 'surge' }, surge_arrester: { type: 'surge' },
+  socket: { type: 'socket' }, outlet: { type: 'socket' }, prise: { type: 'socket' }, socket_2pt: { type: 'socket' },
+  switch_disconnector: { type: 'switch_disconnector' }, disconnector: { type: 'switch_disconnector' }, isolator: { type: 'switch_disconnector' }, sectionneur: { type: 'switch_disconnector' },
   meter: { type: 'meter' }, free: { type: 'free' }, custom: { type: 'custom' },
 };
 
 const DEFAULTS: Record<ModuleType, { poles: number; width?: number }> = {
   differential: { poles: 2 }, breaker: { poles: 1 }, contactor_daynight: { poles: 1, width: 2 },
-  contactor: { poles: 1, width: 2 }, impulse: { poles: 2, width: 1 }, relay: { poles: 2, width: 1 }, psu: { poles: 2, width: 2 }, surge: { poles: 2 },
+  contactor: { poles: 1, width: 2 }, impulse: { poles: 2, width: 1 }, relay: { poles: 2, width: 1 }, psu: { poles: 2, width: 2 }, surge: { poles: 2 }, socket: { poles: 2, width: 3 }, switch_disconnector: { poles: 2 },
   meter: { poles: 2, width: 4 }, free: { poles: 1, width: 1 }, custom: { poles: 1, width: 1 },
 };
 

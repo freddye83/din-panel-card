@@ -2,6 +2,9 @@
 
 Chaque nouvelle version incrémente le numéro dans `package.json` (injecté dans le bundle et affiché dans la console du navigateur).
 
+## 1.27.0
+- Nouveaux modules : `socket` (prise 2P+T sur rail DIN, alias `outlet`, `prise` ; bornes L N PE, calibre et capteur) et `switch_disconnector` (interrupteur sectionneur, alias `disconnector`, `isolator`, `sectionneur` ; symbole normalisé, voyant et liseré d'état avec `state_entity`). Disponibles dans l'éditeur, les deux vues et la recherche.
+
 ## 1.26.0
 - Vue tableau : un module à 1 pôle (`poles: 1`) n'a plus qu'une seule borne en haut et en bas, sans repère N. 2 pôles : 2 vis + N ; 3 pôles : sans N ; 4 pôles : N sur la première vis. (Un disjoncteur 1 DIN sans `poles` reste à 2 pôles : phase + neutre.)
 - Éditeur visuel : tout est replié à l'ouverture, « Général » compris ; les rangées d'un tableau sont repliables et restent repliées à l'ouverture du tableau.

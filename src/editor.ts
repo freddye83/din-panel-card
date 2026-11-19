@@ -4,7 +4,7 @@ import { legacyToPanels } from './config';
 import type { CardConfig, Lang, ModuleConfig, PanelConfig, RowConfig, ZoneConfig } from './types';
 import { t } from './utils/i18n';
 
-const TYPES = ['differential', 'breaker', 'contactor_daynight', 'contactor', 'relay', 'impulse', 'psu', 'surge', 'meter', 'free', 'custom'];
+const TYPES = ['differential', 'breaker', 'contactor_daynight', 'contactor', 'relay', 'impulse', 'psu', 'surge', 'socket', 'switch_disconnector', 'meter', 'free', 'custom'];
 const MOD_KEYS = ['id', 'type', 'label', 'amp', 'poles', 'width', 'mA', 'class', 'curve', 'usage', 'phases', 'sensor', 'current_sensor', 'voltage_sensor', 'state_entity', 'icon', 'max_w', 'accent', 'output', 'section'];
 const PH = ['l1', 'l2', 'l3'];
 const num = (min: number, max: number) => ({ number: { min, max, mode: 'box' } });

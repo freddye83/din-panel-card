@@ -87,6 +87,15 @@ const surge: Face = ({ mod: m, ctx }) => {
   return html`${zone('sp', cells)}${cal(m, 'SPD')}${m.note ? html`<div class="print sm">${m.note}</div>` : nothing}`;
 };
 
+/** Prise modulaire 2P+T : face ronde avec deux alvéoles et la broche de terre. */
+const socket: Face = ({ mod: m }) => html`${zone('so', html`<svg class="zsock" viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="13" fill="#e9ebee"/><circle cx="9.5" cy="16" r="2.2" fill="#222"/><circle cx="20.5" cy="16" r="2.2" fill="#222"/><rect x="13.6" y="3" width="2.8" height="5" rx="1.2" fill="#222"/></svg><b class="zlab">2P+T</b>`)}${cal(m)}`;
+
+/** Interrupteur sectionneur : symbole normalisé (lame inclinée + barre de coupure), voyant d'état si `state_entity`. */
+const disconnector: Face = ({ mod: m, ctx }) => {
+  const st = isOn(ctx.hass, m.state_entity);
+  return html`${zone('sd', html`<svg class="zsd" viewBox="0 0 30 30" aria-hidden="true"><g stroke="#f1f1f1" stroke-width="2" stroke-linecap="round" fill="none"><path d="M15 2v8"/><path d="${st === false ? 'M15 10l9 7' : 'M15 10l7 11'}"/><path d="${st === false ? 'M19 11l5 -4' : 'M17.4 14.4l6 -3'}"/><path d="M15 21v7"/></g></svg><b class="zlab">I-O</b>${st === null ? nothing : lens(st)}`)}${cal(m)}`;
+};
+
 const meter: Face = ({ mod: m, power }) => html`
   ${zone('mt', html`<span class="zlcd">${power.value !== null ? fmtMeasure(power.kind, power.value) : '- - -'}</span>`)}${cal(m, m.label ?? 'kWh')}`;
 
@@ -95,5 +104,5 @@ const free: Face = () => html`<div class="blank"></div>`;
 const custom: Face = ({ mod: m }) => html`${zone('cu', m.icon ? html`<ha-icon icon=${m.icon}></ha-icon>` : nothing)}${cal(m)}`;
 
 export const FACES: Record<string, Face> = {
-  differential, breaker, contactor_daynight: daynight, contactor, relay, impulse, psu, surge, meter, free, custom,
+  differential, breaker, contactor_daynight: daynight, contactor, relay, impulse, psu, surge, socket, switch_disconnector: disconnector, meter, free, custom,
 };

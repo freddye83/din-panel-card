@@ -1,6 +1,6 @@
 export type ModuleType =
   | 'differential' | 'breaker' | 'contactor_daynight' | 'contactor'
-  | 'relay' | 'impulse' | 'psu' | 'surge' | 'meter' | 'free' | 'custom';
+  | 'relay' | 'impulse' | 'psu' | 'surge' | 'socket' | 'switch_disconnector' | 'meter' | 'free' | 'custom';
 export type Usage = 'power' | 'socket' | 'light' | 'other';
 export type Lang = 'fr' | 'en';
 
