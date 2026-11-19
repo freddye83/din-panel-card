@@ -2,6 +2,10 @@
 
 Chaque nouvelle version incrémente le numéro dans `package.json` (injecté dans le bundle et affiché dans la console du navigateur).
 
+## 1.26.0
+- Vue tableau : un module à 1 pôle (`poles: 1`) n'a plus qu'une seule borne en haut et en bas, sans repère N. 2 pôles : 2 vis + N ; 3 pôles : sans N ; 4 pôles : N sur la première vis. (Un disjoncteur 1 DIN sans `poles` reste à 2 pôles : phase + neutre.)
+- Éditeur visuel : tout est replié à l'ouverture, « Général » compris ; les rangées d'un tableau sont repliables et restent repliées à l'ouverture du tableau.
+
 ## 1.25.1
 - Documentation : images du README régénérées avec le rendu actuel (sans point de charge, vue schéma avec ligne de rangée).
 

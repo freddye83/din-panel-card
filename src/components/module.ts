@@ -48,8 +48,8 @@ export function renderModule(m: Module, ctx: Ctx, flag = '', phases: string[] = 
   const pct = p.value !== null && limit ? Math.max(0, p.value) / limit : null;
   const led = pct === null ? '' : pct > 1 ? 'err' : pct >= 0.9 ? 'high' : pct >= 0.6 ? 'warn' : 'ok';
   const face = FACES[m.type] ?? FACES.custom;
-  const cells = Math.max(2, m.poles); // une vis par pôle (2 mini : phase + neutre en 1 DIN)
-  const neutral = m.poles !== 3; // repère N sauf sur un 3 pôles (pas de neutre)
+  const cells = Math.max(1, m.poles); // une vis par pôle (1 pôle : une seule borne, sans N)
+  const neutral = m.poles === 2 || m.poles >= 4; // repère N sur 2 et 4 pôles ; ni sur 1 pôle (une borne) ni sur 3 pôles
   const title = moduleTitle(m, ctx);
   const showPlate = m.type !== 'free' || !!m.label;
   const icon = m.icon ?? (m.type === 'breaker' ? DEFAULT_ICONS[m.usage] : DEFAULT_ICONS[m.type]);

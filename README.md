@@ -157,7 +157,7 @@ In the diagram, the line of each differential reads **`[differential id]  row la
 | `curve` | `B` \| `C` \| `D` | none | Trip curve; printed (`C20`) only when set. |
 | `mA` | number | none | Differential only: sensitivity (e.g. `30`, `300`). |
 | `class` | `AC` \| `A` \| `F` \| `B` | none | Differential only: type. |
-| `poles` | 1–4 | type default | Number of poles. Not printed on the device (kept in the detail sheet). One screw per pole (2 minimum: a 1-DIN device without `poles` is drawn with 2 terminals, phase + neutral). The `N` mark is drawn on the first screw except on 3-pole devices. |
+| `poles` | 1–4 | type default | Number of poles. Not printed on the device (kept in the detail sheet). One screw per pole at the top and bottom. `poles: 1` = a single terminal, no `N`; a 1-DIN breaker without `poles` defaults to 2 poles (phase + neutral, `N` mark on the first screw); 3 poles = no `N`; 4 poles = `N` on the first screw. |
 | `width` | 1–12 | `poles`, or type default | Width in DIN modules. |
 | `usage` | `power` \| `socket` \| `light` \| `other` | `other` | Breakers: colours the nameplate stripe and sets the default icon. |
 | `phases` | list | row phases | e.g. `[L1]`, `[L1, L2, L3]`. A breaker on 3 phases defaults to 3 poles. |
@@ -244,7 +244,7 @@ npm run regress   # jsdom regression assertions (diagram, remembered view, langu
 
 Layout: `src/config.ts` (normalisation), `src/components/` (panel, row, module, details, `diagram.ts`, `modules/faces.ts` = look of each type), `src/editor.ts` (visual editor), `src/styles.ts`, `src/utils/`.
 
-Each new version bumps `version` in `package.json`; it is printed in the browser console on load. See [CHANGELOG.md](CHANGELOG.md) (in French). Current version: **1.25.1**.
+Each new version bumps `version` in `package.json`; it is printed in the browser console on load. See [CHANGELOG.md](CHANGELOG.md) (in French). Current version: **1.26.0**.
 
 ---
 
@@ -387,7 +387,7 @@ Dans le schéma, la ligne de chaque différentiel s'écrit **`[id du différenti
 | `curve` | `B` \| `C` \| `D` | aucune | Courbe de déclenchement ; imprimée (`C20`) seulement si renseignée. |
 | `mA` | nombre | aucun | Différentiel : sensibilité (ex. `30`, `300`). |
 | `class` | `AC` \| `A` \| `F` \| `B` | aucune | Différentiel : type. |
-| `poles` | 1–4 | défaut du type | Nombre de pôles. Non imprimé sur l'appareil (conservé dans la fiche). Une vis par pôle (2 minimum : un appareil 1 DIN sans `poles` a 2 bornes, phase + neutre). Le repère `N` est sur la première vis, sauf sur un 3 pôles. |
+| `poles` | 1–4 | défaut du type | Nombre de pôles. Non imprimé sur l'appareil (conservé dans la fiche). Une vis par pôle en haut et en bas. `poles: 1` = une seule borne, sans `N` ; un disjoncteur 1 DIN sans `poles` vaut 2 pôles par défaut (phase + neutre, repère `N` sur la première vis) ; 3 pôles = pas de `N` ; 4 pôles = `N` sur la première vis. |
 | `width` | 1–12 | `poles`, ou défaut du type | Largeur en modules DIN. |
 | `usage` | `power` \| `socket` \| `light` \| `other` | `other` | Disjoncteurs : colore le liseré de la plaquette et fixe l'icône par défaut. |
 | `phases` | liste | phases de la rangée | ex. `[L1]`, `[L1, L2, L3]`. Un disjoncteur sur 3 phases a 3 pôles par défaut. |
@@ -474,4 +474,4 @@ npm run regress   # assertions de non-régression jsdom (schéma, vue mémorisé
 
 Structure : `src/config.ts` (normalisation), `src/components/` (panel, row, module, détails, `diagram.ts`, `modules/faces.ts` = rendu de chaque type), `src/editor.ts` (éditeur visuel), `src/styles.ts`, `src/utils/`.
 
-Chaque nouvelle version incrémente `version` dans `package.json` ; elle est affichée dans la console du navigateur au chargement. Voir [CHANGELOG.md](CHANGELOG.md). Version actuelle : **1.25.1**.
+Chaque nouvelle version incrémente `version` dans `package.json` ; elle est affichée dans la console du navigateur au chargement. Voir [CHANGELOG.md](CHANGELOG.md). Version actuelle : **1.26.0**.

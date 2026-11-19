@@ -81,12 +81,16 @@ const forms = () => ed.shadowRoot.querySelectorAll('ha-form').length;
 const toggle = async (d) => { d.open = true; d.dispatchEvent(new w.Event('toggle')); await ed.updateComplete; };
 const secs = () => [...ed.shadowRoot.querySelectorAll('details')].filter((x) => x.parentNode === ed.shadowRoot);
 assert.equal(secs().length, 3, 'sections : général, capteurs globaux, 1 tableau');
-assert.equal(forms(), 1, 'seul « Général » est ouvert au départ');
-assert.ok(secs()[0].hasAttribute('open') && !secs()[1].hasAttribute('open') && !secs()[2].hasAttribute('open'));
+assert.equal(forms(), 0, 'tout est replié au départ (même « Général »)');
+assert.ok(secs().every((x) => !x.hasAttribute('open')));
+await toggle(secs()[0]); assert.equal(forms(), 1, 'général créé à l\'ouverture');
 await toggle(secs()[1]); assert.equal(forms(), 2, 'capteurs globaux créés à l\'ouverture');
-await toggle(secs()[2]); assert.equal(forms(), 4, 'tableau + rangée créés à l\'ouverture du tableau');
-const mod = [...secs()[2].querySelectorAll('details')].find((x) => !x.hasAttribute('open'));
-await toggle(mod); assert.ok(forms() >= 6, 'formulaire de module créé à l\'ouverture du module');
+await toggle(secs()[2]); assert.equal(forms(), 3, 'ouverture du tableau : seul son formulaire est créé, rangées repliées');
+const rowD = [...secs()[2].querySelectorAll('details')][0];
+assert.ok(!rowD.hasAttribute('open'), 'rangée repliée');
+await toggle(rowD); assert.equal(forms(), 4, 'rangée créée à l\'ouverture');
+const mod = [...rowD.querySelectorAll('details')].find((x) => !x.hasAttribute('open'));
+await toggle(mod); assert.ok(forms() >= 5, 'formulaire de module créé à l\'ouverture du module');
 // schéma : zone sans icône -> icône du disjoncteur ; vue tableau : infobulle riche avec icônes
 el = await mk({ type: 'x', view: 'tree', panels: [{ id: 'a', rows: [{ id: 'r', modules: [{ id: 'p1', usage: 'socket', zones: [{ room: 'Salon' }, { room: 'Bureau', icon: 'mdi:desk' }] }] }] }] });
 const zi = q(el, 'foreignObject ha-icon').map((e) => e.getAttribute('icon'));
@@ -146,5 +150,14 @@ assert.ok(!el.shadowRoot.querySelector('.mod[title]'), 'plus d\'infobulle native
   assert.ok(boxes(open).includes('L1') && boxes(open).includes('5-4'), 'ligne [L1] + modules dessous');
   assert.ok(!boxes(closed).includes('5-4'), 'replié : modules masqués');
   assert.equal(q(open, '.tap').length - q(closed, '.tap').length, 3, 'les 3 mono : rattachement visible seulement déplié ; la contacteur tri (mêmes phases que la ligne) n\'a pas de piquage');
+}
+// 15. bornes : 1 pôle = 1 vis en haut et en bas, sans N ; 2 pôles = 2 vis + N ; 3 pôles sans N
+{
+  const e = await mk({ type: 'x', panels: [{ id: 'a', rows: [{ id: 'r', modules: [{ id: 'a', poles: 1 }, { id: 'b', poles: 2 }, { id: 'c', poles: 3 }, { id: 'd', poles: 4 }] }] }] });
+  const m = q(e, '.mod');
+  const n = (i, pos) => m[i].querySelectorAll(`.term.${pos} i`).length;
+  assert.deepEqual([0, 1, 2, 3].map((i) => n(i, 'top')), [1, 2, 3, 4], 'une vis par pôle en haut');
+  assert.deepEqual([0, 1, 2, 3].map((i) => n(i, 'bot')), [1, 2, 3, 4], 'une vis par pôle en bas');
+  assert.deepEqual([0, 1, 2, 3].map((i) => m[i].querySelectorAll('.term.n').length > 0), [false, true, false, true], 'repère N : 2 et 4 pôles seulement');
 }
 console.log('regress OK');

@@ -15,7 +15,7 @@ class DinPanelCardEditor extends LitElement {
   declare hass: unknown;
   declare _config: CardConfig;
   /** Modules dépliés : leurs formulaires (lourds : sélecteurs d'entités) ne sont créés qu'à l'ouverture. */
-  private _open = new Set<string>(['sec:general']);
+  private _open = new Set<string>();
 
   setConfig(c: CardConfig) { this._config = c; }
   private get L(): Lang { return (this._config?.language ?? this._hassLang) as Lang; }
@@ -176,8 +176,7 @@ class DinPanelCardEditor extends LitElement {
   private _row(pi: number, ri: number, r: RowConfig) {
     const L = this.L;
     const stop = (fn: () => void) => (e: Event) => { e.preventDefault(); e.stopPropagation(); fn(); };
-    return html`<details class="blk" open><summary><span>${t(L, 'row')} · ${r.label ?? r.id ?? ri + 1}</span>
-        <button class="danger" @click=${stop(() => { const p = this._panels(); p[pi].rows!.splice(ri, 1); this._setPanels(p); })}>✕</button></summary>
+    return this._sec(`r:${pi}/${ri}`, `${t(L, 'row')} · ${r.label ?? r.id ?? ri + 1}`, () => html`
       <ha-form .hass=${this.hass} .data=${{ id: r.id, label: r.label, phases: r.phases }}
         .schema=${[{ type: 'grid', name: '', schema: [{ name: 'id', selector: { text: {} } }, { name: 'label', selector: { text: {} } }] }, { name: 'phases', selector: { select: { multiple: true, options: ['L1', 'L2', 'L3'] } } }]}
         .computeLabel=${this._lbl}
@@ -185,7 +184,7 @@ class DinPanelCardEditor extends LitElement {
           for (const k of ['id', 'label', 'phases']) { const x = e.detail.value[k]; if (x === undefined || x === '' || (Array.isArray(x) && !x.length)) delete row[k]; else row[k] = x; } this._setPanels(p); }}></ha-form>
       ${(r.modules ?? []).map((m, mi) => this._module(pi, ri, mi, m))}
       <button class="add" @click=${() => { const p = this._panels(); const row = p[pi].rows![ri]; row.modules = [...(row.modules ?? []), { type: row.modules?.length ? 'breaker' : 'differential', id: `${row.id ?? ri + 1}-${(row.modules?.length ?? 0) + 1}`, amp: row.modules?.length ? 16 : 40 }]; this._setPanels(p); }}>+ ${t(L, 'add_module')}</button>
-    </details>`;
+    `, html`<button class="danger" @click=${stop(() => { const p = this._panels(); p[pi].rows!.splice(ri, 1); this._open = new Set([...this._open].filter((k) => !k.startsWith('r:') && !/^\d/.test(k))); this._setPanels(p); })}>✕</button>`);
   }
 
   render() {
@@ -204,7 +203,7 @@ class DinPanelCardEditor extends LitElement {
           @value-changed=${(e: CustomEvent) => { const x = this._panels(); x[pi].id = e.detail.value.id || undefined; x[pi].label = e.detail.value.label || undefined; x[pi].modules_per_row = e.detail.value.modules_per_row || undefined; this._setPanels(x); }}></ha-form>
         ${(p.rows ?? []).map((r, ri) => this._row(pi, ri, r))}
         <button class="add" @click=${() => { const x = this._panels(); x[pi].rows = [...(x[pi].rows ?? []), { id: `row_${(x[pi].rows?.length ?? 0) + 1}`, modules: [] }]; this._setPanels(x); }}>+ ${t(L, 'add_row')}</button>`,
-        html`<button class="danger" @click=${(e: Event) => { e.preventDefault(); e.stopPropagation(); const x = this._panels(); x.splice(pi, 1); this._open = new Set([...this._open].filter((k) => !k.startsWith('p:') && !/^\d/.test(k))); this._setPanels(x); }}>✕</button>`))}
+        html`<button class="danger" @click=${(e: Event) => { e.preventDefault(); e.stopPropagation(); const x = this._panels(); x.splice(pi, 1); this._open = new Set([...this._open].filter((k) => !k.startsWith('p:') && !k.startsWith('r:') && !/^\d/.test(k))); this._setPanels(x); }}>✕</button>`))}
       <button class="add" @click=${() => { const x = this._panels(); x.push({ id: `tableau_${x.length + 1}`, rows: [] }); this._setPanels(x); }}>+ ${t(L, 'add_panel')}</button>
       <div class="note">${t(L, 'editor_note')}</div>`;
   }
