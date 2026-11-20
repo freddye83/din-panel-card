@@ -40,9 +40,10 @@ function placeTip(e: Event) {
   const el = mod.querySelector('.tip') as HTMLElement | null;
   if (!el) return;
   const r = mod.getBoundingClientRect();
-  el.style.left = `${Math.max(4, Math.min(r.left, window.innerWidth - 270))}px`;
-  if (r.top > 140) { el.style.bottom = `${window.innerHeight - r.top + 6}px`; el.style.top = 'auto'; }
-  else { el.style.top = `${r.bottom + 6}px`; el.style.bottom = 'auto'; }
+  const z = mod.offsetWidth > 0 ? r.width / mod.offsetWidth || 1 : 1; // `zoom` du tableau (option fit_width) : coordonnées de l'infobulle à compenser
+  el.style.left = `${Math.max(4, Math.min(r.left, window.innerWidth - 270)) / z}px`;
+  if (r.top > 140) { el.style.bottom = `${(window.innerHeight - r.top + 6) / z}px`; el.style.top = 'auto'; }
+  else { el.style.top = `${(r.bottom + 6) / z}px`; el.style.bottom = 'auto'; }
 }
 
 const STATEFUL = new Set(['relay', 'impulse', 'contactor', 'contactor_daynight', 'switch_disconnector']);

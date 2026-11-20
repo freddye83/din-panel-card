@@ -175,4 +175,21 @@ assert.ok(!el.shadowRoot.querySelector('.mod[title]'), 'plus d\'infobulle native
   assert.equal(q(e, '.t-switch_disconnector')[0].querySelectorAll('.zlens').length, 0, 'sectionneur : pas de voyant');
     assert.ok(q(e, '.t-switch_disconnector')[0].classList.contains('st-on'), 'sectionneur : liseré d\'état');
 }
+// 17. vue « sections » : la carte occupe toute la largeur de la section (même multi-colonnes)
+{
+  const e = await mk({ type: 'x', panels: [{ id: 'a', rows: [{ id: 'r', modules: [{ id: 'a' }] }] }] });
+  assert.equal(e.getGridOptions().columns, 'full', 'getGridOptions : largeur pleine section');
+}
+// 18. fit_width : tableau réduit (zoom) pour tenir dans la largeur de la carte (option, désactivée par défaut)
+{
+  const base = { type: 'x', panels: [{ id: 'a', rows: [{ id: 'r', modules: [{ id: 'a', width: 3 }, { id: 'b' }, { id: 'c' }] }] }] };
+  const off = await mk(base); off._cw = 200; await off.updateComplete;
+  assert.ok(!(off.shadowRoot.querySelector('ha-card').getAttribute('style') ?? '').includes('--z'), 'fit_width désactivée par défaut');
+  const on = await mk({ ...base, fit_width: true });
+  assert.ok(!(on.shadowRoot.querySelector('ha-card').getAttribute('style') ?? '').includes('--z'), 'carte assez large : pas de réduction');
+  on._cw = 200; await on.updateComplete;
+  const st = on.shadowRoot.querySelector('ha-card').getAttribute('style');
+  const z = Number(/--z:([0-9.]+)/.exec(st)?.[1]);
+  assert.ok(Math.abs(z - (200 - 24) / (5 * 46 + 40)) < 0.01, 'zoom = (largeur - 24) / (5 modules x 46 + 40) : ' + st);
+}
 console.log('regress OK');

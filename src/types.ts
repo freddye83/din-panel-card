@@ -52,6 +52,7 @@ export interface CardConfig {
   language?: Lang;
   title?: string;
   incoming_title?: string;
+  fit_width?: boolean; // adapte la largeur des modules (--u) à la largeur de la carte pour éviter le défilement horizontal (défaut : non)
   show_led?: boolean; // petit point de charge en haut des modules (défaut : non ; le niveau de charge colore alors la mesure)
   search?: boolean;  // champ de recherche dans la barre d'outils (défaut : oui)
   nominal_voltage?: number;   // tension nominale (V) pour la limite W d'un calibre A (défaut 230)

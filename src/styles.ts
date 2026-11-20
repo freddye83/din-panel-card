@@ -112,6 +112,7 @@ export const cardStyles = css`
   .phtag i { flex: 1; min-width: 0; border-radius: 3px 3px 0 0; font: 700 9px/13px Arial, sans-serif; font-style: normal; text-align: center; color: #fff; overflow: hidden; }
   .phtag .ph-l1 { background: #8a5a2b; } .phtag .ph-l2 { background: #222; } .phtag .ph-l3 { background: #777; }
   .rail-wrap.fixed { width: calc(var(--n) * var(--u)); min-width: 0; }
+  .panel { zoom: var(--z, 1); }
   .panel.fixed { width: fit-content; max-width: 100%; box-sizing: border-box; margin-left: auto; margin-right: auto; }
   .pad { flex: 0 0 18px; }
   .rail {

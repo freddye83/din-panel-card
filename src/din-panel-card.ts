@@ -112,8 +112,21 @@ class DinPanelCard extends LitElement {
   }
   get hass() { return this._hass as HomeAssistant; }
 
+  /** Nombre de modules de la rangée la plus large (capacité fixée, sinon somme des largeurs). */
+  private _fitUnits(): number {
+    return Math.max(1, ...this._panels.map((p) => p.capacity ?? Math.max(1, ...p.rows.map((r) => r.modules.reduce((n, m) => n + m.width, 0)))));
+  }
+
+  /** Facteur de réduction (option `fit_width`) pour que la rangée la plus large tienne dans la carte : 24 px de marge de carte + 40 px autour du rail ; plancher 0,35. */
+  private _fitZoom(base: number): number {
+    if (!this._config?.fit_width || !this._cw) return 1;
+    const need = this._fitUnits() * base + 40;
+    return Math.min(1, Math.max(0.35, (this._cw - 24) / need));
+  }
+
   getCardSize() { return 2 + this._panels.reduce((n, p) => n + p.rows.length * 3, 0); }
-  getGridOptions() { return { columns: 12, min_columns: 6, rows: 'auto' }; }
+  /** Vue « sections » : `full` = toute la largeur de la section, même si elle s'étend sur 2 ou 3 colonnes (sinon 12 colonnes = 1 colonne de section). */
+  getGridOptions() { return { columns: 'full', min_columns: 6, rows: 'auto' }; }
 
   private get _lang(): Lang {
     return (this._config?.language ?? (this._hass?.language?.startsWith('fr') ? 'fr' : 'en')) as Lang;
@@ -171,7 +184,7 @@ class DinPanelCard extends LitElement {
     const tree = this._view === 'tree';
     const maxW = Number(this._config.max_width) > 0 ? Number(this._config.max_width) : 700;
     const boardW = boardWidth(Math.min(this._cw || maxW, maxW));
-    return html`<ha-card class=${dark ? 'dark' : ''} style=${u > 0 ? `--u:${u}px` : ''}>
+    return html`<ha-card class=${dark ? 'dark' : ''} style=${[u > 0 ? `--u:${u}px` : '', this._fitZoom(u > 0 ? u : 46) < 1 ? `--z:${this._fitZoom(u > 0 ? u : 46).toFixed(3)}` : ''].filter(Boolean).join(';')}>
       <div class="toolbar">
         <h2>${this._config.title ?? ''}</h2>
         ${this._config.search === false ? nothing : html`<div class="search">

@@ -93,6 +93,7 @@ The configuration is a tree: **card → panels → rows → modules → zones**.
 | `nominal_voltage` | number (V) | `230` | Used to derive a power limit in W from a rating in A (`amp × voltage`, ×3 for 3-pole devices) when `max_w` is not set. |
 | `incoming_title` | string | `Arrivée` / `Incoming` | Title of the *Incoming* frame (panel view). Use `""` to hide it. |
 | `search` | boolean | `true` | Search field in the toolbar. `false` hides it. |
+| `fit_width` | boolean | `false` | Panel view: scales the panel down proportionally so the widest row fits the card without horizontal scrolling (never enlarged beyond `module_width` / 46 px, scaling limited to 35 %). Handy in a narrow section. |
 | `show_led` | boolean | `false` | Small load dot on top of breakers. Off by default: the power readout turns orange / red (blinking above 100 %) with the load instead. |
 | `sensors` | object | none | Incoming measurements, see [sensors](#sensors-incoming-lines). |
 | `floors` | map | auto colours | Colours of the floor pills in the diagram: `{ <floor name>: { bg: '#38a169', fg: white } }`. A floor without an entry gets a stable colour generated from its name. |
@@ -234,6 +235,10 @@ The toolbar search field looks in **all fields at once** (case and accents ignor
 
 `modules_per_row` sets the capacity of a row in DIN modules. The rail and the enclosure are then exactly `N × module_width` px wide, and the *Incoming* frame uses the same width. If a row contains more than N DIN modules (sum of `width`), it continues on an **extra rail**; a module wider than N sits alone on its rail. On small screens the row scrolls horizontally.
 
+### Dashboard layout (sections view)
+
+In a *sections* dashboard the card takes the **full width of its section**: set the section to 2 or 3 columns (or use the card's *Layout* tab) to give a wide panel enough room. Module width is `module_width` (46 px by default); a 19-module row needs about 900 px. Narrower cards scroll horizontally.
+
 ## Development
 
 ```bash
@@ -246,7 +251,7 @@ npm run regress   # jsdom regression assertions (diagram, remembered view, langu
 
 Layout: `src/config.ts` (normalisation), `src/components/` (panel, row, module, details, `diagram.ts`, `modules/faces.ts` = look of each type), `src/editor.ts` (visual editor), `src/styles.ts`, `src/utils/`.
 
-Each new version bumps `version` in `package.json`; it is printed in the browser console on load. See [CHANGELOG.md](CHANGELOG.md) (in French). Current version: **1.29.1**.
+Each new version bumps `version` in `package.json`; it is printed in the browser console on load. See [CHANGELOG.md](CHANGELOG.md) (in French). Current version: **1.30.0**.
 
 ---
 
@@ -325,6 +330,7 @@ La configuration est un arbre : **carte → tableaux → rangées → modules �
 | `nominal_voltage` | nombre (V) | `230` | Sert à déduire une limite en W d'un calibre en A (`amp × tension`, ×3 si tripolaire) quand `max_w` n'est pas renseigné. |
 | `incoming_title` | texte | `Arrivée` / `Incoming` | Titre du cadre *Arrivée* (vue tableau). `""` pour le masquer. |
 | `search` | booléen | `true` | Champ de recherche dans la barre d'outils. `false` le masque. |
+| `fit_width` | booléen | `false` | Vue tableau : réduit proportionnellement le tableau pour que la rangée la plus large tienne dans la carte sans défilement horizontal (jamais agrandi au-delà de `module_width` / 46 px, réduction limitée à 35 %). Pratique dans une section étroite. |
 | `show_led` | booléen | `false` | Petit point de charge en haut des disjoncteurs. Désactivé par défaut : la mesure de puissance passe à l'orange / rouge (clignotant au-delà de 100 %) selon la charge. |
 | `sensors` | objet | aucun | Mesures d'arrivée, voir [capteurs](#capteurs-lignes-darrivée). |
 | `floors` | map | couleurs auto | Couleurs des pastilles d'étage du schéma : `{ <nom d'étage>: { bg: '#38a169', fg: white } }`. Un étage sans entrée reçoit une couleur stable générée depuis son nom. |
@@ -466,6 +472,10 @@ Le champ de la barre d'outils cherche dans **tous les champs à la fois** (casse
 
 `modules_per_row` fixe la capacité d'une rangée en modules DIN. Le rail et le coffret font alors exactement `N × module_width` px de large, et le cadre *Arrivée* prend la même largeur. Si une rangée contient plus de N modules DIN (somme des `width`), elle continue sur un **rail supplémentaire** ; un module plus large que N occupe seul son rail. Sur petit écran la rangée défile horizontalement.
 
+### Disposition du tableau de bord (vue sections)
+
+Dans un tableau de bord en *sections*, la carte occupe **toute la largeur de sa section** : étends la section sur 2 ou 3 colonnes (ou règle la carte dans l'onglet *Disposition*) pour donner assez de place à un tableau large. La largeur d'un module est `module_width` (46 px par défaut) : une rangée de 19 modules demande environ 900 px. Une carte plus étroite défile horizontalement.
+
 ## Développement
 
 ```bash
@@ -478,4 +488,4 @@ npm run regress   # assertions de non-régression jsdom (schéma, vue mémorisé
 
 Structure : `src/config.ts` (normalisation), `src/components/` (panel, row, module, détails, `diagram.ts`, `modules/faces.ts` = rendu de chaque type), `src/editor.ts` (éditeur visuel), `src/styles.ts`, `src/utils/`.
 
-Chaque nouvelle version incrémente `version` dans `package.json` ; elle est affichée dans la console du navigateur au chargement. Voir [CHANGELOG.md](CHANGELOG.md). Version actuelle : **1.29.1**.
+Chaque nouvelle version incrémente `version` dans `package.json` ; elle est affichée dans la console du navigateur au chargement. Voir [CHANGELOG.md](CHANGELOG.md). Version actuelle : **1.30.0**.

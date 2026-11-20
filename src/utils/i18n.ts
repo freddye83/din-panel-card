@@ -2,7 +2,7 @@ import type { Lang } from '../types';
 
 const D = {
   fr: {
-    total: 'Total', search: 'Champ de recherche', show_led: 'Point de charge (LED)', search_ph: 'Rechercher (id, libellé, pièce, calibre…)', result: 'résultat', no_result: 'aucun résultat', clear: 'Effacer', incoming: 'Arrivée', nominal_voltage: 'Tension nominale (V, défaut 230)', incoming_title: 'Titre du cadre d’arrivée (vue tableau)', phase: 'Phase', power: 'Puissance', current: 'Intensité', voltage: 'Tension',
+    total: 'Total', search: 'Champ de recherche', show_led: 'Point de charge (LED)', fit_width: 'Adapter les modules à la largeur de la carte', search_ph: 'Rechercher (id, libellé, pièce, calibre…)', result: 'résultat', no_result: 'aucun résultat', clear: 'Effacer', incoming: 'Arrivée', nominal_voltage: 'Tension nominale (V, défaut 230)', incoming_title: 'Titre du cadre d’arrivée (vue tableau)', phase: 'Phase', power: 'Puissance', current: 'Intensité', voltage: 'Tension',
     load: 'Charge', zones: 'Zones', protects: 'Circuits protégés', unavailable: 'Indisponible',
     close: 'Fermer', type: 'Type', id: 'Identifiant', rating: 'Calibre', poles: 'Pôles',
     sensitivity: 'Sensibilité', cls: 'Classe', curve: 'Courbe', phases: 'Phases', usage: 'Usage',
@@ -24,7 +24,7 @@ const D = {
     view_tree: 'Schéma', collapse_level: 'Replier un niveau', collapsed: 'Repli initial', max_width: 'Largeur max du schéma (px)', view_panel: 'Tableau', expand_all: 'Tout déplier', collapse_all: 'Tout replier', view: 'Vue initiale', expand: 'Déplier / replier',
   },
   en: {
-    total: 'Total', search: 'Search field', show_led: 'Load dot (LED)', search_ph: 'Search (id, label, room, rating…)', result: 'result', no_result: 'no result', clear: 'Clear', incoming: 'Incoming', nominal_voltage: 'Nominal voltage (V, default 230)', incoming_title: 'Incoming frame title (panel view)', phase: 'Phase', power: 'Power', current: 'Current', voltage: 'Voltage',
+    total: 'Total', search: 'Search field', show_led: 'Load dot (LED)', fit_width: 'Fit modules to the card width', search_ph: 'Search (id, label, room, rating…)', result: 'result', no_result: 'no result', clear: 'Clear', incoming: 'Incoming', nominal_voltage: 'Nominal voltage (V, default 230)', incoming_title: 'Incoming frame title (panel view)', phase: 'Phase', power: 'Power', current: 'Current', voltage: 'Voltage',
     load: 'Load', zones: 'Zones', protects: 'Protected circuits', unavailable: 'Unavailable',
     close: 'Close', type: 'Type', id: 'Identifier', rating: 'Rating', poles: 'Poles',
     sensitivity: 'Sensitivity', cls: 'Class', curve: 'Curve', phases: 'Phases', usage: 'Usage',

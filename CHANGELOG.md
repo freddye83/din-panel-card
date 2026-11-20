@@ -2,6 +2,10 @@
 
 Chaque nouvelle version incrémente le numéro dans `package.json` (injecté dans le bundle et affiché dans la console du navigateur).
 
+## 1.30.0
+- Nouvelle option `fit_width` (vue tableau) : réduit proportionnellement le tableau (zoom) pour que la rangée la plus large tienne dans la carte sans défilement, même dans une section étroite ; jamais agrandi au-delà de `module_width`, réduction limitée à 35 %. Désactivée par défaut.
+- Vue « sections » de Home Assistant : la carte occupe désormais toute la largeur de la section (`getGridOptions` : `columns: full`), y compris quand la section s'étend sur 2 ou 3 colonnes. Avant, elle était limitée à 12 colonnes de grille (une colonne de section).
+
 ## 1.29.1
 - Prise 2P+T : le neutre (N) est à gauche, la phase (L) à droite, en haut.
 
